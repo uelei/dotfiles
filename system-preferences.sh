@@ -17,14 +17,14 @@ echo "Disable the 'Are you sure you want to open this application?' dialog"
 defaults write com.apple.LaunchServices LSQuarantine -bool false
 
 echo "Disable Notification Center and remove the menu bar icon"
-launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
+# launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
 
 echo "Disable auto-correct"
 ####defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
 echo "Show percentage in battery status"
 defaults write com.apple.menuextra.battery ShowPercent -string "YES"
-defaults write com.apple.menuextra.battery ShowTime -string "NO"
+# defaults write com.apple.menuextra.battery ShowTime -string "NO"
 
 echo "Fix fonth smoothing"
 defaults -currentHost write -globalDomain AppleFontSmoothing -int 0
@@ -39,7 +39,7 @@ echo "Show Path bar in Finder"
 defaults write com.apple.finder ShowPathbar -bool true
 
 echo "Show Status bar in Finder"
-defaults write com.apple.finder ShowStatusBar -bool true
+# defaults write com.apple.finder ShowStatusBar -bool true
 
 echo "Set a blazingly fast keyboard repeat rate"
 defaults write NSGlobalDomain KeyRepeat -int 0.012

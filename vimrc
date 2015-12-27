@@ -1,7 +1,11 @@
+if 0 | endif
 
 if has('vim_starting')
-  set nocompatible               " Be iMproved
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
+    if &compatible
+        set nocompatible               " Be iMproved
+    endif
+    
+    set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
 let neobundle_readme=expand('~/.vim/bundle/neobundle.vim/README.md')
@@ -23,7 +27,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 "" NeoBundle install packages
 "*****************************************************************************
 " NeoBundle 'scrooloose/nerdtree'
-" NeoBundle 'tpope/vim-commentary'
+NeoBundle 'tpope/vim-commentary'
 NeoBundle 'tpope/vim-fugitive'
 " NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'bling/vim-airline'
@@ -32,7 +36,7 @@ NeoBundle 'bling/vim-airline'
 " NeoBundle 'vim-scripts/grep.vim'
 " NeoBundle 'vim-scripts/CSApprox'
 " NeoBundle 'bronson/vim-trailing-whitespace'
-" NeoBundle 'jiangmiao/auto-pairs'
+NeoBundle 'jiangmiao/auto-pairs'
 " NeoBundle 'Shougo/vimproc.vim', {
  "      \ 'build' : {
   "     \     'windows' : 'tools\\update-dll-mingw',
@@ -52,14 +56,18 @@ if v:version >= 704
 endif
 
 NeoBundle "valloric/youcompleteme" 
+NeoBundle 'honza/vim-snippets'
+
+NeoBundle 'chriskempson/vim-tomorrow-theme'
+NeoBundle 'altercation/vim-colors-solarized'
 
 
 NeoBundle "wakatime/vim-wakatime"
 
 "" Python 
 NeoBundle "davidhalter/jedi-vim"
-" NeoBundle "majutsushi/tagbar"
-" NeoBundle "Yggdroot/indentLine"
+NeoBundle "majutsushi/tagbar"
+NeoBundle "Yggdroot/indentLine"
 
 "" Javascript Bundle
 NeoBundle "scrooloose/syntastic"
@@ -80,6 +88,9 @@ NeoBundle "scrooloose/syntastic"
 "NeoBundle 'tpope/vim-haml'
 "NeoBundle 'mattn/emmet-vim'
 
+"" coffee script 
+"NeoBundle "kchmck/vim-coffee-script"
+NeoBundle "wookiehangover/jshint.vim"
 
 "" PHP Bundle
 "NeoBundle 'arnaud-lb/vim-php-namespace'
@@ -100,8 +111,12 @@ filetype plugin indent on
 " this will conveniently prompt you to install them.
 NeoBundleCheck
 
-
-colorscheme Tomorrow
+if has('gui_running')
+    " set background=dark
+else
+    " set background=light
+    set background=dark
+endif
 
 "*****************************************************************************
 "" Basic Setup
@@ -121,10 +136,10 @@ set shiftwidth=4
 set expandtab
 
 "" Map leader to ,
-"let mapleader=','
+let mapleader=','
 "
 """ Enable hidden buffers
-"set hidden
+set hidden
 "
 """ Searching
 "set hlsearch
@@ -141,15 +156,15 @@ set expandtab
 set nobackup
 set noswapfile
 
-"set fileformats=unix,dos,mac
-"set showcmd
-"set shell=/bin/sh
-"
+set fileformats=unix,dos,mac
+set showcmd
+set shell=/bin/sh
+
 "" session management
-"let g:session_directory = "~/.vim/session"
-"let g:session_autoload = "no"
-"let g:session_autosave = "no"
-"let g:session_command_aliases = 1
+let g:session_directory = "~/.vim/session"
+let g:session_autoload = "no"
+let g:session_autosave = "no"
+let g:session_command_aliases = 1
 
 "*****************************************************************************
 "" Visual Settings
@@ -159,15 +174,17 @@ set ruler
 set number
 
 "let no_buffers_menu=1
-"if !exists('g:not_finsh_neobundle')
-""  colorscheme molokai
-""endif
+if !exists('g:not_finsh_neobundle')
+  " colorscheme Tomorrow
+  colorscheme solarized
+endif
 "
-""set mousemodel=popup
-""set t_Co=256
-""set cursorline
-""set guioptions=egmrti
-"set gfn=Monospace\ 10
+set mousemodel=popup
+set t_Co=256
+"""set cursorline
+set guioptions=egmrti
+set gfn=Monospace\ 10
+
 """ Status bar
 set laststatus=2
 "
@@ -182,6 +199,11 @@ set laststatus=2
 "set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
 "
 
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-m>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -190,6 +212,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_python_flake8_args='--ignore=E501,E225'
 
 ""*****************************************************************************
 "" Abbreviations
@@ -218,6 +241,10 @@ cnoreabbrev Qall qall
 " let g:syntastic_auto_loc_list=1
 " let g:syntastic_aggregate_errors = 1
 
+" Tagbar
+nmap <silent> <F4> :TagbarToggle<CR>
+let g:tagbar_autofocus = 1
+
 if has('macunix')
   " pbcopy for OSX copy/paste
   vmap <C-x> :!pbcopy<CR>
@@ -239,8 +266,10 @@ let g:UltiSnipsJumpBackwardTrigger = "<c-p>"
 let g:UltiSnipsListSnippets        = "<c-k>" "List possible snippets based on current file
 
 
-
-
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Righ> <NOP>
 
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
