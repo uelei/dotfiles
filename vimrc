@@ -22,21 +22,8 @@ if !filereadable(neobundle_readme)
   let g:not_finsh_neobundle = "yes"
 
   " Run shell script if exist on custom select language
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
 endif
 
 " Required:
@@ -86,7 +73,8 @@ endif
 NeoBundle 'honza/vim-snippets'
 
 "" Color
-NeoBundle 'chriskempson/vim-tomorrow-theme'
+" NeoBundle 'chriskempson/vim-tomorrow-theme'
+" NeoBundle 'tomasr/molokai'
 
 "" Vim-Bootstrap Updater
 NeoBundle 'sherzberg/vim-bootstrap-updater'
@@ -95,10 +83,10 @@ NeoBundle 'sherzberg/vim-bootstrap-updater'
 
 NeoBundle 'vim-scripts/c.vim'
 
-"" wakatime 
+"" wakatime
 NeoBundle 'wakatime/vim-wakatime'
 
-"" youcompleteme 
+"" youcompleteme
 NeoBundle 'ervandew/supertab'
 NeoBundle 'valloric/youcompleteme'
 
@@ -170,6 +158,7 @@ set backspace=indent,eol,start
 set tabstop=4
 set softtabstop=0
 set shiftwidth=4
+set smarttab
 set expandtab
 
 "" Map leader to ,
@@ -212,7 +201,9 @@ set number
 
 let no_buffers_menu=1
 if !exists('g:not_finsh_neobundle')
-  colorscheme tomorrow
+  " colorscheme tomorrow
+  " colorscheme molokai
+  colorscheme Kafka 
 endif
 
 set mousemodel=popup
