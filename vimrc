@@ -97,6 +97,7 @@ NeoBundle "scrooloose/syntastic"
 NeoBundle "majutsushi/tagbar"
 NeoBundle "Yggdroot/indentLine"
 
+NeoBundle "vim-scripts/pytest.vim"
 
 "" Javascript Bundle
 NeoBundle "scrooloose/syntastic"
@@ -127,7 +128,12 @@ NeoBundle "thoughtbot/vim-rspec"
 NeoBundle "majutsushi/tagbar"
 NeoBundle "ecomba/vim-ruby-refactoring"
 
+"" Markdown
+NeoBundle 'JamshedVesuna/vim-markdown-preview'
+NeoBundle 'joeyespo/grip'
 
+"" Multiple cursors
+NeoBundle 'terryma/vim-multiple-cursors'
 
 "" Include user's extra bundle
 if filereadable(expand("~/.vimrc.local.bundles"))
@@ -496,7 +502,7 @@ let g:jedi#completions_command = "<C-Space>"
 
 " syntastic
 let g:syntastic_python_checkers=['python', 'flake8']
-let g:syntastic_python_flake8_post_args='--ignore=W391'
+let g:syntastic_python_flake8_post_args='--ignore=W391,E501'
 
 " vim-airline
 let g:airline#extensions#virtualenv#enabled = 1
@@ -634,3 +640,4 @@ else
   let g:airline_symbols.readonly = ''
   let g:airline_symbols.linenr = ''
 endif
+let vim_markdown_preview_github=1
