@@ -841,9 +841,9 @@ let g:lightline = {
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Python
 " let g:syntastic_python_checkers=['pyflakes']
-" let g:syntastic_python_checkers=['python', 'pep8']
+" let g:syntastic_python_checkers=['pep8']
 " let g:syntastic_python_checkers=['pylint']
-let g:syntastic_python_checkers=['python', 'flake8']
+let g:syntastic_python_checkers=['flake8']
 
 " syntastic
 let g:syntastic_always_populate_loc_list=1
@@ -875,10 +875,6 @@ nnoremap qe :silent! normal mpea"<Esc>bi"<Esc>`pl
 " remove quotes from a word
 nnoremap wq :silent! normal mpeld bhd `ph<CR>
 
-" prettyfy json file
-" map <Leader>j %!python -m json.tool<CR>
-autocmd FileType json autocmd BufWritePre <buffer> %!python -m json.tool
- 
 " py lint trigger
 map <leader>pl :SyntasticCheck pylint<cr>
 
@@ -892,10 +888,9 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 
 "show white space
 set listchars=eol:¬,tab:▸.,trail:~,extends:>,precedes:<,space:␣
-nmap <leader>l :set list!<CR>
+nmap <leader>h :set list!<CR>
 
 " :set list
-
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
