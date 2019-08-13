@@ -128,4 +128,4 @@ eval "$(pyenv virtualenv-init -)"
 export PATH="/home/uelei/.local/bin:$PATH"
 
 
-source ~/.work_sensitive
+source ~/personal_scripts/bash_sensitive
