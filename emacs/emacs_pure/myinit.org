@@ -1,0 +1,226 @@
+* theme
+#+BEGIN_SRC emacs-lisp
+(use-package atom-one-dark-theme
+  :ensure t
+  :config (load-theme 'atom-one-dark t))
+
+(use-package all-the-icons 
+:ensure t
+:defer 10)
+
+(use-package all-the-icons-ivy
+:ensure t
+  :after (all-the-icons ivy)
+  :custom (all-the-icons-ivy-buffer-commands '(ivy-switch-buffer-other-window ivy-switch-buffer))
+  :defer 12
+  :config
+  (add-to-list 'all-the-icons-ivy-file-commands 'counsel-dired-jump)
+  (add-to-list 'all-the-icons-ivy-file-commands 'counsel-find-library)
+  (all-the-icons-ivy-setup))
+
+
+;;(use-package all-the-icons-dired
+;;:ensure t
+;; )
+
+;;(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+(use-package doom-modeline
+      :ensure t
+      :hook (after-init . doom-modeline-mode))
+#+END_SRC
+
+* interface startup
+#+BEGIN_SRC emacs-lisp
+  ;;(setq inhibit-startup-message t)
+  (tool-bar-mode -1)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (global-linum-mode t)
+
+  ;; fix wrong char in compilation buffer
+  (ignore-errors 
+   (require 'ansi-color)
+     (defun endless/colorize-compilation ()
+     "Colorize from `compilation-filter-start' to `point'."
+     (let ((inhibit-read-only t))
+       (ansi-color-apply-on-region
+        compilation-filter-start (point))))
+   )
+  (add-hook 'compilation-filter-hook
+            'endless/colorize-compilation)
+
+  ;;  (require 'ansi-color)
+  ;;  (defun my-colorize-compilation-buffer ()
+  ;;    (when (eq major-mode 'compilation-mode)
+  ;;      (ansi-color-apply-on-region compilation-filter-start (point-max))))
+  ;;(add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
+
+  ;; avoid save backups files #
+  (setq make-backup-files nil)
+  (setq create-lockfiles nil)
+
+  ;; paste to minibuffer fix
+  (defun paste-from-x-clipboard()
+    (interactive)
+      (shell-command
+      (cond
+      (*cygwin* "getclip")
+      (*is-a-mac* "pbpaste")
+      (t "xsel -ob"))
+    1))
+
+  (defun my/paste-in-minibuffer ()
+    (local-set-key (kbd "M-y") 'paste-from-x-clipboard))
+
+  (add-hook 'minibuffer-setup-hook 'my/paste-in-minibuffer)
+
+  (defalias 'list-buffers 'ibuffer)
+
+#+END_SRC
+
+* git
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t
+    :defer 2
+    :init
+    (progn
+    (bind-key "C-x g" 'magit-status)
+  ))
+
+  (use-package git-gutter
+    :ensure t
+    :defer 3
+    :init
+    (global-git-gutter-mode +1)
+    (setq git-gutter:update-interval 1)
+   )
+  ;;(setq git-gutter:update-interval 2)
+  ;;(global-set-key (kbd "M-g M-g") 'hydra-git-gutter/body)
+
+
+ ;; (use-package git-timemachine
+ ;;   :ensure t
+ ;;   )
+#+END_SRC
+  
+
+* swiper ag
+#+BEGIN_SRC emacs-lisp
+
+;; it looks like counsel is a requirement for swiper
+(use-package counsel
+  :ensure t
+ )
+
+;;(use-package ivy
+;;  :ensure t
+;;  :diminish (ivy-mode)
+;;  :bind (("C-x b" . ivy-switch-buffer))
+;;  :config
+;;  (ivy-mode 1)
+;;  (setq ivy-use-virtual-buffers t)
+;;  (setq ivy-display-style 'fancy))\
+
+(use-package swiper
+  :ensure try
+  :bind (("C-s" . swiper)
+	 ("C-r" . swiper)
+	 ("C-c C-r" . ivy-resume)
+	 ("M-x" . counsel-M-x)
+	 ("C-x C-f" . counsel-find-file))
+  :config
+ (progn
+   (setq ivy-display-style 'fancy)
+   (ivy-mode 1)
+   (setq ivy-use-virtual-buffers t)
+   (setq enable-recursive-minibuffers t)
+   (global-set-key "\C-s" 'swiper)
+   (global-set-key (kbd "C-c C-r") 'ivy-resume)
+   (global-set-key (kbd "<f6>") 'ivy-resume)
+   (global-set-key (kbd "M-x") 'counsel-M-x)
+   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+   (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+   (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+   (global-set-key (kbd "<f1> l") 'counsel-find-library)
+   (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+   (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+   (global-set-key (kbd "C-c g") 'counsel-git)
+   (global-set-key (kbd "C-c j") 'counsel-git-grep)
+   (global-set-key (kbd "C-S-f") 'counsel-ag)
+   (global-set-key (kbd "C-x l") 'counsel-locate)
+   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+   (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+   
+ ))
+#+END_SRC
+
+* evil mode
+#+BEGIN_SRC emacs-lisp
+    (use-package evil
+      :ensure t
+      :init
+      (evil-mode 1)
+     )
+    (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
+    (evil-define-key 'motion help-mode-map (kbd "<tab>") 'forward-button)
+    (evil-define-key 'motion help-mode-map (kbd "S-<tab>") 'backward-button)
+
+    (define-key evil-normal-state-map (kbd "K") 'elpy-doc)
+
+
+
+
+(defun xah-click-describe-char (@click)
+  "Mouse click to `describe-char' at clicked point.
+URL `http://ergoemacs.org/emacs/emacs_mouse_wheel_config.html'
+Version 2015-04-22"
+  (interactive "e")
+  (let ((p1 (posn-point (event-start @click))))
+    (goto-char p1)
+    (make-marker)
+    (describe-char p1)))
+
+;; on linux, make right button show char info on clicked point
+(when (string-equal system-type "gnu/linux")
+  (global-set-key (kbd "<mouse-3>") 'xah-describe-char-on-click)
+  )
+
+
+
+(defun goto-def-or-rgrep ()
+  "Go to definition of thing at point or do an rgrep in project if that fails"
+  (interactive)
+  (condition-case nil (elpy-goto-definition)
+    (error (elpy-rgrep-symbol (thing-at-point 'symbol)))))
+
+
+
+
+    (define-key evil-normal-state-map (kbd "gd") 'goto-def-or-rgrep)
+    (define-key evil-normal-state-map (kbd "C-/") 'comment-line)
+    (define-key evil-normal-state-map (kbd "<mouse-8>") 'pop-tag-mark)
+    (define-key evil-normal-state-map (kbd "gD") 'jump-to-definition-other-window)
+
+
+#+END_SRC
+
+
+* realgud
+#+BEGIN_SRC emacs-lisp
+
+(use-package dap-mode
+  :after lsp-mode
+  :commands dap-debug
+  :hook ((python-mode . dap-ui-mode)
+ 	 (python-mode . dap-mode))
+  :config
+    (require 'dap-python)
+)
+;;(setq gud-pdb-command-name "python -m pdb")
+
+#+END_SRC
+
+
+
+

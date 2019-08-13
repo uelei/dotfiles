@@ -1,0 +1,450 @@
+* interface startup
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t)
+  (tool-bar-mode -1)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (global-linum-mode t)
+
+  ;; fix wrong char in compilation buffer
+  (ignore-errors 
+   (require 'ansi-color)
+     (defun endless/colorize-compilation ()
+     "Colorize from `compilation-filter-start' to `point'."
+     (let ((inhibit-read-only t))
+       (ansi-color-apply-on-region
+        compilation-filter-start (point))))
+   )
+  (add-hook 'compilation-filter-hook
+            'endless/colorize-compilation)
+
+  ;;  (require 'ansi-color)
+  ;;  (defun my-colorize-compilation-buffer ()
+  ;;    (when (eq major-mode 'compilation-mode)
+  ;;      (ansi-color-apply-on-region compilation-filter-start (point-max))))
+  ;;(add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
+
+  ;; avoid save backups files #
+  (setq make-backup-files nil)
+  (setq create-lockfiles nil)
+
+  ;; paste to minibuffer fix
+  (defun paste-from-x-clipboard()
+    (interactive)
+      (shell-command
+      (cond
+      (*cygwin* "getclip")
+      (*is-a-mac* "pbpaste")
+      (t "xsel -ob"))
+    1))
+
+  (defun my/paste-in-minibuffer ()
+    (local-set-key (kbd "M-y") 'paste-from-x-clipboard))
+
+  (add-hook 'minibuffer-setup-hook 'my/paste-in-minibuffer)
+
+  (defalias 'list-buffers 'ibuffer)
+
+#+END_SRC
+
+* git
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t
+    :init
+    (progn
+    (bind-key "C-x g" 'magit-status)
+  ))
+
+  (use-package git-gutter
+    :ensure t
+    :init
+    (global-git-gutter-mode +1)
+    (setq git-gutter:update-interval 1)
+   )
+  ;;(setq git-gutter:update-interval 2)
+  ;;(global-set-key (kbd "M-g M-g") 'hydra-git-gutter/body)
+
+
+ ;; (use-package git-timemachine
+ ;;   :ensure t
+ ;;   )
+#+END_SRC
+  
+* flycheck
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init
+    (global-flycheck-mode t))
+#+END_SRC
+
+* python
+#+BEGIN_SRC emacs-lisp
+  ;;(setq py-python-command "python3")
+  ;;(setq python-shell-interpreter "python3")
+
+  (use-package virtualenvwrapper
+     :ensure t
+      :config
+      (venv-initialize-interactive-shells)
+      (venv-initialize-eshell))
+
+;;  (use-package blacken
+;;    :ensure t)
+
+  (defun my/python-format-code ()
+    (interactive)
+    (if (executable-find "black")
+	(blacken-buffer)
+      (elpy-format-code)))
+
+  (use-package elpy
+	:ensure t
+	:config 
+	(elpy-enable)
+	(setq elpy-test-pytest-runner-command '("pipenv" "run" "pytest" "--pdb" "-x"))
+	(elpy-set-test-runner 'elpy-test-pytest-runner)
+	(define-key elpy-mode-map (kbd "C-c C-f") 'my/python-format-code)
+	)
+
+  (use-package importmagic
+	:ensure t
+	:config
+	(add-hook 'python-mode-hook 'importmagic-mode))
+#+END_SRC
+* theme
+#+BEGIN_SRC emacs-lisp
+(use-package atom-one-dark-theme
+  :ensure t
+  :config (load-theme 'atom-one-dark t))
+
+(use-package all-the-icons 
+:ensure t
+:defer 0.5)
+
+(use-package all-the-icons-ivy
+:ensure t
+  :after (all-the-icons ivy)
+  :custom (all-the-icons-ivy-buffer-commands '(ivy-switch-buffer-other-window ivy-switch-buffer))
+  :config
+  (add-to-list 'all-the-icons-ivy-file-commands 'counsel-dired-jump)
+  (add-to-list 'all-the-icons-ivy-file-commands 'counsel-find-library)
+  (all-the-icons-ivy-setup))
+
+
+(use-package all-the-icons-dired
+:ensure t
+)
+
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+(use-package doom-modeline
+      :ensure t
+      :hook (after-init . doom-modeline-mode))
+#+END_SRC
+
+* swiper ag
+#+BEGIN_SRC emacs-lisp
+
+;; it looks like counsel is a requirement for swiper
+(use-package counsel
+  :ensure t
+ )
+
+;;(use-package ivy
+;;  :ensure t
+;;  :diminish (ivy-mode)
+;;  :bind (("C-x b" . ivy-switch-buffer))
+;;  :config
+;;  (ivy-mode 1)
+;;  (setq ivy-use-virtual-buffers t)
+;;  (setq ivy-display-style 'fancy))\
+
+(use-package swiper
+  :ensure try
+  :bind (("C-s" . swiper)
+	 ("C-r" . swiper)
+	 ("C-c C-r" . ivy-resume)
+	 ("M-x" . counsel-M-x)
+	 ("C-x C-f" . counsel-find-file))
+  :config
+ (progn
+   (setq ivy-display-style 'fancy)
+   (ivy-mode 1)
+   (setq ivy-use-virtual-buffers t)
+   (setq enable-recursive-minibuffers t)
+   (global-set-key "\C-s" 'swiper)
+   (global-set-key (kbd "C-c C-r") 'ivy-resume)
+   (global-set-key (kbd "<f6>") 'ivy-resume)
+   (global-set-key (kbd "M-x") 'counsel-M-x)
+   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+   (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+   (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+   (global-set-key (kbd "<f1> l") 'counsel-find-library)
+   (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+   (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+   (global-set-key (kbd "C-c g") 'counsel-git)
+   (global-set-key (kbd "C-c j") 'counsel-git-grep)
+   (global-set-key (kbd "C-S-f") 'counsel-ag)
+   (global-set-key (kbd "C-x l") 'counsel-locate)
+   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+   (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+   
+ ))
+#+END_SRC
+
+* evil mode
+#+BEGIN_SRC emacs-lisp
+    (use-package evil
+      :ensure t
+      :init
+      (evil-mode 1)
+     )
+    (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
+    (evil-define-key 'motion help-mode-map (kbd "<tab>") 'forward-button)
+    (evil-define-key 'motion help-mode-map (kbd "S-<tab>") 'backward-button)
+
+    (define-key evil-normal-state-map (kbd "K") 'elpy-doc)
+
+
+
+
+(defun xah-click-describe-char (@click)
+  "Mouse click to `describe-char' at clicked point.
+URL `http://ergoemacs.org/emacs/emacs_mouse_wheel_config.html'
+Version 2015-04-22"
+  (interactive "e")
+  (let ((p1 (posn-point (event-start @click))))
+    (goto-char p1)
+    (make-marker)
+    (describe-char p1)))
+
+;; on linux, make right button show char info on clicked point
+(when (string-equal system-type "gnu/linux")
+  (global-set-key (kbd "<mouse-3>") 'xah-describe-char-on-click)
+  )
+
+
+
+(defun goto-def-or-rgrep ()
+  "Go to definition of thing at point or do an rgrep in project if that fails"
+  (interactive)
+  (condition-case nil (elpy-goto-definition)
+    (error (elpy-rgrep-symbol (thing-at-point 'symbol)))))
+
+
+
+
+    (define-key evil-normal-state-map (kbd "gd") 'goto-def-or-rgrep)
+    (define-key evil-normal-state-map (kbd "C-/") 'comment-line)
+    (define-key evil-normal-state-map (kbd "<mouse-8>") 'pop-tag-mark)
+    (define-key evil-normal-state-map (kbd "gD") 'jump-to-definition-other-window)
+
+
+#+END_SRC
+
+* autocomplete
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package auto-complete
+  ;;     :ensure t
+  ;;     :init
+  ;;     (progn
+  ;;       (ac-config-default)
+  ;;       (global-auto-complete-mode t)
+  ;;    ))
+
+    (use-package yasnippet
+      :ensure t
+      :init
+        (yas-global-mode 1))
+    
+    (use-package yasnippet-snippets
+       :ensure t)
+   
+#+END_SRC
+  
+* which-key
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+	:ensure t 
+	:config
+	(which-key-mode))
+#+END_SRC
+* neo tree
+#+BEGIN_SRC emacs-lisp
+  (use-package neotree
+    :ensure t
+    :init
+    (global-set-key [f8] 'neotree-toggle)
+    (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+    (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+    (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+    (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+    (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+    (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+    (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+    (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+    (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
+    :config
+    (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+)
+
+  
+  (use-package all-the-icons 
+    :ensure t
+    :defer 0.5)
+#+END_SRC
+
+* realgud
+#+BEGIN_SRC emacs-lisp
+  ;;(use-package realgud
+  ;;:ensure t)
+
+(use-package dap-mode
+  :after lsp-mode
+  :commands dap-debug
+  :hook ((python-mode . dap-ui-mode)
+ 	 (python-mode . dap-mode))
+  :config
+    (require 'dap-python)
+)
+;;(setq gud-pdb-command-name "python -m pdb")
+
+#+END_SRC
+
+* multiple-cursors
+#+BEGIN_SRC emacs-lisp
+   ;; (use-package mark-multiple
+   ;;   :ensure t
+   ;;   :bind ("M-j". 'mark-next-like-this))
+
+    (use-package evil-mc
+      :ensure t
+      :init
+         (global-evil-mc-mode 1)
+      :bind
+      ("M-j" . evil-mc-make-and-goto-next-match)
+      ("M-J" . evil-mc-skip-and-goto-prev-match)
+      ("C-g" . evil-mc-undo-all-cursors)
+      ;; (global-unset-key (kbd "M-<down-mouse-1>"))
+      ;; (global-set-key (kbd "M-<mouse-1>") 'evil-mc-make-cursor-here)
+
+  )
+
+   ;;  (use-package multiple-cursors
+   ;;    :ensure t
+   ;;    :init
+   ;;    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+   ;;    )
+   ;; ;;       (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+   ;;       (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+   ;;       (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+   ;;    :bind (:map modi-mode-map
+   ;;          ("C-S-c C-S-c" . mc/edit-lines)
+   ;;          ("C-6" . mc/mark-next-like-this)
+   ;;          ("C-4" . mc/mark-previous-like-this)
+   ;;          ("C-c C-<" . mc/mark-all-like-this)
+   ;;          ("C-S-<mouse-1>" . mc/add-cursor-on-click))
+   ;;  :bind (:map region-bindings-mode-map
+   ;;          ("a" . mc/mark-all-like-this)
+   ;;          ("p" . mc/mark-previous-like-this)
+   ;;          ("n" . mc/mark-next-like-this)
+   ;;          ("P" . mc/unmark-previous-like-this)
+   ;;          ("N" . mc/unmark-next-like-this)
+   ;;          ("[" . mc/cycle-backward)
+   ;;          ("]" . mc/cycle-forward)
+   ;;          ("m" . mc/mark-more-like-this-extended)
+   ;;          ("h" . mc-hide-unmatched-lines-mode)
+   ;;          ("\\" . mc/vertical-align-with-space)
+   ;;          ("#" . mc/insert-numbers) ; use num prefix to set the starting number
+   ;;          ("^" . mc/edit-beginnings-of-lines)
+   ;;          ("$" . mc/edit-ends-of-lines))
+   ;;   :init
+   ;;   (progn
+   ;;     ;; Temporary hack to get around bug # 28524 in emacs 26+
+   ;;     ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=28524
+   ;;     (setq mc/mode-line
+   ;;           `(" mc:" (:eval (format ,(propertize "%-2d" 'face 'font-lock-warning-face)
+   ;;                                   (mc/num-cursors)))))
+
+   ;;     (setq mc/list-file (locate-user-emacs-file "mc-lists"))
+
+   ;;     ;; Disable the annoying sluggish matching paren blinks for all cursors
+   ;;     ;; when you happen to type a ")" or "}" at all cursor locations.
+   ;;     (defvar modi/mc-blink-matching-paren--store nil
+   ;;       "Internal variable used to restore the value of `blink-matching-paren'
+   ;; after `multiple-cursors-mode' is quit.")
+
+   ;;     ;; The `multiple-cursors-mode-enabled-hook' and
+   ;;     ;; `multiple-cursors-mode-disabled-hook' are run in the
+   ;;     ;; `multiple-cursors-mode' minor mode definition, but they are not declared
+   ;;     ;; (not `defvar'd). So do that first before using `add-hook'.
+   ;;     (defvar multiple-cursors-mode-enabled-hook nil
+   ;;       "Hook that is run after `multiple-cursors-mode' is enabled.")
+   ;;     (defvar multiple-cursors-mode-disabled-hook nil
+   ;;       "Hook that is run after `multiple-cursors-mode' is disabled.")
+
+   ;;     (defun modi/mc-when-enabled ()
+   ;;       "Function to be added to `multiple-cursors-mode-enabled-hook'."
+   ;;       (setq modi/mc-blink-matching-paren--store blink-matching-paren)
+   ;;       (setq blink-matching-paren nil))
+
+   ;;     (defun modi/mc-when-disabled ()
+   ;;       "Function to be added to `multiple-cursors-mode-disabled-hook'."
+   ;;       (setq blink-matching-paren modi/mc-blink-matching-paren--store))
+
+   ;;     (add-hook 'multiple-cursors-mode-enabled-hook #'modi/mc-when-enabled)
+   ;;     (add-hook 'multiple-cursors-mode-disabled-hook #'modi/mc-when-disabled)))
+#+END_SRC
+
+* org
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+  (use-package evil-org
+    :ensure t
+    :after org
+    :config
+    (add-hook 'org-mode-hook 'evil-org-mode)
+    (add-hook 'evil-org-mode-hook
+              (lambda ()
+                (evil-org-set-key-theme)))
+    (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+
+
+
+  (custom-set-variables
+   '(org-directory "~/Dropbox/org")
+   '(org-default-notes-file (concat org-directory "/notes.org"))
+   '(org-export-html-postamble nill)
+   '(org-hide-leading-starts t)
+   '(org-startup-folded (quote overview))
+   '(org-startup-indented t)
+   )
+
+(setq org-log-done 'time)
+#+END_SRC
+
+
+* shell
+#+BEGIN_SRC emacs-lisp
+(use-package better-shell
+    :ensure t
+    :bind (("C-`" . better-shell-shell)
+    ("C-;" . better-shell-remote-open)))
+
+#+END_SRC
+
+* elixir
+#+BEGIN_SRC emacs-lisp
+  (use-package alchemist
+    :ensure t)
+#+END_SRC
+
+#+RESULTS:
+
