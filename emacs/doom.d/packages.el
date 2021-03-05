@@ -66,9 +66,12 @@
 
 ;; emoji
 (package! emojify)
-(package! company-emoji)
+;;(package! company-emoji)
 
 
 ;; email
 (package! mu4e-maildirs-extension)
 (package! mu4e-alert)
+
+
+(package! poetry)
