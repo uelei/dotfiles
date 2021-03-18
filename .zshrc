@@ -4,8 +4,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH="/home/uelei/.oh-my-zsh"
 
-ZSH_THEME="spaceship" 
-
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
@@ -36,28 +34,30 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
-# fix agent missing on wsl
-ps -u $(whoami) | grep ssh-agent &> /dev/null
-if [ $? -ne 0 ];then
-   echo "exporting new ssh agent"
-   eval $(ssh-agent)
-   ssh-add
-   echo "export SSH_AGENT_PID=$SSH_AGENT_PID" > ~/.agent-profile
-   echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> ~/.agent-profile
-else
-    echo "using ssh agent"
-    source ~/.agent-profile
-fi
-# trap 'ssh-agent -k; exit' 0
-
 # bug on wsl and spaceship
-SPACESHIP_BATTERY_SHOW=false
+# SPACESHIP_BATTERY_SHOW=false
 
 # wsl
 if (( ${+WSL_DISTRO_NAME} )); then
-	echo "exporting display for wsl"
-	export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
-	export GPG_TTY=$(tty)
+
+    # fix agent missing on wsl
+    ps -u $(whoami) | grep ssh-agent &> /dev/null
+    if [ $? -ne 0 ];then
+	echo "exporting new ssh agent"
+	eval $(ssh-agent)
+	ssh-add
+	echo "export SSH_AGENT_PID=$SSH_AGENT_PID" > ~/.agent-profile
+	echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> ~/.agent-profile
+    else
+	echo "using ssh agent"
+	source ~/.agent-profile
+    fi
+    # trap 'ssh-agent -k; exit' 0
+
+
+    echo "exporting display for wsl"
+    export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
+    export GPG_TTY=$(tty)
 
 
 	# if grep -qs '/mnt/g ' /proc/mounts; then
@@ -112,4 +112,9 @@ zinit light-mode for \
 zinit light zdharma/fast-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-completions
+
+# install theme
+zinit light denysdovhan/spaceship-prompt
+
+ZSH_THEME="spaceship" 
 
