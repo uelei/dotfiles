@@ -3,12 +3,11 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-(load-file "~/personal_scripts/secrets.el")
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name "Wesley"
-      user-mail-address "ueleiww@gmail.com")
+(setq user-full-name "Uelei"
+      user-mail-address "emacs@uelei.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -20,7 +19,8 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "monospace" :size 14))
+;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
+;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -35,11 +35,13 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+(setq
+ projectile-project-search-path '("~/code/" "~/code/pontotel/"))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
-;; - `use-package' for configuring packages
+;; - `use-package!' for configuring packages
 ;; - `after!' for running code after a package has loaded
 ;; - `add-load-path!' for adding directories to the `load-path', relative to
 ;;   this file. Emacs searches the `load-path' when you load packages with
@@ -47,132 +49,122 @@
 ;; - `map!' for binding new keys
 ;;
 ;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c g k').
+;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
 ;; This will open documentation for it, including demos of how they are used.
 ;;
-;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
+;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
 
-;; ;; black for python files
-;; (def-package! blacken
-;;    :hook
-;;    (python-mode . blacken-mode)
-;;    (before-save . blacken-buffer))
+;; ;; python formater
+;; (setq-default dotspacemacs-configuration-layers '(
+;;   (python :variables python-formatter 'black)))
 
-;; pytest custom config
-(def-package! python-pytest
-  :custom
-  (python-pytest-arguments
-   '("-v"
-     "--color"          ;; colored output in the buffer
-     "--failed-first"   ;; run the previous failed tests first
-     "--maxfail=5")))
-
-;;  org stuffs
-(def-package! org
-  :config
-  (setq
-   org-directory (expand-file-name "~/Dropbox/org/")
-   org-agenda-files (expand-file-name "~/Dropbox/org/work_todo.org")
-   org-log-done 'time
-   org-adapt-indentation nil
-
-  ;; set color in priorities
-  org-priority-faces '((?A . (:foreground "red" :background "yellow" :weight 'bold))
-                      (?B . (:foreground "yellow" :weight 'bold))
-                      (?C . (:foreground "green" :weight 'bold)))
-  )
-
-  (setq org-agenda-files
-      (append
-       (file-expand-wildcards "~/Dropbox/org/*.org")
-       (file-expand-wildcards "~/Dropbox/org/*/*.org")))
-
-  (defun my/generate-org-filename-for-week-number ()
-    ;; (setq my-org-note--time (format-time-string "%Y_%U"))
-    (expand-file-name (format "%s/%s.org" (plist-get org-capture-plist :subfolder) (format-time-string "%Y_%V") ) org-directory))
-
-    (setq org-capture-templates '(
-                              ("w" "work week todo"
-                               plain (file my/generate-org-filename-for-week-number)
-                               "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"
-                               :empty-lines 1
-                               :subfolder "work"
-                               )
-                              ("b" "work backlog todo"
-                               plain (file "~/Dropbox/org/work_backlog.org")
-                               "* TODO %?\n  Entered on: %U - %a\n"
-                               :empty-lines 1)
-                              ("n" "work notes"
-                               plain (file "~/Dropbox/org/work_notes.org")
-                               "* %?\n  Entered on: %U - %a\n"
-                               )
-                              ("t" "home todo"
-                               plain (file "~/Dropbox/org/home_todo.org")
-                               "* TODO %?\nSCHEDULE: %(org-insert-time-stamp (org-read-date nil t \"+7d\"))\nentered on: %u - %a\n"
-                               :empty-lines 1)
-                              ("h" "home notes"
-                               plain (file "~/Dropbox/org/home_notes.org")
-                               "* %?\n  Entered on: %U - %a\n"
-                               )
-                              ))
-
-  )
-
-;; editor config
-;; (def-package! editorconfig
+;; (def-package! dap-mode
+;;   :after lsp-mode
 ;;   :config
-;;   (editorconfig-mode 1))
+;;   (dap-mode t)
+;;   (dap-ui-mode t))
 
+;; (def-package! poetry
+;; :config
+;;          (poetry-tracking-mode 1)
+;;          )
 
 ;; comment line like pycharm
-(map! :ne "C-/" #'comment-line)
+(map! "C-/" #'comment-line)
 
-;; ;; emoji
-(def-package! emojify
+;; emoji
+(after! emojify
   :config
   (add-hook 'after-init-hook #'global-emojify-mode)
   (setq emojify-company-tooltips-p t)
   )
 
-;; (def-package! company-emoji)
-;; (after! company
-;;    (add-to-list 'company-backends 'company-emoji))
+(after! text-mode
+  (set-company-backend! '(text-mode) '(company-emoji)))
 
-;; (use-package! markdown-mode
-;;   :hook
-;;   (git-commit-mode . markdown-mode))
-
-
+;; emoji + markdown
 (when (featurep! :lang markdown)
   (after! markdown-mode
     (setq markdown-header-scaling t)
     (set-company-backend! '(markdown-mode gfm-mode) '(company-emoji))))
 
 
-(after! text-mode
-    (set-company-backend! '(text-mode) '(company-emoji)))
+;; ;;  org stuffs
+(after! org
+  :config
+  (setq
+   org-directory (expand-file-name "~/Dropbox/notes/org/")
+   org-log-done 'time
+   org-adapt-indentation nil
+   ;; ;; set color in priorities
+   ;; org-priority-faces '((?A . (:foreground "red" :background "yellow" :weight 'bold))
+   ;;                     (?B . (:foreground "yellow" :weight 'bold))
+   ;;                     (?C . (:foreground "green" :weight 'bold)))
+   org-agenda-files
+   (append
+    (file-expand-wildcards "~/Dropbox/notes/org/*.org")
+    (file-expand-wildcards "~/Dropbox/notes/org/*/*.org")))
+
+  ;; (defun my/generate-org-filename-for-week-number ()
+  ;;   ;; (setq my-org-note--time (format-time-string "%Y_%U"))
+  ;;   (expand-file-name (format "%s/%s.org" (plist-get org-capture-plist :subfolder) (format-time-string "%Y_%V") ) org-directory))
+
+  ;; Old org-capture-template
+  ;; (setq org-capture-templates '(
+  ;;                               ("w" "work week todo"
+  ;;                                plain (file my/generate-org-filename-for-week-number)
+  ;;                                "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"
+  ;;                                :empty-lines 1
+  ;;                                :subfolder "work"
+  ;;                                )
+  ;;                               ("b" "work backlog todo"
+  ;;                                plain (file "~/Dropbox/org/work_backlog.org")
+  ;;                                "* TODO %?\n  Entered on: %U - %a\n"
+  ;;                                :empty-lines 1)
+  ;;                               ("n" "work notes"
+  ;;                                plain (file "~/Dropbox/org/work_notes.org")
+  ;;                                "* %?\n  Entered on: %U - %a\n"
+  ;;                                )
+  ;;                               ("t" "home todo"
+  ;;                                plain (file "~/Dropbox/org/home_todo.org")
+  ;;                                "* TODO %?\nSCHEDULE: %(org-insert-time-stamp (org-read-date nil t \"+7d\"))\nentered on: %u - %a\n"
+  ;;                                :empty-lines 1)
+  ;;                               ("h" "home notes"
+  ;;                                plain (file "~/Dropbox/org/home_notes.org")
+  ;;                                "* %?\n  Entered on: %U - %a\n"
+  ;;                                )
+  ;;                               ))
 
 
-;; (after! git-commit-mode
-;;   (set-company-backend! '(git-commit-mode gfm-mode) '(company-emoji)))
 
+  )
 
-  ;; (after! mode
-  ;;   (setq markdown-header-scaling t)
+;;;make org capture nice
+;;;https://github.com/tecosaur/emacs-config/compare/6bcdbaa..49c790e
+(after! org-capture
+  (load! "org-capture-uelei")
+)
+;; ;; black for python files
+;; (def-package! blacken
+;;    :hook
+;;    (python-mode . blacken-mode)
+;;    (before-save . blacken-buffer))
 
-  ;;   (set-company-backend! '(markdown-mode gfm-mode) '(company-emoji))))
+;; ;; pytest custom config
+;; (def-package! python-pytest
+;;   :custom
+;;   (python-pytest-arguments
+;;    '("-v"
+;;      "--color"          ;; colored output in the buffer
+;;      "--failed-first"   ;; run the previous failed tests first
+;;      "--maxfail=5")))
 
-
-
-(when (and (featurep! :lang python +lsp)
-           (featurep! :checkers syntax))
-  (set-next-checker! 'python-mode 'lsp 'python-mypy))
-
-
-;; (def-package! poetry)
-
+;; lsp python
+;; (when (and (featurep! :lang python +lsp)
+;;            (featurep! :checkers syntax))
+;;   (set-next-checker! 'python-mode 'lsp 'python-mypy))
 
 
 ;; (when (featurep! :tools lsp)
@@ -197,31 +189,47 @@
 ;;                          (+custom--pick-doom-color 'yellow))))
 
 
-(use-package! terraform-mode
+(after! terraform-mode
   :config
   (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
 
 
-(use-package! mu4e-maildirs-extension
-  :defer t
+(after! mu4e
+  :config
+
+  (setq mu4e-root-maildir (expand-file-name "~/.mail")
+
+      ;; Use mbsync for email sync
+      ;; mu4e-get-mail-command "~/mbsync.sh"
+      mu4e-get-mail-command "mbsync -a"
+      mu4e-update-interval 3600
+
+      ;; dont save sent messages gmail/imap do that
+      mu4e-sent-messages-behavior 'delete
+
+      ;; fix mbsync error UID
+      mu4e-change-filenames-when-moving t
+
+      mu4e-compose-signature-auto-include nil
+
+        mu4e-headers-show-threads t
+        mu4e-headers-include-related t
+
+        mu4e-index-cleanup nil
+        mu4e-index-lazy-check t
+        mu4e-headers-results-limit 2500
+
+	;; show images and aatachment
+	mu4e-view-show-images t
+	mu4e-use-fancy-chars t
+
+        mu4e-view-show-addresses t
+        ;; mu4e-headers-include-related t
+        mu4e-headers-skip-duplicates t)
+
+  (let ((personal-settings "~/personal_scripts/emacs/email_settings.el"))
+    (when (file-exists-p personal-settings)
+       (load-file personal-settings))))
+
+(after! mu4e-maildirs-extension
   :init (with-eval-after-load 'mu4e (mu4e-maildirs-extension-load)))
-
-(use-package! mu4e-alert
-    :after mu4e
-    :hook ((after-init . mu4e-alert-enable-mode-line-display)
-           (after-init . mu4e-alert-enable-notifications))
-    :config (mu4e-alert-set-default-style 'libnotify))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (poetry))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-(use-package! poetry)

@@ -118,3 +118,5 @@ zinit light denysdovhan/spaceship-prompt
 
 ZSH_THEME="spaceship" 
 
+# rust cargo
+# export PATH=$PATH:$HOME/.cargo/bin

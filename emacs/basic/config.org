@@ -1,0 +1,981 @@
+#+TITLE: Emacs configuration
+#+DESCRIPTION: An org-babel based emacs configuration
+#+LANGUAGE: en
+#+PROPERTY: results silent
+#+AUTHOR: Wesley W Werneck
+#+EMAIL: emacs@uelei.com
+#+OPTIONS: num:nil 
+#+startup: indent
+
+My config and preferences for emacs
+* Repos & Core Packages
+** startup
+
+#+BEGIN_SRC emacs-lisp
+;; The default is 800 kilobytes.  Measured in bytes.
+;;(setq gc-cons-threshold (* 50 1000 1000))
+
+;;Profile emacs startup
+(add-hook 'emacs-startup-hook
+	   (lambda ()
+	    (message "*** Emacs loaded in %s with %d garbage collections."
+		      (format "%.2f seconds"
+			      (float-time
+			       (time-subtract after-init-time before-init-time)))
+		      gcs-done)))
+
+(set-default-coding-systems 'utf-8)
+
+#+END_SRC
+
+** use package
+
+#+BEGIN_SRC emacs-lisp
+  ;; (require 'package)
+
+  ;; ;; install if not installed use-package
+  ;; (unless (package-installed-p 'use-package)
+  ;;   (package-refresh-contents)
+  ;;   (package-install 'use-package))
+
+  ;; (eval-when-compile
+  ;;   (require 'use-package))
+
+
+#+END_SRC
+
+** straigh.el
+
+Bootstrap the straight.el package manager
+#+begin_src emacs-lisp
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el"
+                         user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+;; Load up use-package for subsequent configuration
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+
+#+end_src
+
+
+
+
+** general
+Setup general early to use in all packages :general
+#+begin_src emacs-lisp
+(use-package general
+  :ensure t
+  :config
+  (general-override-mode)
+  (general-auto-unbind-keys)
+
+;; The global definer allows me to use a leader key in most states.
+(general-create-definer global-definer
+  :keymaps 'override
+  :states '(insert normal hybrid motion visual operator)
+  :prefix "SPC"
+  :non-normal-prefix "S-SPC")
+
+
+(global-definer
+  "!"   'shell-command
+  ":"   'eval-expression)
+
+;; We define a global-leader definer to access major-mode specific bindings:
+(general-create-definer global-leader
+  ;; :keymaps 'override
+  :states '(insert normal hybrid motion visual operator)
+  :prefix "SPC m"
+  :non-normal-prefix "S-SPC m"
+  "" '( :ignore t
+        :which-key
+        (lambda (arg)
+          (cons (cadr (split-string (car arg) " "))
+                (replace-regexp-in-string "-mode$" "" (symbol-name major-mode))))))
+)
+
+
+(defmacro +general-global-menu! (name infix-key &rest body)
+  "Create a definer named +general-global-NAME wrapping global-definer.
+Create prefix map: +general-global-NAME. Prefix bindings in BODY with INFIX-KEY."
+  (declare (indent 2))
+  `(progn
+     (general-create-definer ,(intern (concat "+general-global-" name))
+       :wrapping global-definer
+       :prefix-map (quote ,(intern (concat "+general-global-" name "-map")))
+       :infix ,infix-key
+       :wk-full-keys nil
+       "" '(:ignore t :which-key ,name))
+     (,(intern (concat "+general-global-" name))
+      ,@body)))
+
+(+general-global-menu! "buffer" "b"
+  "x"  'kill-current-buffer
+  "o" '((lambda () (interactive) (switch-to-buffer nil))
+        :which-key "other-buffer")
+  "p"  'previous-buffer
+  "r"  'rename-buffer
+  "M" '((lambda () (interactive) (switch-to-buffer "*Messages*"))
+        :which-key "messages-buffer")
+  "n"  'next-buffer
+  "s" '((lambda () (interactive) (switch-to-buffer "*scratch*"))
+        :which-key "scratch-buffer")
+  "TAB" '((lambda () (interactive) (switch-to-buffer nil))
+          :which-key "other-buffer"))
+
+
+(+general-global-menu! "tools" "o"
+  "m"  'mu4e
+  "t"  'term)
+
+
+(general-create-definer global-leader
+  :keymaps 'override
+  :states '(emacs normal hybrid motion visual operator)
+  :prefix "SPC m"
+  "" '(:ignore t :which-key (lambda (arg) `(,(cadr (split-string (car arg) " ")) . ,(replace-regexp-in-string "-mode$" "" (symbol-name major-mode))))))
+
+
+
+;;(use-package elisp-mode
+;; ;;this is a built in package, so we don't want to try and install it
+;;  :ensure nil
+;;  :general
+;;  (global-leader
+;;    ;;specify the major modes these should apply to:
+;;    :major-modes
+;;    '(emacs-lisp-mode lisp-interaction-mode t)
+;;   ;;and the keymaps:
+;;    :keymaps
+;;    '(emacs-lisp-mode-map lisp-interaction-mode-map)
+;;    "e" '(:ignore t :which-key "eval")
+;;    "eb" 'eval-buffer
+;;    "ed" 'eval-defun
+;;    "ee" 'eval-expression
+;;    "ep" 'pp-eval-last-sexp
+;;    "es" 'eval-last-sexp
+;;    "i" 'elisp-index-search))
+
+
+#+end_src
+
+* Theme and ui
+** Theme load
+#+BEGIN_SRC emacs-lisp
+;; (use-package monokai-alt-theme
+;;     :ensure t
+;;     :config
+;;     (load-theme 'monokai-alt t))
+
+(use-package dracula-theme
+    :ensure t
+    :config
+    (load-theme 'dracula t))
+
+
+
+;; (use-package panda-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'panda t))
+#+END_SRC
+
+** UI
+*** Splash Screen
+Remove splash screen and use *scratch* instead as the home buffer
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t
+      inhibit-startup-echo-area-message t)
+#+END_SRC
+
+*** Line Numbers
+
+Enable line numbers in some modes
+#+BEGIN_SRC emacs-lisp
+;;(column-number-mode)
+
+;; Enable line numbers for some modes
+(dolist (mode '(text-mode-hook
+                prog-mode-hook
+                conf-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 1))))
+
+;; Override some modes which derive from the above
+(dolist (mode '(org-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+#+END_SRC
+
+Menu bar is off 
+... but still let me easily toggle it on/off
+#+BEGIN_SRC emacs-lisp
+;; Toggle menubar keybind
+(global-set-key (kbd "C-c m") 'menu-bar-mode)
+#+END_SRC
+
+*** fringe
+#+BEGIN_SRC emacs-lisp
+(set-fringe-mode 10)
+#+END_SRC
+
+*** rainbol-delimiters
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-delimiters
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode))
+#+END_SRC 
+
+*** backup
+
+disable emacs's automatic backup~ file
+
+#+BEGIN_SRC emacs-lisp
+
+(setq make-backup-files nil)
+
+#+END_SRC
+
+disable emac's lock files #
+#+BEGIN_SRC emacs-lisp
+
+(setq create-lockfiles nil)
+
+#+END_SRC
+
+*** emoji
+#+BEGIN_SRC emacs-lisp
+  (use-package emojify
+    :hook (after-init . global-emojify-mode))
+#+END_SRC
+
+* Evil
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+
+#+END_SRC
+
+** comment
+#+BEGIN_SRC emacs-lisp
+
+(use-package evil-nerd-commenter
+  :ensure t
+  :bind ("C-/" . evilnc-comment-or-uncomment-lines))
+
+#+END_SRC
+
+
+** drag lines
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package drag-stuff
+  ;;   :ensure t
+  ;;   :config
+  ;;   (map! "<M-up>"    #'drag-stuff-up
+  ;;         "<M-down>"  #'drag-stuff-down
+  ;;         "<M-left>"  #'drag-stuff-left
+  ;;         "<M-right>" #'drag-stuff-right))
+
+  (use-package drag-stuff
+    :ensure t
+    :config
+    (drag-stuff-global-mode 1)
+    (global-set-key (kbd "M-k") 'drag-stuff-up)
+    (global-set-key (kbd "M-j") 'drag-stuff-down))
+
+#+END_SRC
+
+* Company 
+
+#+BEGIN_SRC emacs-lisp
+;; (use-package yasnippet
+;;   :commands (yas-global-mode)
+;;   )
+;; (use-package yasnippet-snippets
+;; :ensure t)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package company
+    :ensure t
+
+    :config
+
+  (setq company-idel-delay 1)
+      ;; ;; necessary for binding escape in `company-active-map'.
+      ;; ;; https://github.com/noctuid/general.el/issues/105
+      ;; (with-eval-after-load 'evil
+      ;;   (evil-make-intercept-map company-active-map 'insert)
+      ;;   (general-def company-active-map [escape] 'company-abort)
+      ;;   (general-def company-active-map "C-k"    'company-select-previous)
+      ;;   (general-def company-active-map "RET"    'company-complete-selection))
+      (global-company-mode)
+    (add-hook 'after-init-hook 'global-company-mode)
+    )
+
+
+
+    ;; (use-package company
+    ;; :ensure t
+    ;; :custom
+    ;; (company-idle-delay nil)
+    ;;   (company-minimum-prefix-length 0)
+    ;;   (company-echo-delay 0)
+    ;;   (company-tooltip-limit 14)
+    ;;   (company-tooltip-align-annotations t)
+    ;;   (company-tooltip-maximum-width 50)
+    ;;   (company-tooltip-minimum-width 50)
+    ;;   (company-selection-wrap-around t)
+    ;;   (company-require-match 'never)
+    ;; :config
+    ;;   ;; necessary for binding escape in `company-active-map'.
+    ;;   ;; https://github.com/noctuid/general.el/issues/105
+    ;;   (with-eval-after-load 'evil
+    ;;     (evil-make-intercept-map company-active-map 'insert)
+    ;;     (general-def company-active-map [escape] 'company-abort)
+    ;;     (general-def company-active-map "C-k"    'company-select-previous)
+    ;;     (general-def company-active-map "RET"    'company-complete-selection))
+    ;;   (global-company-mode)
+    ;; (add-hook 'after-init-hook 'global-company-mode)
+    ;; )
+
+
+          ;; (use-package company-box
+          ;; :hook (
+          ;;        company-mode . company-box-mode))
+
+
+#+END_SRC
+
+
+* IVY
+Setup and use Ivy
+#+BEGIN_SRC emacs-lisp
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  ;; Ivy Keybindings
+  (global-set-key (kbd "C-c C-r") 'ivy-resume))
+#+END_SRC
+
+Configure Swiper
+#+BEGIN_SRC emacs-lisp
+(use-package swiper
+  :ensure t
+  :config
+  (global-set-key "\C-s" 'swiper)
+  )
+#+END_SRC
+
+Counsel configuration
+#+BEGIN_SRC emacs-lisp
+(use-package counsel 
+  :ensure t
+  :config 
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file))
+#+END_SRC
+
+* Keys
+** Basic 
+  We don't want to have to type "yes" or "no" at prompts.
+  #+BEGIN_SRC emacs-lisp
+  (fset 'yes-or-no-p 'y-or-n-p)
+
+  #+END_SRC
+
+  Esc cancel all 
+  #+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+  #+END_SRC
+
+** Which-key
+
+  Show key to press
+  #+BEGIN_SRC emacs-lisp
+  (use-package which-key
+   :ensure t
+   :config
+  (which-key-mode))
+  #+END_SRC
+
+** files menu
+
+#+BEGIN_SRC emacs-lisp
+(+general-global-menu! "file" "f"
+  "d"   '((lambda (&optional arg)
+            (interactive "P")
+            (let ((buffer (when arg (current-buffer))))
+              (diff-buffer-with-file buffer))) :which-key "diff-with-file")
+  "e"   '(:ignore t :which-key "edit")
+  "ed"  '((lambda () (interactive) (find-file-existing literate-file) (widen))
+          :which-key "dotfile")
+  "eR"  '((lambda () (interactive) (load-file user-init-file))
+          :which-key "reload-init.el")
+  "et"  '((lambda ()
+            (interactive)
+            (save-restriction
+              (widen)
+              (check-parens)
+              (org-babel-tangle-file literate-file))
+            (load-file "~/.emacs.d/init.el"))
+          :which-key "tangle/reload-init.el")
+  "l"   '((lambda (&optional arg)
+            (interactive "P")
+            (call-interactively (if arg #'find-library-other-window #'find-library)))
+          :which-key "+find-library")
+  "p"   'find-function-at-point
+  "P"   'find-function
+  "R"   'rename-file-and-buffer
+  "s"   'save-buffer
+  "v"   'find-variable-at-point
+  "V"   'find-variable)
+
+
+
+
+;;frames
+(+general-global-menu! "frame" "F"
+  "D" 'delete-other-frames
+  "F" 'select-frame-by-name
+  "O" 'other-frame-prefix
+  "c" '(:ingore t :which-key "color")
+  "cb" 'set-background-color
+  "cc" 'set-cursor-color
+  "cf" 'set-foreground-color
+  "f" 'set-frame-font
+  "m" 'make-frame-on-monitor
+  "n" 'next-window-any-frame
+  "o" 'other-frame
+  "p" 'previous-window-any-frame
+  "r" 'set-frame-name)
+
+
+
+(+general-global-menu! "window" "w"
+  "?" 'split-window-vertically
+  "=" 'balance-windows-area
+  "/" 'split-window-horizontally
+  "O" 'delete-other-windows
+  "X" '((lambda () (interactive) (call-interactively #'other-window) (kill-buffer-and-window))
+        :which-key "kill-other-buffer-and-window")
+  "H" 'evil-window-move-far-left
+  "J" 'evil-window-move-very-bottom
+  "K" 'evil-window-move-very-top
+  "L" 'evil-window-move-far-right
+  "d" 'delete-window
+  "h" 'windmove-left
+  "j" 'windmove-down
+  "k" 'windmove-up
+  "l" 'windmove-right
+  "o" 'other-window
+  "t" '((lambda () (interactive)
+          "toggle window dedication"
+          (set-window-dedicated-p (selected-window) (not (window-dedicated-p))))
+        :which-key "toggle window dedication")
+  "x" 'kill-buffer-and-window)
+
+
+#+END_SRC
+* Lang 
+** Dap-mode
+#+begin_src emacs-lisp
+  ;; (use-package dap-mode
+  ;; :ensure t
+  ;; :config
+  ;; (require 'dap-python)
+
+
+  ;; (dap-ui-mode 1)
+  ;; ;; enables mouse hover support
+  ;; (dap-tooltip-mode 1)
+  ;; ;; use tooltips for mouse hover
+  ;; ;; if it is not enabled `dap-mode' will use the minibuffer.
+  ;; (tooltip-mode 1)
+  ;; ;; displays floating panel with debug buttons
+  ;; ;; requies emacs 26+
+  ;; (dap-ui-controls-mode 1)
+
+
+  ;; )
+
+
+  ;; test with debugpy 
+
+
+  (use-package dap-mode
+    :ensure t
+    :config
+    (require 'dap-python)
+    (setq dap-python-debugger 'debugpy))
+
+
+
+#+end_src
+** Python 
+  
+
+#+BEGIN_SRC emacs-lisp
+
+        (use-package poetry
+         :ensure t
+         :config
+         (poetry-tracking-mode 1))
+
+
+        (use-package python
+        :general
+  (+general-global-python
+    ;; "b"  'magit-branch
+    ;; "B"  'magit-blame
+    ;; "c"  'magit-clone
+    ;; "f"  '(:ignore t :which-key "file")
+    ;; "ff" 'magit-find-file
+    ;; "fh" 'magit-log-buffer-file
+    ;; "i"  'magit-init
+    ;; "L"  'magit-list-repositories
+    ;; "m"  'magit-dispatch
+    ;; "S"  'magit-stage-file
+    ;; "s"  'magit-status
+    ;; "U"  'magit-unstage-file)
+        ;;   (global-leader
+        ;; ;;specify the major modes these should apply to:
+        ;; ;; :major-modes
+        ;; ;; '(emacs-lisp-mode lisp-interaction-mode t)
+        ;; ;;and the keymaps:
+        ;; :keymaps
+        ;; ;; '(p-mode-map lisp-interaction-mode-map)
+        ;; ;; "e" '(:ignore t :which-key "eval")
+        ;; ;; "ed" 'eval-defun
+        ;; ;; "ee" 'eval-expression
+        ;; ;; "ep" 'pp-eval-last-sexp
+        ;; ;; "es" 'eval-last-sexp
+        "ps" 'poetry-show))
+        
+
+
+      ;; ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+      ;; (add-hook 'python-mode-hook #'lsp)
+
+
+      (use-package lsp-mode
+        :ensure t
+        :init
+        ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+        (setq lsp-keymap-prefix "C-c l")
+        :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+               (python-mode . lsp)
+               ;; if you want which-key integration
+               (lsp-mode . lsp-enable-which-key-integration))
+        :commands lsp
+  ;;       :config
+  ;;   (lsp-register-custom-settings
+  ;;    '(("pyls.plugins.pyls_mypy.enabled" t t)
+  ;;      ("pyls.plugins.pyls_mypy.live_mode" nil t)
+  ;;      ("pyls.plugins.pyls_black.enabled" t t)))
+  ;; :bind (:map evil-normal-state-map
+  ;;               ("gh" . lsp-describe-thing-at-point)
+  ;;               )
+
+  )
+
+
+
+  ;; (use-package lsp-ui
+  ;; :ensure t
+  ;;   :config (setq lsp-ui-sideline-show-hover t
+  ;;                 lsp-ui-sideline-delay 0.5
+  ;;                 lsp-ui-doc-delay 5
+  ;;                 lsp-ui-sideline-ignore-duplicates t
+  ;;                 lsp-ui-doc-position 'bottom
+  ;;                 lsp-ui-doc-alignment 'frame
+  ;;                 lsp-ui-doc-header nil
+  ;;                 lsp-ui-doc-include-signature t
+  ;;                 lsp-ui-doc-use-childframe t)
+  ;;   :commands lsp-ui-mode
+  ;;   :bind (:map evil-normal-state-map
+  ;;               ("gd" . lsp-ui-peek-find-definitions)
+  ;;               ("gr" . lsp-ui-peek-find-references)
+  ;;               :map md/leader-map
+  ;;               ("Ni" . lsp-ui-imenu)))
+
+
+
+      ;; optionally
+      (use-package lsp-ui 
+	:ensure t
+	:commands lsp-ui-mode)
+      ;; ;; if you are helm user
+      ;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+
+      ;; ;; optionally if you want to use debugger
+      ;; ;; (use-package dap-mode)
+      ;; ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+      ;; (add-hook 'python-mode-hook #'lsp)
+
+
+
+    ;; (use-package lsp-pyright
+    ;;   :ensure t
+    ;;   :hook (python-mode . (lambda ()
+    ;;                           (require 'lsp-pyright)
+    ;;                           (lsp))))  ; or lsp-deferred
+
+
+
+  (use-package python-pytest
+  :general
+  (+general-global-python
+      "t"  'python-pytest-dispatch)
+  )
+#+END_SRC
+
+* Editorconfig
+#+BEGIN_SRC emacs-lisp
+(use-package editorconfig
+:ensure t
+  :config
+  (editorconfig-mode 1))
+#+END_SRC
+
+* Git
+#+BEGIN_SRC emacs-lisp
+(+general-global-menu! "git/version-control" "g")
+
+(use-package magit
+  :ensure t
+  :after (general)
+  :general
+  (+general-global-git/version-control
+    "b"  'magit-branch
+    "B"  'magit-blame
+    "c"  'magit-clone
+    "f"  '(:ignore t :which-key "file")
+    "ff" 'magit-find-file
+    "fh" 'magit-log-buffer-file
+    "i"  'magit-init
+    "L"  'magit-list-repositories
+    "m"  'magit-dispatch
+    "S"  'magit-stage-file
+    "s"  'magit-status
+    "U"  'magit-unstage-file)
+  :init
+  :config
+  (transient-bind-q-to-quit))
+
+(use-package git-gutter
+  :ensure t
+  ;; :ensure git-gutter-fringe
+  :hook ((prog-mode . git-gutter-mode)
+         (org-mode . git-gutter-mode)))
+#+END_SRC
+
+* Mu4e
+#+BEGIN_SRC emacs-lisp
+;; (use-package mu4e
+;;    :ensure nil)
+(use-package mu4e
+  :ensure nil
+  ;; :ensure-system-package mu
+  ;;:bind (("C-c m" . mu4e))
+
+  :config
+  ;; (mu4e-attachment-dir "~/Downloads")
+  ;; (mu4e-compose-signature-auto-include nil)
+  ;; ;; (mu4e-drafts-folder "/gmail/Drafts")
+  ;; (mu4e-get-mail-command "mbsync -a")
+  ;; (mu4e-maildir "~/.mail")
+  ;; (mu4e-refile-folder "/gmail/Archive")
+  ;; (mu4e-sent-folder "/gmail/Sent Mail")
+  ;; (mu4e-maildir-shortcuts
+  ;;  '(("/gmail/INBOX" . ?i)
+  ;;    ("/gmail/All Mail" . ?a)
+  ;;    ("/gmail/Deleted Items" . ?d)
+  ;;    ("/gmail/Drafts" . ?D)
+  ;;    ("/gmail/Important" . ?i)
+  ;;    ("/gmail/Sent Mail" . ?s)
+  ;;    ("/gmail/Starred" . ?S)))
+  ;; (mu4e-trash-folder "/gmail/Trash")
+  ;; (mu4e-update-interval 300)
+  ;; (mu4e-use-fancy-chars t)
+  ;; (mu4e-view-show-addresses t)
+  ;; (mu4e-view-show-images t))
+
+  (let ((personal-settings "~/personal_scripts/emacs/email_settings.el"))
+    (when (file-exists-p personal-settings)
+       (load-file personal-settings))))
+#+END_SRC
+
+*** Maildir extension so i see a summary of mailboxes
+
+#+BEGIN_SRC emacs-lisp
+(use-package mu4e-maildirs-extension
+  :ensure t
+  :config
+  (mu4e-maildirs-extension)
+  
+  ;; (mu4e-maildirs-extension-custom-list '("INBOX"))
+)
+#+END_SRC
+
+* Projectile
+
+#+BEGIN_SRC emacs-lisp
+
+(+general-global-menu! "project" "p"
+  "b" '(:ignore t :which-key "buffer"))
+
+;; (defun dw/switch-project-action ()
+;;   "Switch to a workspace with the project name and start `magit-status'."
+;;   ;; TODO: Switch to EXWM workspace 1?
+;;   (persp-switch (projectile-project-name))
+;;   (magit-status))
+
+(+general-global-menu! "search" "/"
+   "/" 'counsel-projectile-grep
+)
+
+
+
+
+(use-package projectile
+  :ensure t
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :after (general)
+  :general
+  (+general-global-project
+    "!" 'projectile-run-shell-command-in-root
+    "%" 'projectile-replace-regexp
+    "&" 'projectile-run-async-shell-command-in-root
+    "A" 'projectile-toggle-between-implementation-and-test
+    "bn" 'projectile-next-project-buffer
+    "bp" 'projectile-previous-project-buffer
+    "c" 'projectile-compile-project
+    "D" 'projectile-dired
+    "e" 'projectile-edit-dir-locals
+    "g" 'projectile-find-tag
+    "G" 'projectile-regenerate-tags
+    "I" 'projectile-invalidate-cache
+    "k" 'projectile-kill-buffers
+    "R" 'projectile-replace
+    "s" 'projectile-save-project-buffers
+    "T" 'projectile-test-project
+    "p" 'projectile-persp-switch-project
+    "v" 'projectile-vc)
+  :demand t
+  ;; :bind-keymap
+  ;; ("C-c p" . projectilt-command-map)
+  :init
+  (when (file-directory-p "~/code")
+    (setq projectile-project-search-path '("~/code" "~/code/pontotel")))
+  ;; (setq projectile-switch-project-action #'dw/switch-project-action)
+)
+
+
+(use-package perspective
+  :ensure t
+  :config
+  (persp-mode)
+  :general
+  (+general-global-buffer
+    "b" 'persp-ivy-switch-buffer
+   ;;  "!" 'projectile-run-shell-command-in-root
+   ;; "v" 'projectile-vc
+)
+
+
+)
+
+
+(+general-global-menu! "workspaces" "TAB")
+
+
+(use-package persp-projectile
+  :ensure t
+  :after projectile
+  :general
+  (+general-global-workspaces
+    "TAB" 'persp-switch 
+   ;;  "!" 'projectile-run-shell-command-in-root
+   ;; "v" 'projectile-vc
+)
+)
+
+(use-package counsel-projectile
+  :ensure t
+  :after projectile
+  :bind (("C-M-p" . counsel-projectile-find-file))
+  :config
+  (counsel-projectile-mode))
+
+
+
+
+#+END_SRC
+
+* Doom modeline 
+
+#+begin_src emacs-lisp
+
+  (use-package doom-modeline
+    :ensure t
+    :config
+    (column-number-mode 1)
+    :custom
+    (doom-modeline-icon t "Show icons in the modeline")
+    (doom-modeline-mu4e t "modeline email alert")
+    :hook
+    (after-init . doom-modeline-mode)
+  )
+#+end_src
+
+
+* kubernetes
+
+#+begin_src emacs-lisp
+
+(evil-set-initial-state 'kubernetes-overview-mode 'emacs)
+(evil-set-initial-state 'kubernetes-mode 'emacs)
+      (use-package kubernetes
+        :ensure t
+        :commands (kubernetes-overview)
+        :config
+        (evil-set-initial-state 'kubernetes-overview-mode 'emacs)
+
+        )
+
+
+    ;; If you want to pull in the Evil compatibility package.
+    ;; (use-package kubernetes-evil
+    ;;   :ensure t
+    ;;   :after kubernetes)
+
+
+#+end_src
+
+**  yaml
+#+begin_src emacs-lisp
+  (use-package yaml-mode
+    :ensure t
+    )
+
+#+end_src
+
+* Multiline
+
+#+BEGIN_SRC emacs-lisp
+;; (use-package evil-mc
+;; :ensure t
+;;   :commands (evil-mc-make-cursor-here
+;; 	       evil-mc-make-all-cursors
+;; 	       evil-mc-undo-all-cursors evil-mc-pause-cursors
+;; 	       evil-mc-resume-cursors evil-mc-make-and-goto-first-cursor
+;; 	       evil-mc-make-and-goto-last-cursor
+;; 	       evil-mc-make-cursor-move-next-line
+;; 	       evil-mc-make-cursor-move-prev-line evil-mc-make-cursor-at-pos
+;; 	       evil-mc-has-cursors-p evil-mc-make-and-goto-next-cursor
+;; 	       evil-mc-skip-and-goto-next-cursor evil-mc-make-and-goto-prev-cursor
+;; 	       evil-mc-skip-and-goto-prev-cursor evil-mc-make-and-goto-next-match
+;; 	       evil-mc-skip-and-goto-next-match evil-mc-skip-and-goto-next-match
+;; 	       evil-mc-make-and-goto-prev-match evil-mc-skip-and-goto-prev-match)
+;;   :init
+;;   (add-hook 'prog-mode-hook #'evil-mc-mode)
+;;   (add-hook 'text-mode-hook #'evil-mc-mode)
+
+;; )
+(use-package evil-mc
+  :after evil
+  :general
+  ;; ('normal "M-j" 'evil-mc-make-all-cursors)
+  ;; ('normal :pre  "g z" "u" 'evil-mc-undo-all-cursors)
+  ;; ('normal :pre  "g z" "c" 'evil-mc-make-cursor-here)
+  ('normal "M-d" 'evil-mc-make-and-goto-next-match)
+  ;; ('normal :pre  "g z" "p" 'evil-mc-make-and-goto-prev-match)
+  ;; ('normal :pre  "g z" "N" 'evil-mc-skip-and-goto-next-match)
+  ('normal "M-D" 'evil-mc-skip-and-goto-prev-match)
+  ('normal "<escape>" 'evil-mc-undo-all-cursors)
+  ;; ('normal evil-mc-key-map "C-n" 'evil-mc-make-and-goto-next-cursor)
+  :config (evil-mc-mode 1)
+  ;; (progn
+  ;;   (evil-define-key 'normal evil-mc-key-map (kbd "<escape>") 'evil-mc-undo-all-cursors))
+
+)
+;; (use-package evil-mc
+;;   :ensure t
+;;   :defer t
+;;   :diminish evil-mc-mode "ⓒ"
+;;   :init (global-evil-mc-mode t)
+;;   :init (add-hook 'after-init-hook #'global-evil-mc-mode)
+;;   :bind (:map evil-mc-key-map
+;;               ("C-g" . evil-mc-undo-all-cursors)
+;;               )
+;;   :config
+;;   (progn
+;;     (evil-define-key 'normal evil-mc-key-map (kbd "<escape>") 'evil-mc-undo-all-cursors)))
+
+;;   ;; (use-package evil-mc
+;;   ;;   :ensure t
+;;   ;;   :config
+;;   ;;   (global-evil-mc-mode))
+;;     ;; (general-def '(normal visual)
+;;     ;;   "gs" evil-mc-cursors-map
+;;     ;;   "M-n" #'evil-aaaaamuelek
+
+;;  -make-and-goto-next-cursor
+;;     ;;   "M-p" #'evil-aaaaamuelek
+
+;;  -make-and-goto-prev-cursor
+;;     ;;   "C-n" #'evil-aaaaamuelek
+
+;;  -make-and-goto-next-match
+;;     ;;   "C-t" #'evil-aaaaamuelek
+
+;;  -skip-and-goto-next-match
+;;     ;;   "C-p" #'evil-aaaaamuelek -make-and-goto-prev-match))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package evil-multiedit
+  ;;   :ensure t
+  ;;   :config
+  ;;   (evil-multiedit-default-keybinds))
+#+END_SRC
+* Some emacs configs to help
+
+https://github.com/swaroopch/rangoli-emacs
+* Docker
+** docker file
+
+#+begin_src emacs-lisp
+  (use-package dockerfile-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+
+#+end_src
