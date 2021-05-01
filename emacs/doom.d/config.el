@@ -145,7 +145,7 @@
 ;;;https://github.com/tecosaur/emacs-config/compare/6bcdbaa..49c790e
 (after! org-capture
   (load! "org-capture-uelei")
-)
+  )
 ;; ;; black for python files
 ;; (def-package! blacken
 ;;    :hook
@@ -199,18 +199,18 @@
 
   (setq mu4e-root-maildir (expand-file-name "~/.mail")
 
-      ;; Use mbsync for email sync
-      ;; mu4e-get-mail-command "~/mbsync.sh"
-      mu4e-get-mail-command "mbsync -a"
-      mu4e-update-interval 3600
+        ;; Use mbsync for email sync
+        ;; mu4e-get-mail-command "~/mbsync.sh"
+        mu4e-get-mail-command "mbsync -a"
+        mu4e-update-interval 3600
 
-      ;; dont save sent messages gmail/imap do that
-      mu4e-sent-messages-behavior 'delete
+        ;; dont save sent messages gmail/imap do that
+        mu4e-sent-messages-behavior 'delete
 
-      ;; fix mbsync error UID
-      mu4e-change-filenames-when-moving t
+        ;; fix mbsync error UID
+        mu4e-change-filenames-when-moving t
 
-      mu4e-compose-signature-auto-include nil
+        mu4e-compose-signature-auto-include nil
 
         mu4e-headers-show-threads t
         mu4e-headers-include-related t
@@ -219,17 +219,91 @@
         mu4e-index-lazy-check t
         mu4e-headers-results-limit 2500
 
-	;; show images and aatachment
-	mu4e-view-show-images t
-	mu4e-use-fancy-chars t
+        ;; show images and aatachment
+        mu4e-view-show-images t
+        mu4e-use-fancy-chars t
 
         mu4e-view-show-addresses t
         ;; mu4e-headers-include-related t
-        mu4e-headers-skip-duplicates t)
+        mu4e-headers-skip-duplicates t
+        mu4e-main-show-maildirs t
+        )
 
   (let ((personal-settings "~/personal_scripts/emacs/email_settings.el"))
     (when (file-exists-p personal-settings)
-       (load-file personal-settings))))
+      (load-file personal-settings))))
 
-(after! mu4e-maildirs-extension
-  :init (with-eval-after-load 'mu4e (mu4e-maildirs-extension-load)))
+;; (after! mu4e-maildirs-extension
+;;   :init (with-eval-after-load 'mu4e (mu4e-maildirs-extension-load)))
+
+
+(after! magit-todos
+  :config
+  (setq magit-todos-exclude-globs '("*.map" "*.js" "*.py" "!*.org"))
+  )
+
+;; (after! magit
+
+;;   ;; :config
+;;   ;;   (magit-org-todos-autoinsert)
+;;   )
+
+
+;; (use-package! mu4e-views
+;;   :after mu4e
+;;   :config
+;;   (setq mu4e-views-completion-method 'ivy)
+;;   (setq mu4e-views-default-view-method "html")
+;;   (setq mu4e-views-next-previous-message-behaviour 'stick-to-current-window) ;; when pressing n and p stay in the current window
+;;   (setq mu4e-views-mu4e-html-email-header-style
+;;         "<style type=\"text/css\">
+;; .mu4e-mu4e-views-mail-headers { font-family: sans-serif; font-size: 10pt; margin-bottom: 30px; padding-bottom: 10px; border-bottom: 1px solid #ccc; color: #000;}
+;; .mu4e-mu4e-views-header-row { display:block; padding: 1px 0 1px 0; }
+;; .mu4e-mu4e-views-mail-header { display: inline-block; text-transform: capitalize; font-weight: bold; }
+;; .mu4e-mu4e-views-header-content { display: inline-block; padding-right: 8px; }
+;; .mu4e-mu4e-views-email { display: inline-block; padding-right: 8px; }
+;; .mu4e-mu4e-views-attachment { display: inline-block; padding-right: 8px; }
+;; </style>"
+;;         )
+
+;;   (add-hook! mu4e-headers-mode
+;;     (mu4e-views-mu4e-use-view-msg-method "html")) ;; select the default
+
+;;   ;; (map! :map mu4e-headers-mode-map
+;;       :n "M-b" #'mu4e-views-cursor-msg-view-window-up
+;;       :n "M-f" #'mu4e-views-cursor-msg-view-window-down
+;;       :localleader
+;;       :desc "Message action"        "a"   #'mu4e-views-mu4e-view-action
+;;       :desc "Scoll message down"    "b"   #'mu4e-views-cursor-msg-view-window-up
+;;       :desc "Scoll message up"      "f"   #'mu4e-views-cursor-msg-view-window-down
+;;       :desc "Open attachment"       "o"   #'mu4e-views-mu4e-view-open-attachment
+;;       :desc "Save attachment"       "s"   #'mu4e-views-mu4e-view-save-attachment
+;;       :desc "Save all attachments"  "S"   #'mu4e-views-mu4e-view-save-all-attachments
+;;       :desc "Set view method"       "v"   #'mu4e-views-mu4e-select-view-msg-method)) ;; select viewing method)
+
+
+;; Evil bindings for xwidget webkit browsers
+;; (map! :map xwidget-webkit-mode-map
+;;       :n "Z Z" #'quit-window
+;;       :n "gr"  #'xwidget-webkit-reload
+;;       :n "y"   #'xwidget-webkit-copy-selection-as-kill
+;;       :n "s-c" #'xwidget-webkit-copy-selection-as-kill
+;;       :n "t"   #'xwidget-webkit-browse-url
+;;       :n "TAB" #'xwidget-webkit-forward
+;;       :n "C-o" #'xwidget-webkit-back
+;;       :n "G"   #'xwidget-webkit-scroll-bottom
+;;       :n "gg"  #'xwidget-webkit-scroll-top
+;;       :n "C-b" #'xwidget-webkit-scroll-down
+;;       :n "C-f" #'xwidget-webkit-scroll-up
+;;       :n "M-=" #'xwidget-webkit-zoom-in
+;;       :n "M--" #'xwidget-webkit-zoom-out
+;;       :n "k"   #'xwidget-webkit-scroll-down-line
+;;       :n "j"   #'xwidget-webkit-scroll-up-line)
+
+
+
+;; (use-package! mu4e-maildirs-extension
+;;   :after mu4e
+;;   :config
+;;   (mu4e-maildirs-extension)
+;;   (setq mu4e-maildirs-extension-title nil))

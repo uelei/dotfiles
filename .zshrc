@@ -17,6 +17,7 @@ alias m="make"
 alias gc="git commit -S"
 alias gs="git stash"
 alias gsp="git stash pop"
+alias k="kubectl"
 
 # pyenv
 export PATH="/home/uelei/.pyenv/bin:$PATH"

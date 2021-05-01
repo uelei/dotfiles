@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo " setup uelei ubuntu version"
+echo "setup uelei ubuntu/debian version"
 
 
 echo -n "Install apt-get stuffs (y/n)? "
@@ -27,8 +27,7 @@ if [ "$answer" = "y" -o "$answer" = "Y" ] ;then
     # eval "$(pyenv init -)"
     # eval "$(pyenv virtualenv-init -)"
 
-    #pipsi
-
+    # pipsi
     curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python
 
     # pipenv
@@ -37,30 +36,14 @@ if [ "$answer" = "y" -o "$answer" = "Y" ] ;then
     # pipsi upgrade Pygments
 fi
 
-echo -n "Install mongo 4.0 (y/n)? "
-read answer
-if [ "$answer" = "y" -o "$answer" = "Y" ] ;then
-    # mongo
-    wget -qO - https://www.mongodb.org/static/pgp/server-4.0.asc | sudo apt-key add -
-    echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
-    sudo apt install mongodb-org
-fi
 
 echo -n "Install emacs (y/n)? "
 read answer
 if [ "$answer" = "y" -o "$answer" = "Y" ] ;then
-	echo "Intalling Emacs26 ppa"
+	echo "Intalling Emacs27 ppa"
     sudo add-apt-repository ppa:kelleyk/emacs
 	sudo apt-get update 
-	sudo apt-get install emacs26
-
-fi
-
-
-echo -n "Install postgresql (y/n)? "
-read answer
-if [ "$answer" = "y" -o "$answer" = "Y" ] ;then
-    sudo apt-get install -y postgresql postgresql-contrib
+	sudo apt-get install emacs27
 
 fi
 
