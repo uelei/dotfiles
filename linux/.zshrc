@@ -35,45 +35,36 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
-# bug on wsl and spaceship
-# SPACESHIP_BATTERY_SHOW=false
-
 # wsl
 if (( ${+WSL_DISTRO_NAME} )); then
+
+    # bug on wsl and spaceship
+    SPACESHIP_BATTERY_SHOW=false
 
     # fix agent missing on wsl
     ps -u $(whoami) | grep ssh-agent &> /dev/null
     if [ $? -ne 0 ];then
-	echo "exporting new ssh agent"
-	eval $(ssh-agent)
-	ssh-add
-	echo "export SSH_AGENT_PID=$SSH_AGENT_PID" > ~/.agent-profile
-	echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> ~/.agent-profile
+	    echo "exporting new ssh agent"
+        eval $(ssh-agent)
+        ssh-add
+        echo "export SSH_AGENT_PID=$SSH_AGENT_PID" > ~/.agent-profile
+        echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> ~/.agent-profile
     else
-	echo "using ssh agent"
-	source ~/.agent-profile
+        echo "using ssh agent"
+        source ~/.agent-profile
     fi
-    # trap 'ssh-agent -k; exit' 0
 
-
-    echo "exporting display for wsl"
-    export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
-    export GPG_TTY=$(tty)
-
-
-	# if grep -qs '/mnt/g ' /proc/mounts; then
-	# 	echo "its mounted"
-    #     else
-	# 	echo "not mounted"
-
-	# 	sudo mount -t drvfs d: /mnt/g
-	# fi
+    # dont need in new wslg
+    # https://devblogs.microsoft.com/commandline/wslg-architecture/
+    # echo "exporting display for wsl"
+    # export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
+    # export GPG_TTY=$(tty)
 
 fi
 
 
 # load my personal scripts
-source ~/personal_scripts/bash_sensitive.sh
+source ~/Dropbox/uelei_files/personal_scripts/bash_sensitive.sh
 
 function setenv(){
   if [ -z "$1" ]; then

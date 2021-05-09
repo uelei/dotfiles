@@ -7,16 +7,20 @@ echo -n "Install apt-get stuffs (y/n)? "
 read answer
 if [ "$answer" = "y" -o "$answer" = "Y" ] ;then
     echo "intalling basics apt-get stuffs"
-    sudo apt-get install --no-install-recommends git htop make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev openssh-server zsh vim python3.6-dev
+
+    sudo apt-get install -y build-essential libssl-dev zlib1g-dev libbz2-dev \
+        libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
+        xz-utils tk-dev libffi-dev liblzma-dev python-openssl libtool cmake
 fi
 
 echo -n "Install ho my zsh (y/n)? "
 read answer
 if [ "$answer" = "y" -o "$answer" = "Y" ] ;then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
-echo -n "Install pyenv + pipsi + pipenv (y/n)? "
+
+echo -n "Install pyenv (y/n)? "
 read answer
 if [ "$answer" = "y" -o "$answer" = "Y" ] ;then
     # pyenv
@@ -26,14 +30,9 @@ if [ "$answer" = "y" -o "$answer" = "Y" ] ;then
     # export PATH="/home/uelei/.pyenv/bin:$PATH"
     # eval "$(pyenv init -)"
     # eval "$(pyenv virtualenv-init -)"
+    pyenv install 3.8.8
+    pyenv global 3.8.8
 
-    # pipsi
-    curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python
-
-    # pipenv
-    pipsi install pipenv
-    # upgrade
-    # pipsi upgrade Pygments
 fi
 
 

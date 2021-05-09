@@ -237,16 +237,15 @@
 ;;   :init (with-eval-after-load 'mu4e (mu4e-maildirs-extension-load)))
 
 
-(after! magit-todos
-  :config
-  (setq magit-todos-exclude-globs '("*.map" "*.js" "*.py" "!*.org"))
-  )
-
-;; (after! magit
-
-;;   ;; :config
-;;   ;;   (magit-org-todos-autoinsert)
+;; (after! magit-todos
+;;   :config
+;;   (setq magit-todos-exclude-globs '("*.map" "*.js" "*.py" "!*.org"))
 ;;   )
+
+(after! magit-org-todos
+  :config
+  (magit-org-todos-autoinsert)
+  )
 
 
 ;; (use-package! mu4e-views

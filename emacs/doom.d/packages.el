@@ -58,13 +58,13 @@
 
 (package! company-emoji)
 
-;; (package! magit-org-todos)
+(package! magit-org-todos)
 
 ;; (package! mu4e-maildirs-extension)
 ;; (package! mu4e-maildirs-extension :pin "3ef4c48516")
 
 (disable-packages! nose pipenv anaconda-mode company-anaconda pyvenv pyenv-mode
-                   ;; magit-todos
+                   magit-todos
                    )
 
 
