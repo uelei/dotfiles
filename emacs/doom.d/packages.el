@@ -80,7 +80,7 @@
   :recipe (:host github :repo "progfolio/doct")
   :pin "8ac08633ae413a6605b6506d2739eece7475272e")
 
-
+(package! dockerfile-mode)
 
 ;; (package! mu4e-views)
 (package! kubernetes)

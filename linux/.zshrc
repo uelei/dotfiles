@@ -5,7 +5,7 @@
 export ZSH="/home/uelei/.oh-my-zsh"
 
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git kubectl)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -17,10 +17,12 @@ alias m="make"
 alias gc="git commit -S"
 alias gs="git stash"
 alias gsp="git stash pop"
-alias k="kubectl"
 
 # pyenv
-export PATH="/home/uelei/.pyenv/bin:$PATH"
+# nedd to add the following lines to ~/.zprofile
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 

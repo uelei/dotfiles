@@ -34,6 +34,7 @@
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
+(setq org-startup-folded t)
 
 (setq
  projectile-project-search-path '("~/code/" "~/code/pontotel/"))
