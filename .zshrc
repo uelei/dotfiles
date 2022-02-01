@@ -22,6 +22,27 @@ alias gs="git stash"
 alias gsp="git stash pop"
 alias pya="pyenv activate"
 alias pyd="pyenv deactivate"
+
+
+# changes for os type
+case "$OSTYPE" in
+    darwin*)
+        # macos
+        echo "macos settings"
+        # mac postgres client
+        export PATH="/usr/local/opt/libpq/bin:$PATH"
+        ;;
+    linux*)
+        # linux settings
+        # load brew on linux
+        echo "linux settings"
+        if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+            echo "loading linuxbrew"
+            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        fi
+        ;;
+esac
+
 # pyenv
 # nedd to add the following lines to ~/.zprofile
 export PYENV_ROOT="$HOME/.pyenv"
@@ -48,9 +69,6 @@ export NVM_DIR="$HOME/.nvm"
 # wsl
 if (( ${+WSL_DISTRO_NAME} )); then
 
-    # bug on wsl and spaceship
-    SPACESHIP_BATTERY_SHOW=false
-
     # fix agent missing on wsl
     ps -u $(whoami) | grep ssh-agent &> /dev/null
     if [ $? -ne 0 ];then
@@ -74,8 +92,8 @@ fi
 
 echo "load dropbox configs"
 # load my personal scripts
-if [[ -f ~/Dropbox/uelei_files/personal_scripts/bash_sensitive.sh ]]; then
-    source ~/Dropbox/uelei_files/personal_scripts/bash_sensitive.sh
+if [[ -f $HOME/Dropbox/uelei_files/personal_scripts/bash_sensitive.sh ]]; then
+    source $HOME/Dropbox/uelei_files/personal_scripts/bash_sensitive.sh
 fi
 
 function setenv(){
@@ -105,7 +123,7 @@ autoload -Uz _zinit
 
 echo "load zinit plugins "
 # Load a few important annexes, without Turbo
-# (this is currently required for annexes)
+#  (this is currently required for annexes)
 zinit light-mode for \
     zdharma-continuum/zinit-annex-as-monitor \
     zdharma-continuum/zinit-annex-bin-gem-node \
@@ -118,18 +136,10 @@ zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-completions
 
-# echo "load spaceship"
-# install theme
-# zinit light denysdovhan/spaceship-prompt
-
-# ZSH_THEME="spaceship"
-
-# rust cargo
-# export PATH=$PATH:$HOME/.cargo/bin
-
-# mac postgres client
-export PATH="/usr/local/opt/libpq/bin:$PATH"
-
-
+# Theme starship > spaceship
+zinit light starship/starship
 echo "loading starship"
 eval "$(starship init zsh)"
+
+# rust cargo
+export PATH=$PATH:$HOME/.cargo/bin
