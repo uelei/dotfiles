@@ -49,29 +49,25 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 
-(when (package! lsp-mode)
-  (package! lsp-ui)
-  (package! company-lsp)
-  (package! dap-mode)
-  )
+;; (when (package! lsp-mode)
+;;   (package! lsp-ui)
+;;   (package! company-lsp)
+;;   (package! dap-mode)
+;;   )
 
 
 (package! company-emoji)
 
-(package! magit-org-todos)
+;;(package! magit-org-todos)
 
 ;; (package! mu4e-maildirs-extension)
 ;; (package! mu4e-maildirs-extension :pin "3ef4c48516")
 
-(disable-packages! nose pipenv anaconda-mode company-anaconda pyvenv pyenv-mode
+(disable-packages! nose pipenv anaconda-mode company-anaconda
                    magit-todos
                    )
 
-
-(setq
- projectile-project-search-path '("~/code/" "~/code/pontotel/"))
-
-(unpin! org-mode)
+;;(unpin! org-mode)
 ;; (package! org-super-agenda :pin "f5e80e4d0da6b2eeda9ba21e021838fa6a495376")
 
 
@@ -83,6 +79,8 @@
 (package! dockerfile-mode)
 
 ;; (package! mu4e-views)
-(package! kubernetes)
+;;(package! kubernetes)
 ;; (package! k8s-mode)
 ;; (package! kubernetes-evil)
+
+(package! with-venv)

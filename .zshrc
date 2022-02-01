@@ -5,10 +5,13 @@
 export ZSH="$HOME/.oh-my-zsh"
 
 # Add wisely, as too many plugins slow down shell startup.
+echo "load plugins"
 plugins=(git kubectl)
 
+echo "load oh my zsh"
 source $ZSH/oh-my-zsh.sh
 
+echo "load comecou alias "
 # User configuration
 
 # alias
@@ -17,25 +20,30 @@ alias m="make"
 alias gc="git commit -S"
 alias gs="git stash"
 alias gsp="git stash pop"
-
+alias pya="pyenv activate"
+alias pyd="pyenv deactivate"
 # pyenv
 # nedd to add the following lines to ~/.zprofile
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
 
+echo "load pyenv"
+eval "$(pyenv init --path --no-rehash)"
+eval "$(pyenv init -)"
+# eval "$(pyenv virtualenv-init -)"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+
+echo "load pipx path"
 # pipx ensure path
 # Created by `userpath` on 2020-05-24 12:11:57
 export PATH="$PATH:$HOME/.local/bin"
 
 
+echo "load nvm"
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 
 # wsl
 if (( ${+WSL_DISTRO_NAME} )); then
@@ -64,7 +72,7 @@ if (( ${+WSL_DISTRO_NAME} )); then
 
 fi
 
-
+echo "load dropbox configs"
 # load my personal scripts
 if [[ -f ~/Dropbox/uelei_files/personal_scripts/bash_sensitive.sh ]]; then
     source ~/Dropbox/uelei_files/personal_scripts/bash_sensitive.sh
@@ -81,6 +89,7 @@ function setenv(){
 # go 
 export PATH=$PATH:/usr/local/go/bin
 
+echo "load zinit"
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -94,6 +103,7 @@ source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
+echo "load zinit plugins "
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
 zinit light-mode for \
@@ -103,15 +113,23 @@ zinit light-mode for \
     zdharma-continuum/zinit-annex-rust
 
 ### End of Zinit's installer chunk
-
+echo "load mais"
 zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-completions
 
+# echo "load spaceship"
 # install theme
-zinit light denysdovhan/spaceship-prompt
+# zinit light denysdovhan/spaceship-prompt
 
-ZSH_THEME="spaceship" 
+# ZSH_THEME="spaceship"
 
 # rust cargo
 # export PATH=$PATH:$HOME/.cargo/bin
+
+# mac postgres client
+export PATH="/usr/local/opt/libpq/bin:$PATH"
+
+
+echo "loading starship"
+eval "$(starship init zsh)"

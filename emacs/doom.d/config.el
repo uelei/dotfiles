@@ -37,7 +37,9 @@
 (setq org-startup-folded t)
 
 (setq
- projectile-project-search-path '("~/code/" "~/code/pontotel/"))
+ projectile-project-search-path
+ (append '("~/code/")
+        (file-expand-wildcards "~/code/*")))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -307,3 +309,20 @@
 ;;   :config
 ;;   (mu4e-maildirs-extension)
 ;;   (setq mu4e-maildirs-extension-title nil))
+
+
+;; (use-package! dap-mode
+;;   :after lsp-mode
+;;   :commands dap-debug
+;;   :hook ((python-mode . dap-ui-mode)
+;; 	 (python-mode . dap-mode))
+;;   :config
+;;   (eval-when-compile
+;;     (require 'cl))
+;;   (require 'dap-python)
+;;   (require 'dap-lldb)
+
+;;   ;; Temporal fix
+;;   (defun dap-python--pyenv-executable-find (command)
+;;     (with-venv (executable-find "python")))
+;;   )
