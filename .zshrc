@@ -1,17 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# Add wisely, as too many plugins slow down shell startup.
-echo "load plugins"
-plugins=(git kubectl)
-
-echo "load oh my zsh"
-source $ZSH/oh-my-zsh.sh
-
-echo "load comecou alias "
 # User configuration
 
 # alias
@@ -22,7 +11,10 @@ alias gs="git stash"
 alias gsp="git stash pop"
 alias pya="pyenv activate"
 alias pyd="pyenv deactivate"
-
+alias dc="docker-compose"
+alias dcps="docker-compose ps"
+alias dcs="docker-compose stop"
+alias dcc="docker compose kill ; docker compose rm -f ; docker system prune -f ; docker volume prune -f"
 
 # changes for os type
 case "$OSTYPE" in
@@ -56,11 +48,8 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 echo "load pipx path"
 # pipx ensure path
-# Created by `userpath` on 2020-05-24 12:11:57
 export PATH="$PATH:$HOME/.local/bin"
 
-
-echo "load nvm"
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -121,23 +110,25 @@ source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-echo "load zinit plugins "
-# Load a few important annexes, without Turbo
-#  (this is currently required for annexes)
-zinit light-mode for \
-    zdharma-continuum/zinit-annex-as-monitor \
-    zdharma-continuum/zinit-annex-bin-gem-node \
-    zdharma-continuum/zinit-annex-patch-dl \
-    zdharma-continuum/zinit-annex-rust
-
 ### End of Zinit's installer chunk
-echo "load mais"
-zinit light zdharma-continuum/fast-syntax-highlighting
-zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-completions
+echo "load zinit plugins"
+zinit wait lucid light-mode for \
+  atinit"zicompinit; zicdreplay" \
+      zdharma-continuum/fast-syntax-highlighting \
+  atload"_zsh_autosuggest_start" \
+      zsh-users/zsh-autosuggestions \
+  blockf atpull'zinit creinstall -q .' \
+      zsh-users/zsh-completions \
+      OMZP::git
+
+zinit snippet OMZL::theme-and-appearance.zsh
 
 # Theme starship > spaceship
-zinit light starship/starship
+if [[ "$OSTYPE" != "darwin"* ]]; then
+    # Mac OSX
+    echo "instaling starship using zinit"
+    zinit light starship/starship
+fi
 echo "loading starship"
 eval "$(starship init zsh)"
 
