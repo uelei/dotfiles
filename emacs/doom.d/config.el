@@ -93,10 +93,14 @@
     (setq markdown-header-scaling t)
     (set-company-backend! '(markdown-mode gfm-mode) '(company-emoji))))
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((verb . t)))
 
 ;; ;;  org stuffs
 (after! org
   :config
+  (define-key org-mode-map (kbd "C-c C-r") verb-command-map)
   (setq
    org-directory (expand-file-name "~/Dropbox/notes/org/")
    org-log-done 'time

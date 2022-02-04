@@ -55,7 +55,7 @@
 ;;   (package! dap-mode)
 ;;   )
 
-
+(package! verb)
 (package! company-emoji)
 
 ;;(package! magit-org-todos)
