@@ -112,6 +112,12 @@ autoload -Uz _zinit
 
 ### End of Zinit's installer chunk
 echo "load zinit plugins"
+# zinit wait lucid for \
+#   atinit"zicompinit; zicdreplay"  \
+#         zdharma-continuum/fast-syntax-highlighting
+
+# zinit light zsh-users/zsh-autosuggestions
+# zinit light zsh-users/zsh-completions
 zinit wait lucid light-mode for \
   atinit"zicompinit; zicdreplay" \
       zdharma-continuum/fast-syntax-highlighting \
@@ -119,6 +125,8 @@ zinit wait lucid light-mode for \
       zsh-users/zsh-autosuggestions \
   blockf atpull'zinit creinstall -q .' \
       zsh-users/zsh-completions \
+      zsh-users/zsh-history-substring-search \
+      djui/alias-tips  \
       OMZP::git
 
 zinit snippet OMZL::theme-and-appearance.zsh
