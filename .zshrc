@@ -5,13 +5,15 @@
 # alias
 alias x="exit"
 alias m="make"
+
 alias gc="git commit -S"
 alias gs="git stash"
 alias gsp="git stash pop"
+
 alias pya="pyenv activate"
 alias pyd="pyenv deactivate"
+
 alias dc="docker-compose"
-alias dcps="docker-compose ps"
 alias dcs="docker-compose stop"
 alias dcc="docker compose kill ; docker compose rm -f ; docker system prune -f ; docker volume prune -f"
 
@@ -143,6 +145,7 @@ zinit wait lucid for \
 	OMZP::docker-compose \
 	as"completion" \
     OMZP::docker/_docker \
+    OMZP::kubectl \
     djui/alias-tips
 
 zinit snippet OMZL::theme-and-appearance.zsh
