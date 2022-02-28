@@ -18,7 +18,10 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 
+-- coment like vscode
 lvim.keys.visual_mode['<C-_>'] = '<CMD>lua require("Comment.api").toggle_current_linewise()<CR>'
+lvim.keys.normal_mode['<C-_>'] = '<CMD>lua require("Comment.api").toggle_current_linewise()<CR>'
+lvim.keys.insert_mode['<C-_>'] = '<CMD>lua require("Comment.api").toggle_current_linewise()<CR>'
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = false
 -- edit a default keymapping
@@ -63,7 +66,6 @@ lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Project
 --   },
 -- }
 
-lvim.keys.insert_mode['<C-_>'] = '<CMD>lua require("Comment.api").toggle_current_linewise()<CR>'
 -- lvim.keys.normal_mode = {
 
 -- 	-- Alternative way to save
@@ -185,10 +187,10 @@ lvim.builtin.treesitter.context_commentstring.enable = true
 -- *
 lvim.builtin.which_key.active = true
 lvim.builtin.which_key.mappings["w"] = { "<cmd>w<CR>", "Save" }
-lvim.builtin.which_key.mappings["W"] = { "<cmd>w!<CR>", "Force Save" }
+-- lvim.builtin.which_key.mappings["W"] = { "<cmd>w!<CR>", "Force Save" }
 lvim.builtin.which_key.mappings["q"] = { "<cmd>q<CR>", "Quit" }
-lvim.builtin.which_key.mappings["Q"] = { "<cmd>q!<CR>", "Force Quit" }
-lvim.builtin.which_key.mappings["F"] = { "<cmd>lua vim.lsp.buf.formatting()<cr>", "Format" }
+-- lvim.builtin.which_key.mappings["Q"] = { "<cmd>q!<CR>", "Force Quit" }
+-- lvim.builtin.which_key.mappings["F"] = { "<cmd>lua vim.lsp.buf.formatting()<cr>", "Format" }
 -- lvim.builtin.which_key.mappings["b"]["c"] = { "<cmd>Telescope current_buffer_fuzzy_find<cr>", "Search Current Buffer" }
 -- lvim.builtin.which_key.mappings["s"]["f"] = {
 -- 	"<cmd>Telescope find_files find_command=rg,--ignore,--hidden,--files<CR>",
@@ -196,6 +198,7 @@ lvim.builtin.which_key.mappings["F"] = { "<cmd>lua vim.lsp.buf.formatting()<cr>"
 -- }
 -- lvim.builtin.which_key.mappings["s"]["m"] = { "<cmd>Telescope marks<cr>", "Search Marks" }
 -- lvim.builtin.which_key.mappings["s"]["g"] = { "<cmd>Telescope git_files<cr>", "Search Git Files" }
+lvim.builtin.which_key.mappings["g"]["g"] = {"<cmd>lua require('neogit').open()<cr>", "NeoGit"}
 lvim.builtin.which_key.mappings["t"] = {
  name = "Toggle",
  h = { "<cmd>set hlsearch!<CR>", "Toggle Highlight" },
@@ -300,7 +303,8 @@ lvim.plugins = {
       vim.g.gitblame_enabled = 0
   end,
    },
-   { "kdheepak/lazygit.nvim" },
+   -- { "kdheepak/lazygit.nvim" },
+{'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' },
    {
   "NTBBloodbath/rest.nvim",
   requires = { "nvim-lua/plenary.nvim" },
