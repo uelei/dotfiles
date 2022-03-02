@@ -6,6 +6,10 @@
 alias x="exit"
 alias m="make"
 
+alias ls="exa --icons "
+alias cat="bat --style=auto "
+
+alias g="git"
 alias gc="git commit -S"
 alias gs="git stash"
 alias gsp="git stash pop"
@@ -115,70 +119,22 @@ autoload -Uz _zinit
 
 ### End of Zinit's installer chunk
 echo "load zinit plugins"
-# from https://gist.github.com/numToStr/53a0bf7e8ac9c5aa98d52c112980fb0f
-# load oh my zsh plugins
-zinit wait lucid for \
-	OMZL::clipboard.zsh \
-	OMZL::compfix.zsh \
-	OMZL::completion.zsh \
-	OMZL::correction.zsh \
-    atload"
-        alias ..='cd ..'
-        alias ...='cd ../..'
-        alias ....='cd ../../..'
-        alias .....='cd ../../../..'
-    " \
-	OMZL::directories.zsh \
-	OMZL::git.zsh \
-	OMZL::grep.zsh \
-	OMZL::history.zsh \
-	OMZL::key-bindings.zsh \
-	OMZL::spectrum.zsh \
-	OMZL::termsupport.zsh \
-    atload"
-        alias gcd='gco dev'
-    " \
-	OMZP::git \
-    atload"
-        alias dcupb='docker-compose up --build'
-    " \
-	OMZP::docker-compose \
-	as"completion" \
-    OMZP::docker/_docker \
-    OMZP::kubectl \
-    djui/alias-tips
 
-zinit snippet OMZL::theme-and-appearance.zsh
+# load plugins after 5 seconds verbose 
+zinit wait"5" for \
+                        OMZ::lib/git.zsh \
+    atload"unalias grv" OMZ::plugins/git/git.plugin.zsh \
+                        OMZ::plugins/docker-compose \
+                        OMZ::plugins/kubectl \
+                        djui/alias-tips
 
-# IMPORTANT:
-# These plugins should be loaded after ohmyzsh plugins
-zinit wait lucid for \
-    light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20" atload"!_zsh_autosuggest_start" \
+zinit wait"1" for \
+    light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50" atload"!_zsh_autosuggest_start" \
         zsh-users/zsh-autosuggestions \
     light-mode atinit"typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
         zdharma-continuum/fast-syntax-highlighting \
-    light-mode blockf atpull'zinit creinstall -q .' \
-    atinit"
-        zstyle ':completion:*' completer _expand _complete _ignored _approximate
-        zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-        zstyle ':completion:*' menu select=2
-        zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-        zstyle ':completion:*:descriptions' format '-- %d --'
-        zstyle ':completion:*:processes' command 'ps -au$USER'
-        zstyle ':completion:complete:*:options' sort false
-        zstyle ':fzf-tab:complete:_zlua:*' query-string input
-        zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm,cmd -w -w'
-        zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
-        zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
-    " \
-        zsh-users/zsh-completions \
-    bindmap"^R -> ^H" atinit"
-        zstyle :history-search-multi-word page-size 10
-        zstyle :history-search-multi-word highlight-color fg=red,bold
-        zstyle :plugin:history-search-multi-word reset-prompt-protect 1
-    " \
-        zdharma-continuum/history-search-multi-word \
         zsh-users/zsh-history-substring-search
+# zinit light zdharma-continuum/history-search-multi-word
 
 if [[ "$OSTYPE" != "darwin"* ]]; then
     # Not Mac OSX

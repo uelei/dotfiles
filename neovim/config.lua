@@ -22,6 +22,7 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.visual_mode['<C-_>'] = '<CMD>lua require("Comment.api").toggle_current_linewise()<CR>'
 lvim.keys.normal_mode['<C-_>'] = '<CMD>lua require("Comment.api").toggle_current_linewise()<CR>'
 lvim.keys.insert_mode['<C-_>'] = '<CMD>lua require("Comment.api").toggle_current_linewise()<CR>'
+
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = false
 -- edit a default keymapping
@@ -199,6 +200,8 @@ lvim.builtin.which_key.mappings["q"] = { "<cmd>q<CR>", "Quit" }
 -- lvim.builtin.which_key.mappings["s"]["m"] = { "<cmd>Telescope marks<cr>", "Search Marks" }
 -- lvim.builtin.which_key.mappings["s"]["g"] = { "<cmd>Telescope git_files<cr>", "Search Git Files" }
 lvim.builtin.which_key.mappings["g"]["g"] = {"<cmd>lua require('neogit').open()<cr>", "NeoGit"}
+lvim.builtin.which_key.mappings["b"]["c"] = {"<cmd>BufferKill<CR>", "Close Buffer"}
+
 lvim.builtin.which_key.mappings["t"] = {
  name = "Toggle",
  h = { "<cmd>set hlsearch!<CR>", "Toggle Highlight" },
