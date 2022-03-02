@@ -123,6 +123,7 @@ echo "load zinit plugins"
 # load plugins after 5 seconds verbose 
 zinit wait"5" for \
                         OMZ::lib/git.zsh \
+                        OMZ::lib/key-bindings.zsh \
     atload"unalias grv" OMZ::plugins/git/git.plugin.zsh \
                         OMZ::plugins/docker-compose \
                         OMZ::plugins/kubectl \
