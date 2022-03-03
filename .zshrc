@@ -46,9 +46,8 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 
 echo "load pyenv"
-eval "$(pyenv init --path --no-rehash)"
+# eval "$(pyenv init --path)" Add this line to .zprofile
 eval "$(pyenv init -)"
-# eval "$(pyenv virtualenv-init -)"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 echo "load pipx path"
@@ -134,8 +133,8 @@ zinit wait"1" for \
         zsh-users/zsh-autosuggestions \
     light-mode atinit"typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
         zdharma-continuum/fast-syntax-highlighting \
-        zsh-users/zsh-history-substring-search
-# zinit light zdharma-continuum/history-search-multi-word
+        zsh-users/zsh-history-substring-search \
+        zdharma-continuum/history-search-multi-word
 
 if [[ "$OSTYPE" != "darwin"* ]]; then
     # Not Mac OSX
