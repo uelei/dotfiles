@@ -121,20 +121,18 @@ echo "load zinit plugins"
 
 # load plugins after 5 seconds verbose 
 zinit wait"5" for \
+                        djui/alias-tips
+
+zinit wait lucid for \
+    light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50" atload"!_zsh_autosuggest_start" \
+        zsh-users/zsh-autosuggestions \
+    light-mode atinit"typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
+        zdharma-continuum/fast-syntax-highlighting \
                         OMZ::lib/git.zsh \
                         OMZ::lib/key-bindings.zsh \
     atload"unalias grv" OMZ::plugins/git/git.plugin.zsh \
                         OMZ::plugins/docker-compose \
                         OMZ::plugins/kubectl \
-                        djui/alias-tips
-
-zinit wait"1" for \
-    light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50" atload"!_zsh_autosuggest_start" \
-        zsh-users/zsh-autosuggestions \
-    light-mode atinit"typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
-        zdharma-continuum/fast-syntax-highlighting \
-        zsh-users/zsh-history-substring-search \
-        zdharma-continuum/history-search-multi-word
 
 if [[ "$OSTYPE" != "darwin"* ]]; then
     # Not Mac OSX
@@ -158,4 +156,7 @@ export PATH=$PATH:$HOME/.cargo/bin
 [ -z "$HISTFILE" ] && HISTFILE="$HOME/.zhistory"
 HISTSIZE=290000
 SAVEHIST=$HISTSIZE
+
+# auto complete for kubectl
+source  <(kubectl completion zsh) 
 
