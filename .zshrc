@@ -32,18 +32,18 @@ case "$OSTYPE" in
     linux*)
         # linux settings
         # load brew on linux
-        echo "linux settings"
-        if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
-            echo "loading linuxbrew"
-            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-        fi
+        # echo "linux settings"
+        # if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+        #     echo "loading linuxbrew"
+        #     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        # fi
         ;;
 esac
 
 # pyenv
 # nedd to add the following lines to ~/.zprofile
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
 
 echo "load pyenv"
 # eval "$(pyenv init --path)" Add this line to .zprofile
@@ -136,8 +136,7 @@ zinit wait lucid for \
 
 if [[ "$OSTYPE" != "darwin"* ]]; then
     # Not Mac OSX
-    echo "instaling starship using zinit"
-    zinit light starship/starship
+    echo "linux some extraplugins"
 else
     # Mac OSX
     zinit light zsh-users/zsh-apple-touchbar 
@@ -157,6 +156,8 @@ export PATH=$PATH:$HOME/.cargo/bin
 HISTSIZE=290000
 SAVEHIST=$HISTSIZE
 
+autoload -Uz compinit
+compinit
 # auto complete for kubectl
 source  <(kubectl completion zsh) 
 
