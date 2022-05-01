@@ -154,8 +154,8 @@ lvim.builtin.notify.active = true
 -- *
 -- Dashboard
 -- *
-lvim.builtin.dashboard.active = true
-lvim.builtin.dashboard.custom_section.a.command = "Telescope find_files find_command=rg,--ignore,--hidden,--files"
+lvim.builtin.alpha.active = true
+-- lvim.builtin.alpha.custom_section.a.command = "Telescope find_files find_command=rg,--ignore,--hidden,--files"
 
 -- *
 -- Terminal
@@ -169,12 +169,11 @@ lvim.builtin.terminal.shading_factor = 1
 lvim.builtin.nvimtree.setup.view.side = "left"
 -- lvim.builtin.nvimtree.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 1
-lvim.builtin.nvimtree.setup.hide_dotfiles = 0
+-- lvim.builtin.nvimtree.setup.hide_dotfiles = 0
 
 -- *
 -- Treesitter
 -- *
-lvim.builtin.treesitter.ensure_installed = "maintained"
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.matchup.enable = true
