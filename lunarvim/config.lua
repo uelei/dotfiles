@@ -157,6 +157,8 @@ lvim.builtin.notify.active = true
 lvim.builtin.alpha.active = true
 -- lvim.builtin.alpha.custom_section.a.command = "Telescope find_files find_command=rg,--ignore,--hidden,--files"
 
+-- require("dap.ext.vscode").load_launchjs()
+
 -- *
 -- Terminal
 -- *
@@ -216,23 +218,23 @@ lvim.builtin.which_key.mappings["x"] = {
 }
 -- Dap
 lvim.builtin.dap.active = true
-require("dap.ext.vscode").load_launchjs()
+-- require("dap.ext.vscode").load_launchjs()
 
 -- if you don't want all the parsers change this to a table of the ones you want
--- lvim.builtin.treesitter.ensure_installed = {
--- 	"bash",
--- 	"c",
--- 	"javascript",
--- 	"json",
--- 	"lua",
--- 	"python",
--- 	"typescript",
--- 	"tsx",
--- 	"css",
--- 	"rust",
--- 	"java",
--- 	"yaml",
--- }
+lvim.builtin.treesitter.ensure_installed = {
+	"bash",
+	"c",
+	"javascript",
+	"json",
+	"lua",
+	"python",
+	"typescript",
+	"tsx",
+	"css",
+	"rust",
+	"java",
+	"yaml",
+}
 
 -- generic LSP settings
 
@@ -260,8 +262,8 @@ require("dap.ext.vscode").load_launchjs()
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
+	{ command = "autopep8", filetypes = { "python" } , extra_args={" --aggressive",  " --in-place"}},
 	{ command = "isort", filetypes = { "python" } },
-	{ command = "black", filetypes = { "python" } },
 	{
 		-- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
 		command = "prettier",

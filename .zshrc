@@ -19,7 +19,7 @@ alias pyd="pyenv deactivate"
 
 alias dc="docker-compose"
 alias dcs="docker-compose stop"
-alias dcc="docker compose kill ; docker compose rm -f ; docker system prune -f ; docker volume prune -f"
+alias dcc="docker compose kill ; docker compose down; docker compose rm -f ; docker system prune -f ; docker volume prune -f"
 
 # changes for os type
 case "$OSTYPE" in
@@ -121,7 +121,7 @@ echo "load zinit plugins"
 
 # load plugins after 5 seconds verbose 
 zinit wait"5" for \
-                        djui/alias-tips
+    djui/alias-tips
 
 zinit wait lucid for \
     light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50" atload"!_zsh_autosuggest_start" \
