@@ -1,10 +1,21 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+
+# oh-my-zsh
+# Path to your oh-my-zsh installation.
+#export ZSH="$HOME/.oh-my-zsh"
+
+# ZSH_THEME="startship"
+
+# source $ZSH/oh-my-zsh.sh
+
+
 # User configuration
 # alias
 alias x="exit"
 alias m="make"
+alias n="nvim"
 
 alias ls="exa --icons "
 alias cat="bat --style=auto "
@@ -129,6 +140,8 @@ zinit wait lucid for \
     light-mode atinit"typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
         zdharma-continuum/fast-syntax-highlighting \
                         OMZ::lib/git.zsh \
+                        OMZ::lib/completion.zsh \
+                        OMZ::lib/directories.zsh \
                         OMZ::lib/key-bindings.zsh \
     atload"unalias grv" OMZ::plugins/git/git.plugin.zsh \
                         OMZ::plugins/docker-compose \
@@ -152,9 +165,9 @@ export PATH=$PATH:$HOME/.cargo/bin
 #####################
 # HISTORY           #
 #####################
-[ -z "$HISTFILE" ] && HISTFILE="$HOME/.zhistory"
-HISTSIZE=290000
-SAVEHIST=$HISTSIZE
+# [ -z "$HISTFILE" ] && HISTFILE="$HOME/.zhistory"
+# HISTSIZE=290000
+# SAVEHIST=$HISTSIZE
 
 autoload -Uz compinit
 compinit
