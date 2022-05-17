@@ -99,7 +99,16 @@ return packer.startup(function(use)
 
 	-- Git
 	use("lewis6991/gitsigns.nvim")
-	use("github/copilot.vim")
+	use({
+		"f-person/git-blame.nvim",
+		event = "BufRead",
+		config = function()
+			vim.cmd("highlight default link gitblame SpecialComment")
+			vim.g.gitblame_enabled = 0
+		end,
+	})
+  -- Copilot
+  use("github/copilot.vim")
 	use("hrsh7th/cmp-copilot")
   
   use("mg979/vim-visual-multi")
@@ -109,29 +118,18 @@ return packer.startup(function(use)
 		opt = true,
 		event = "BufReadPre",
 		module = { "dap" },
-		wants = { "nvim-dap-virtual-text", "DAPInstall.nvim", "nvim-dap-ui", "nvim-dap-python", "which-key.nvim" },
+		wants = { "nvim-dap-virtual-text", "nvim-dap-ui", "which-key.nvim" },
 		requires = {
-			"uelei/DAPInstall.nvim",
 			"theHamsta/nvim-dap-virtual-text",
 			"rcarriga/nvim-dap-ui",
-			"mfussenegger/nvim-dap-python",
-			"nvim-telescope/telescope-dap.nvim",
 			{ "leoluz/nvim-dap-go", module = "dap-go" },
-			{ "jbyuki/one-small-step-for-vimkind", module = "osv" },
 		},
 		config = function()
 			require("config.dap").setup()
 		end,
 	})
-
-	use({
-		"f-person/git-blame.nvim",
-		event = "BufRead",
-		config = function()
-			vim.cmd("highlight default link gitblame SpecialComment")
-			vim.g.gitblame_enabled = 0
-		end,
-	})
+  
+  -- Rest client
 	use({
 		"NTBBloodbath/rest.nvim",
 		requires = { "nvim-lua/plenary.nvim" },
@@ -160,7 +158,6 @@ return packer.startup(function(use)
 			})
 		end,
 	})
-
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
