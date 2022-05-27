@@ -79,7 +79,6 @@ local opts = {
 }
 
 local mappings = {
-  -- ["a"] = { "<cmd>Alpha<cr>", "Alpha" },
   ["b"] = {
     "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
     "Buffers",
@@ -187,3 +186,15 @@ local mappings = {
 
 which_key.setup(setup)
 which_key.register(mappings, opts)
+
+
+vim.cmd('autocmd FileType http lua WhichKeyPython()')
+function WhichKeyPython()
+    which_key.register({
+
+  m = {
+    name = "Http",
+    r = {'<Plug>RestNvim', 'run'},
+    }}, opts)
+end
+

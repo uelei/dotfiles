@@ -1,11 +1,6 @@
 local M = {}
 
 local function configure()
-  local dap_install = require "dap-install"
-  dap_install.setup {
-    installation_path = vim.fn.stdpath "data" .. "/dapinstall/",
-  }
-
   local dap_breakpoint = {
     error = {
       text = "🟥",
@@ -62,6 +57,7 @@ function M.setup()
   configure() -- Configuration
   configure_exts() -- Extensions
   configure_debuggers() -- Debugger
+  require('dap.ext.vscode').load_launchjs()
   require("config.dap.keymaps").setup() -- Keymaps
 end
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-set -euo pipefail
+dir=$(pwd)
 
 
 echo "making personal files folders"
 
 
-ln -sr ../zshrc ~/.zshrc
+ln -s  $dir/zshrc ~/.zshrc
