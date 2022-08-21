@@ -2215,3 +2215,26 @@ cursor_text_color background
 # Marks
 mark1_foreground #282c34
 mark1_background #ff6c6b
+
+
+    {
+      "background": "#1E2127",
+      "black": "#000000",
+      "blue": "#61AFEF",
+      "brightBlack": "#5C6370",
+      "brightBlue": "#61AFEF",
+      "brightCyan": "#56B6C2",
+      "brightGreen": "#98C379",
+      "brightPurple": "#C678DD",
+      "brightRed": "#E06C75",
+      "brightWhite": "#FFFFFF",
+      "brightYellow": "#D19A66",
+      "cyan": "#56B6C2",
+      "foreground": "#5C6370",
+      "green": "#98C379",
+      "name": "One Dark",
+      "purple": "#C678DD",
+      "red": "#E06C75",
+      "white": "#ABB2BF",
+      "yellow": "#D19A66"
+    }
