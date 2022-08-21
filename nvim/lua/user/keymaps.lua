@@ -5,6 +5,12 @@ local term_opts = { silent = true }
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap
 
+-- Do not yank with x
+keymap('n', 'x', '"_x', opts)
+
+-- Delete word backwards
+keymap('n', 'dw', 'vb"_d', opts)
+
 --Remap space as leader key
 keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
@@ -25,19 +31,21 @@ keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
--- Resize with arrows
-keymap("n", "<C-Up>", ":resize -2<CR>", opts)
-keymap("n", "<C-Down>", ":resize +2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+-- Not work on macos
+-- -- Resize with arrows
+-- keymap("n", "<C-Up>", ":resize -2<CR>", opts)
+-- keymap("n", "<C-Down>", ":resize +2<CR>", opts)
+-- keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
+-- keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
 -- Navigate buffers
 keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
 
+-- only work on mac if use kitty terminal
 -- Move text up and down
-keymap("n", "<A-j>", "<Esc>:m .+1<CR>==gi", opts)
-keymap("n", "<A-k>", "<Esc>:m .-2<CR>==gi", opts)
+keymap("n", "<A-k>", "<Esc>:m .-2<CR>", opts)
+keymap("n", "<A-j>", "<Esc>:m .+1<CR>", opts)
 
 -- Insert --
 -- Press jk fast to enter
@@ -69,4 +77,8 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 -- keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
 -- keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 -- keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
+
+-- Comment
+keymap("n", "<m-/>", "<cmd>lua require('Comment.api').toggle_current_linewise()<CR>", opts)
+keymap("x", "<m-/>", '<ESC><CMD>lua require("Comment.api").toggle_linewise_op(vim.fn.visualmode())<CR>', opts)
 

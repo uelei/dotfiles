@@ -9,11 +9,12 @@ local formatting = null_ls.builtins.formatting
 local diagnostics = null_ls.builtins.diagnostics
 
 null_ls.setup({
-	debug = false,
+	debug = true,
 	sources = {
 		formatting.prettier.with({ extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } }),
-		formatting.autopep8,
-		formatting.stylua,
+    formatting.black.with({ extra_args = { "--fast" } }),
+		-- formatting.autopep8,
+		-- formatting.stylua,
 		formatting.isort,
     diagnostics.flake8
 	},

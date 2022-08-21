@@ -103,9 +103,11 @@ cmp.setup {
       vim_item.menu = ({
         copilot = "[COPILOT]",
         nvim_lsp = "[LSP]",
+        emoji = "[EMOJI]",
         luasnip = "[Snippet]",
         buffer = "[Buffer]",
         path = "[Path]",
+        nvim_lsp_signature_help = "[signature]",
       })[entry.source.name]
       return vim_item
     end,
@@ -113,9 +115,11 @@ cmp.setup {
   sources = {
     { name = "copilot" },
     { name = "nvim_lsp" },
+    { name = "emoji" },
     { name = "luasnip" },
     { name = "buffer" },
     { name = "path" },
+    { name = "nvim_lsp_signature_help" },
   },
   confirm_opts = {
     behavior = cmp.ConfirmBehavior.Replace,
