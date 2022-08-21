@@ -1,7 +1,6 @@
 local M = {}
 
 function M.setup(_)
-  -- require("dap-python").setup("python", {})
 
   local dap = require('dap')
   local venv = os.getenv("VIRTUAL_ENV")
@@ -12,6 +11,7 @@ function M.setup(_)
       args = { '-m', 'debugpy.adapter' };
   }
 
+  require("dap-python").setup(string.format("%s/bin/python",venv))
   vim.notify("DAP loading vscode python")
 
 dap.configurations.python = {
