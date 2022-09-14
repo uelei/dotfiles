@@ -13,6 +13,7 @@
 
 # User configuration
 # alias
+alias :q="exit"
 alias x="exit"
 alias m="make"
 alias n="nvim"

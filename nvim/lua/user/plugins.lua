@@ -159,9 +159,9 @@ return packer.startup(function(use)
       end,
     }
 
-    -- Copilot
-    use {"github/copilot.vim", commit="da286d8c52159026f9cba16cd0f98b609c056841"}
-    use "hrsh7th/cmp-copilot"
+    -- -- Copilot
+    -- use {"github/copilot.vim", commit="da286d8c52159026f9cba16cd0f98b609c056841"}
+    -- use "hrsh7th/cmp-copilot"
 
     -- DAP
     use { "mfussenegger/nvim-dap" }
@@ -229,7 +229,7 @@ return packer.startup(function(use)
     end
     }
 
-    use "chrisbra/Colorizer"
+    -- use "chrisbra/Colorizer"
     -- use "ap/vim-css-color"
     -- use {
     --   "klen/nvim-test",
@@ -242,17 +242,31 @@ return packer.startup(function(use)
     -- ORG
     use "nvim-orgmode/orgmode"
 
+    -- UI
     -- Notify
     use {
       "rcarriga/nvim-notify", config = function()
           vim.notify = require("notify")
       end
     }
+    -- Tabbar
     use {
     'romgrk/barbar.nvim',
     requires = { 'kyazdani42/nvim-web-devicons' }
     }
+    use "editorconfig/editorconfig-vim"
 
+
+    -- Code documentation
+    use {
+      "kkoomen/vim-doge",
+      run = ":call doge#install()",
+      config = function()
+       require("user.doge").setup()
+      end,
+      cmd = { "DogeGenerate", "DogeCreateDocStandard" },
+      disable = false,
+    }
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

@@ -12,10 +12,17 @@ null_ls.setup({
 	debug = true,
 	sources = {
 		formatting.prettier.with({ extra_args = { "--no-semi", "--single-quote", "--jsx-single-quote" } }),
-    formatting.black.with({ extra_args = { "--fast" } }),
-		-- formatting.autopep8,
-		-- formatting.stylua,
+
+    -- python
 		formatting.isort,
-    diagnostics.flake8
+    formatting.black.with({ extra_args = { "--fast" } }),
+    diagnostics.flake8,
+		-- formatting.autopep8,
+    -- lua
+		formatting.stylua,
+    -- terraform
+    formatting.terraform_fmt,
+    -- go
+    formatting.gofmt,
 	},
 })
