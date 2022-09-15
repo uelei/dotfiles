@@ -143,6 +143,9 @@ zinit wait lucid for \
         zdharma-continuum/fast-syntax-highlighting \
                         OMZ::lib/git.zsh \
                         OMZ::lib/completion.zsh \
+                        OMZ::lib/theme-and-appearance.zsh \
+                        OMZ::lib/history.zsh \
+                        OMZ::lib/clipboard.zsh \
                         OMZ::lib/directories.zsh \
                         OMZ::lib/key-bindings.zsh \
     atload"unalias grv" OMZ::plugins/git/git.plugin.zsh \
@@ -154,7 +157,7 @@ if [[ "$OSTYPE" != "darwin"* ]]; then
     echo "linux some extraplugins"
 else
     # Mac OSX
-    zinit light zsh-users/zsh-apple-touchbar 
+    # zinit light zsh-users/zsh-apple-touchbar # only work on iterm
 fi
 
 echo "loading starship"
