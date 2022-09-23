@@ -34,7 +34,6 @@ require("orgmode").setup({
 			description = "Journal",
 			template = "\n*** %<%Y-%m-%d> %<%A>\n**** %U\n\n%?",
 			-- target = '~/notes/org/org' %(os.date('%Y-%m-%d'))
-
 			target = "~/notes/org/" .. os.date("%Y-%m-%d") .. ".org",
 		},
 		-- { n = "Notes",

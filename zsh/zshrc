@@ -131,8 +131,15 @@ zinit wait lucid for \
         OMZP::docker/_docker
 
 
-# Load pyenv lazy
-zinit wait"1" for davidparsson/zsh-pyenv-lazy
+if [ -e pyproject.toml ]
+then
+    echo "there is a pyproject.toml"
+    eval "$(pyenv init -)"
+else
+    # Load pyenv lazy
+    echo "lazy loading pyenv"
+    zinit wait"1" for davidparsson/zsh-pyenv-lazy
+fi
 
 
 if [[ "$OSTYPE" != "darwin"* ]]; then
