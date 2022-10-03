@@ -1,8 +1,12 @@
 # Dotfiles
-Dot files and some important files
 
-## Emacs
+My dotfiles for my daily use
 
-Two emacs setup 
-- doom.d config for emacs config
-- basic vanila setup
+## To link all files 
+
+```bash
+
+stow -t ~ kitty nvim zsh
+
+```
+

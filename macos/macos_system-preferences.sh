@@ -16,10 +16,10 @@
 echo "Disable the 'Are you sure you want to open this application?' dialog"
 defaults write com.apple.LaunchServices LSQuarantine -bool false
 
-echo "Disable Notification Center and remove the menu bar icon"
+# echo "Disable Notification Center and remove the menu bar icon"
 # launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist
 
-echo "Disable auto-correct"
+# echo "Disable auto-correct"
 ####defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
 echo "Show percentage in battery status"
@@ -38,32 +38,32 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 echo "Show Path bar in Finder"
 defaults write com.apple.finder ShowPathbar -bool true
 
-echo "Show Status bar in Finder"
+# echo "Show Status bar in Finder"
 # defaults write com.apple.finder ShowStatusBar -bool true
 
 echo "Set a blazingly fast keyboard repeat rate"
 defaults write NSGlobalDomain KeyRepeat -int 0.012
 
 echo "Set a shorter Delay until key repeat"
-defaults write NSGlobalDomain InitialKeyRepeat -int 12
+defaults write NSGlobalDomain InitialKeyRepeat -int 10
 
 echo "Show the ~/Library folder"
 chflags nohidden ~/Library
 
-echo "Disable rubberband scrolling"
+# echo "Disable rubberband scrolling"
 ####defaults write -g NSScrollViewRubberbanding -bool false
 
-echo "Disable dashboard"
+# echo "Disable dashboard"
 ####defaults write com.apple.dashboard mcx-disabled -boolean YES
 
-echo "Move dock to left side of screen"
+# echo "Move dock to left side of screen"
 ####defaults write com.apple.dock orientation -string left
 
-echo "Hide dock automatically"
+# echo "Hide dock automatically"
 ####defaults write com.apple.dock autohide -boolean true
 
 # I actually didn't get this working.. ideas?
-echo "Set Dock auto-hide delay"
+# echo "Set Dock auto-hide delay"
 ####defaults write com.apple.dock autohide-delay 0
 
 echo "Show all filename extensions in Finder"
@@ -92,41 +92,41 @@ defaults write com.apple.finder FXPreferredViewStyle -string "Nlmv"
 echo "Remove default text from basic screen saver"
 defaults write ~/Library/Preferences/com.apple.ScreenSaver.Basic MESSAGE " "
 
-echo "Disable sound effect when changing volume"
-defaults write -g com.apple.sound.beep.feedback -integer 0
+# echo "Disable sound effect when changing volume"
+# defaults write -g com.apple.sound.beep.feedback -integer 0
 
-echo "Disable user interface sound effects"
+# echo "Disable user interface sound effects"
 ####defaults write com.apple.systemsound 'com.apple.sound.uiaudio.enabled' -int 0
 
-echo "Set system sounds volume to 0"
+# echo "Set system sounds volume to 0"
 ####defaults write com.apple.systemsound com.apple.sound.beep.volume -float 0
 
 ###############################################################################
 # Trackpad, Mouse, Keyboard, Gestures                                         #
 ###############################################################################
 
-echo "Enable tap to click (Trackpad)"
+# echo "Enable tap to click (Trackpad)"
 ####defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 ####defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 ####defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
-echo "Use scroll gesture with the Ctrl (^) modifier key to zoom"
+# echo "Use scroll gesture with the Ctrl (^) modifier key to zoom"
 ####defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
 ####defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
 
-echo "Follow mouse when zoomed in"
+# echo "Follow mouse when zoomed in"
 ####defaults write com.apple.universalaccess closeViewPanningMode -int 0
 
-echo "Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)"
+# echo "Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)"
 ####defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
-echo "Tap with two fingers to emulate right click"
+# echo "Tap with two fingers to emulate right click"
 ####defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
 
-echo "Disable three finger drag"
+# echo "Disable three finger drag"
 ####defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool false
 
-echo "Disable automatic rearrangement of spaces based on most recent usage"
+# echo "Disable automatic rearrangement of spaces based on most recent usage"
 ####defaults write com.apple.dock mru-spaces -bool false
 
 # For reference
