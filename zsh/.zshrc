@@ -1,4 +1,3 @@
-
 # User configuration
 # alias
 alias :q="exit"
