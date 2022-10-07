@@ -41,11 +41,16 @@ defaults write com.apple.finder ShowPathbar -bool true
 # echo "Show Status bar in Finder"
 # defaults write com.apple.finder ShowStatusBar -bool true
 
-echo "Set a blazingly fast keyboard repeat rate"
-defaults write NSGlobalDomain KeyRepeat -int 0.012
+# normal minimum is 15 (225 ms)
+defaults write -g InitialKeyRepeat -float 10.0
 
 echo "Set a shorter Delay until key repeat"
-defaults write NSGlobalDomain InitialKeyRepeat -int 10
+defaults write NSGlobalDomain InitialKeyRepeat -float 10.0
+
+echo "Set a blazingly fast keyboard repeat rate"
+# normal minimum is 2 (30 ms)
+defaults write NSGlobalDomain KeyRepeat -float 1.0
+defaults write -g KeyRepeat -float 1.0
 
 echo "Show the ~/Library folder"
 chflags nohidden ~/Library
@@ -85,9 +90,9 @@ echo "Require password after a minute after sleep or screen saver begins"
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 60
 
-echo "Use list view in all Finder windows by default"
-echo "Four-letter codes for the other view modes: icnv, Nlmv, Flwv"
-defaults write com.apple.finder FXPreferredViewStyle -string "Nlmv"
+# echo "Use list view in all Finder windows by default"
+# echo "Four-letter codes for the other view modes: icnv, Nlmv, Flwv"
+# defaults write com.apple.finder FXPreferredViewStyle -string "Nlmv"
 
 echo "Remove default text from basic screen saver"
 defaults write ~/Library/Preferences/com.apple.ScreenSaver.Basic MESSAGE " "
