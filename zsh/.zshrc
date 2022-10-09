@@ -156,6 +156,13 @@ eval "$(starship init zsh)"
 # rust cargo
 export PATH=$PATH:$HOME/.cargo/bin
 
+# gvm
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+
+# tfenv terraform
+export PATH="$HOME/.tfenv/bin:$PATH"
+
+
 echo "loading compinit lazy turbo"
 zi for \
     atload"zicompinit; zicdreplay" \
