@@ -1,17 +1,19 @@
+require("user.org")
+vim.opt.relativenumber = true
+
 lvim.format_on_save = false
 lvim.lsp.diagnostics.virtual_text = false
-lvim.builtin.notify.active = true
+-- lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 
 -- All the treesitter parsers you want to install. If you want all of them, just
 -- replace everything with "all".
-lvim.builtin.treesitter.ensure_installed = {
-  "all",
-}
+lvim.builtin.treesitter.ensure_installed = "all"
 
 -- Set a formatter.
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
+  { command = "isort", filetypes = { "python" } },
   { command = "black", filetypes = { "python" } },
 }
 
@@ -31,6 +33,16 @@ pcall(function() require("dap-python").setup(mason_path .. "packages/debugpy/ven
 -- neither are present it defaults to unittest.
 pcall(function() require("dap-python").test_runner = "pytest" end)
 
+
+
+-- Shorten function name
+local keymap = vim.api.nvim_set_keymap
+
+local opts = { noremap = true, silent = true }
+
+keymap("n", "<S-l>", ":bnext<CR>", opts)
+keymap("n", "<S-h>", ":bprevious<CR>", opts)
+
 -- Mappings
 lvim.builtin.which_key.mappings["dm"] = { "<cmd>lua require('dap-python').test_method()<cr>", "Test Method" }
 lvim.builtin.which_key.mappings["df"] = { "<cmd>lua require('dap-python').test_class()<cr>", "Test Class" }
@@ -44,6 +56,7 @@ lvim.builtin.which_key.mappings["P"] = {
   i = { "<cmd>lua require('swenv.api').pick_venv()<cr>", "Pick Env" },
   s = { "<cmd>lua require('swenv.api').get_current_venv()<cr>", "Show Env" },
   d = { "<cmd>lua require('neogen').generate()<cr>", "Create docstrings" },
+  t = { "<cmd>lua require('neotest').run.run()<cr>", "Test Nearst" },
 }
 
 -- Additional Plugins
@@ -64,7 +77,27 @@ lvim.plugins = {
             },
           },
         },
-      }
+      } end,
+  },
+  {
+    "klen/nvim-test",
+    config = function()
+      require("nvim-test").setup()
     end,
   },
+  {
+    "j-hui/fidget.nvim",
+    config = function()
+      require("fidget").setup({})
+    end,
+  },
+  "mg979/vim-visual-multi",
+  "nvim-orgmode/orgmode",
+  "p00f/nvim-ts-rainbow", -- Raiowparentheses
+  "f-person/git-blame.nvim",
 }
+
+vim.g.gitblame_enabled = 0
+lvim.builtin.which_key.mappings["gL"] = { "<cmd>GitBlameToggle<cr>", "Blame all" }
+
+lvim.builtin.treesitter.rainbow.enable = true
