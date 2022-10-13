@@ -1,4 +1,5 @@
 require("user.org")
+
 vim.opt.relativenumber = true
 
 lvim.format_on_save = false
@@ -97,7 +98,9 @@ lvim.plugins = {
   "f-person/git-blame.nvim",
 }
 
+-- git blame setting
 vim.g.gitblame_enabled = 0
 lvim.builtin.which_key.mappings["gL"] = { "<cmd>GitBlameToggle<cr>", "Blame all" }
 
+-- enable rainbow parentheses
 lvim.builtin.treesitter.rainbow.enable = true
