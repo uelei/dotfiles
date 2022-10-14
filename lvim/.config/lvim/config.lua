@@ -34,8 +34,6 @@ pcall(function() require("dap-python").setup(mason_path .. "packages/debugpy/ven
 -- neither are present it defaults to unittest.
 pcall(function() require("dap-python").test_runner = "pytest" end)
 
-
-
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap
 
@@ -43,6 +41,13 @@ local opts = { noremap = true, silent = true }
 
 keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
+
+-- not store deleted line on register
+keymap("v", "dd", '"_dd', opts)
+keymap("n", "dd", '"_dd', opts)
+
+keymap("v", "x", '"_x', opts)
+keymap("n", "x", '"_x', opts)
 
 -- Mappings
 lvim.builtin.which_key.mappings["dm"] = { "<cmd>lua require('dap-python').test_method()<cr>", "Test Method" }
