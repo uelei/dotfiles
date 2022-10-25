@@ -8,10 +8,10 @@
 ####defaults write NSGlobalDomain AppleMetricUnits -bool true
 
 ####echo "Setup computer name"
-####sudo scutil --set ComputerName "kimmo-macbook"
-####sudo scutil --set HostName "kimmo-macbook"
-####sudo scutil --set LocalHostName "kimmo-macbook"
-####sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "kimmo-macbook"
+####sudo scutil --set ComputerName "uelei-macbook"
+####sudo scutil --set HostName "uelei-macbook"
+####sudo scutil --set LocalHostName "uelei-macbook"
+####sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "uelei-macbook"
 
 echo "Disable the 'Are you sure you want to open this application?' dialog"
 defaults write com.apple.LaunchServices LSQuarantine -bool false
