@@ -43,6 +43,8 @@ lvim.plugins = {
 
 	-- colorscheme
 	"bluz71/vim-nightfly-guicolors",
+	"sainnhe/sonokai",
+	"EdenEast/nightfox.nvim",
 
 	-- lsp
 	"lvimuser/lsp-inlayhints.nvim",
@@ -59,18 +61,17 @@ lvim.plugins = {
 	"jose-elias-alvarez/typescript.nvim",
 	"mxsdev/nvim-dap-vscode-js",
 
-  -- Rest client
-  {
-    "NTBBloodbath/rest.nvim",
-    commit = "e5f68db73276c4d4d255f75a77bbe6eff7a476ef",
-    requires = { "nvim-lua/plenary.nvim" },
-    opt = false,
-    ft = { "http" },
-    config = function()
-      require("rest-nvim").setup({
-        result_split_horizontal = false,
-      })
-    end,
-  }
-
+	-- Rest client
+	{
+		"NTBBloodbath/rest.nvim",
+		commit = "e5f68db73276c4d4d255f75a77bbe6eff7a476ef",
+		requires = { "nvim-lua/plenary.nvim" },
+		opt = false,
+		ft = { "http" },
+		config = function()
+			require("rest-nvim").setup({
+				result_split_horizontal = false,
+			})
+		end,
+	},
 }
