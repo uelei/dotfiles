@@ -13,9 +13,6 @@ alias gc="git commit -S"
 alias gs="git stash"
 alias gsp="git stash pop"
 
-alias pya="pyenv activate"
-alias pyd="pyenv deactivate"
-
 alias dc="docker-compose"
 alias dcs="docker-compose stop"
 alias dcc="docker compose kill ; docker compose down; docker compose rm -f ; docker system prune -f ; docker volume prune -f"
@@ -43,10 +40,8 @@ echo "load pipx path"
 # pipx ensure path
 export PATH="$PATH:$HOME/.local/bin"
 
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export NVM_COMPLETION=true
+export NVM_SYMLINK_CURRENT="true"
 
 # wsl
 if (( ${+WSL_DISTRO_NAME} )); then
@@ -106,10 +101,11 @@ source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 
 ### End of Zinit's installer chunk
 echo "load zinit plugins"
-
 # load plugins after 5 seconds verbose 
 zinit wait"5" for \
     djui/alias-tips
+
+zinit wait lucid light-mode for lukechilds/zsh-nvm
 
 zinit wait lucid for \
     light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50" atload"!_zsh_autosuggest_start" \
