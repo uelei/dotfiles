@@ -4,6 +4,8 @@ alias :q="exit"
 alias x="exit"
 alias m="make"
 alias n="nvim"
+alias lgit="lazygit"
+alias lv="lvim"
 
 alias ls="exa --icons "
 alias cat="bat --style=auto "
