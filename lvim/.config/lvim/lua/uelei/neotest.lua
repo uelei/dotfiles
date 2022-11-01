@@ -1,3 +1,8 @@
+local status_ok, test = pcall(require, "neotest")
+if not status_ok then
+  return
+end
+
 -- local function setup_vim_test()
 --   vim.api.nvim_exec(
 --     [[
@@ -14,7 +19,6 @@
 -- end
 
 
-local test = require("neotest")
 test.setup({
 	adapters = {
 
