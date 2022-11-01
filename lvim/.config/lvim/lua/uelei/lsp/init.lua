@@ -1,7 +1,7 @@
-require("user.lsp.languages.rust")
-require("user.lsp.languages.go")
-require("user.lsp.languages.python")
-require("user.lsp.languages.js-ts")
+require("uelei.lsp.languages.rust")
+require("uelei.lsp.languages.go")
+require("uelei.lsp.languages.python")
+require("uelei.lsp.languages.js-ts")
 
 lvim.format_on_save = false
 lvim.lsp.diagnostics.virtual_text = false
