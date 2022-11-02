@@ -34,7 +34,7 @@ orgmode.setup({
 		n = "Notes",
 		nw = {
 			description = "work",
-			target = "~/notes/work/notes.org",
+			target = "~/notes/work/w_notes.org",
 			template = "\n*** %U\n\n%? \n",
 		},
 		nh = {
@@ -104,7 +104,7 @@ orgmode.setup({
 		wn = {
 			description = "Note",
 			template = "\n*** %U\n\n%?",
-			target = "~/notes/work/notes.org",
+			target = "~/notes/work/w_notes.org",
 		},
 	},
 })
