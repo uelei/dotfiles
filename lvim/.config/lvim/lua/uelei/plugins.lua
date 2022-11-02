@@ -72,7 +72,6 @@ lvim.plugins = {
 	"mhartington/oceanic-next",
 
 	-- lsp
-	"lvimuser/lsp-inlayhints.nvim",
 	"hrsh7th/cmp-emoji",
 
 	-- rust
