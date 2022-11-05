@@ -7,8 +7,8 @@ alias n="nvim"
 alias lgit="lazygit"
 alias lv="lvim"
 
-alias ls="exa --icons "
-alias cat="bat --style=auto "
+alias e="exa --icons "
+alias b="bat --style=auto "
 
 alias g="git"
 alias gc="git commit -S"
