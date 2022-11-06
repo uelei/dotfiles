@@ -19,7 +19,10 @@ require("nvim-treesitter.configs").setup({
 
 orgmode.setup({
 
-	org_agenda_files = { "~/notes/**/*",  ('%s/*.org'):format(vim.fn.getcwd())  },
+	org_agenda_skip_scheduled_if_done = true,
+	org_agenda_skip_deadline_if_done = true,
+
+	org_agenda_files = { "~/notes/**/*", ("%s/*.org"):format(vim.fn.getcwd()) },
 	org_default_notes_file = "~/notes/refile.org",
 
 	org_todo_keywords = { "TODO(t)", "WAITING(w)", "NEXT(n)", "|", "DONE(d)" },

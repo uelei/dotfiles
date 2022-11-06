@@ -6,3 +6,5 @@ require("uelei.keymaps")
 require("uelei.git")
 require("uelei.neotest")
 
+lvim.colorscheme = 'nightfox'
+
