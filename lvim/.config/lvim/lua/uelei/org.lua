@@ -38,12 +38,12 @@ orgmode.setup({
 		nw = {
 			description = "work",
 			target = "~/notes/work/w_notes.org",
-			template = "\n*** %U\n\n%? \n",
+			template = "\n* %U\n\n%? \n",
 		},
 		nh = {
 			description = "home",
 			target = "~/notes/home/notes.org",
-			template = "*** %U\n %? \n",
+			template = "* %U\n %? \n",
 		},
 
 		h = "Home",
@@ -70,7 +70,7 @@ orgmode.setup({
 		hn = {
 			description = "Note",
 			target = "~/notes/home/notes.org",
-			template = "*** %U\n %? \n",
+			template = "* %U\n %? \n",
 		},
 
 		t = "Task",
@@ -106,7 +106,7 @@ orgmode.setup({
 		},
 		wn = {
 			description = "Note",
-			template = "\n*** %U\n\n%?",
+			template = "\n* %U\n\n%?",
 			target = "~/notes/work/w_notes.org",
 		},
 	},

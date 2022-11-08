@@ -60,13 +60,11 @@ if (( ${+WSL_DISTRO_NAME} )); then
         echo "using ssh agent"
         source ~/.agent-profile
     fi
-
     # dont need in new wslg
     # https://devblogs.microsoft.com/commandline/wslg-architecture/
     # echo "exporting display for wsl"
     # export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
     # export GPG_TTY=$(tty)
-
 fi
 
 echo "load dropbox configs"
@@ -127,24 +125,15 @@ zinit wait lucid for \
   as"completion" \
         OMZP::docker/_docker
 
-
-if [ -e pyproject.toml ]
-then
-    echo "there is a pyproject.toml"
+if [ -f pyproject.toml ] || [[ "$OSTYPE" != "darwin"* ]]; then
+    echo "loading pyenv"
+    export PYENV_ROOT="$HOME/.pyenv" 
+    command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"
 else
     # Load pyenv lazy
     echo "lazy loading pyenv"
     zinit wait"1" for davidparsson/zsh-pyenv-lazy
-fi
-
-
-if [[ "$OSTYPE" != "darwin"* ]]; then
-    # Not Mac OSX
-    echo "linux some extraplugins"
-else
-    # Mac OSX
-    # zinit light zsh-users/zsh-apple-touchbar # only work on iterm
 fi
 
 echo "loading starship"
@@ -159,7 +148,6 @@ export PATH=$PATH:$HOME/.cargo/bin
 
 # tfenv terraform
 export PATH="$HOME/.tfenv/bin:$PATH"
-
 
 echo "loading compinit lazy turbo"
 zi for \
