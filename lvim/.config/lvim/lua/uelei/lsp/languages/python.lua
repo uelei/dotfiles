@@ -2,7 +2,7 @@
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
 	{ command = "isort", filetypes = { "python" } },
-	{ command = "black", filetypes = { "python" } },
+	-- { command = "black", filetypes = { "python" } },
 })
 
 -- Set a linter.

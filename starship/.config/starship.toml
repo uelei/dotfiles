@@ -42,3 +42,6 @@ style = "bright-white"
 format = "$all_status$ahead_behind"
 # up_to_date = "✓"
 
+
+[aws]
+symbol = "☁️🅰 "
