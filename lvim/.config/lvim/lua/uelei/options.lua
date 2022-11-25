@@ -1,7 +1,6 @@
 vim.opt.relativenumber = true
 
 lvim.format_on_save = false
-lvim.lsp.diagnostics.virtual_text = false
 -- lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 
@@ -9,3 +8,4 @@ lvim.builtin.terminal.active = true
 -- replace everything with "all".
 lvim.builtin.treesitter.ensure_installed = "all"
 
+lvim.lsp.automatic_configuration.skipped_servers = {}
