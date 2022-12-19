@@ -98,7 +98,8 @@ if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
 fi
 
 source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
-
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
 echo "load zinit plugins"
 # load plugins after 5 seconds verbose 
@@ -150,8 +151,9 @@ export PATH=$PATH:$HOME/.cargo/bin
 export PATH="$HOME/.tfenv/bin:$PATH"
 
 # fix first install can be removed later
-if [[ ! -e $HOME/.cache/zinit ]]; then
-  mkdir -p $HOME/.cache/zinit
+if [[ ! -e $HOME/.cache/zinit/completions ]]; then
+  echo "creating a inital folder for zinit completions"
+  mkdir -p $HOME/.cache/zinit/completions
 fi
 
 echo "loading compinit lazy turbo"
