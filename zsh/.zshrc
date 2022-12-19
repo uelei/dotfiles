@@ -149,6 +149,11 @@ export PATH=$PATH:$HOME/.cargo/bin
 # tfenv terraform
 export PATH="$HOME/.tfenv/bin:$PATH"
 
+# fix first install can be removed later
+if [[ ! -e $HOME/.cache/zinit ]]; then
+  mkdir -p $HOME/.cache/zinit
+fi
+
 echo "loading compinit lazy turbo"
 zi for \
     atload"zicompinit; zicdreplay" \
