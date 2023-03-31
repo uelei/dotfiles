@@ -164,3 +164,6 @@ zi for \
     wait \
   zsh-users/zsh-completions
 echo "done"
+
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+

@@ -25,12 +25,12 @@ orgmode.setup({
 	org_agenda_files = { "~/notes/**/*", ("%s/*.org"):format(vim.fn.getcwd()) },
 	org_default_notes_file = "~/notes/refile.org",
 
-	org_todo_keywords = { "TODO(t)", "WAITING(w)", "NEXT(n)", "|", "DONE(d)" },
+	org_todo_keywords = { "TODO(t)", "WAITING(w)", "NEXT(n)", "|", "DONE(d)", "CANCELED(c)" },
 	org_todo_keyword_faces = {
-		WAITING = ":background #806731 :foreground #0b1610 :weight bold",
-		NEXT = ":background #806731 :foreground #0b1610 :weight bold",
-		DONE = ":background #416644 :foreground #0b1610 :slant italic",
-		TODO = ":background #326777 :foreground #0b1610 :weight bold",
+		NEXT = ":foreground yellow :weight bold",
+		DONE = ":foreground green :slant italic",
+    WAITING = ':foreground blue :weight bold',
+    TODO = ':foreground red', -- overrides builtin color for `TODO` keyword
 	},
 	org_capture_templates = {
 

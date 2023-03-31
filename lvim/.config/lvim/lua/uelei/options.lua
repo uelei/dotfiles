@@ -9,3 +9,6 @@ lvim.builtin.terminal.active = true
 lvim.builtin.treesitter.ensure_installed = "all"
 
 lvim.lsp.automatic_configuration.skipped_servers = {}
+
+vim.opt.list = true
+vim.opt.listchars:append "eol:↴"

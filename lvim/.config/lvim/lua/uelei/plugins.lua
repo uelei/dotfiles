@@ -96,7 +96,7 @@ lvim.plugins = {
 	"rakr/vim-one",
 	"drewtempelmeyer/palenight.vim",
 	"mhartington/oceanic-next",
-	"sam4llis/nvim-tundra",
+  "NvChad/nvim-colorizer.lua",
 
 	-- lsp
 	"hrsh7th/cmp-emoji",

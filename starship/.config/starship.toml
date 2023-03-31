@@ -44,4 +44,4 @@ format = "$all_status$ahead_behind"
 
 
 [aws]
-symbol = "☁️🅰 "
+symbol = "☁️ 🅰 "
