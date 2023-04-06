@@ -64,7 +64,7 @@ lvim.plugins = {
 
 	{
 		"nvim-neotest/neotest",
-		requires = {
+		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"antoinemadec/FixCursorHold.nvim",
@@ -102,8 +102,8 @@ lvim.plugins = {
 	"hrsh7th/cmp-emoji",
 	{
 		"tzachar/cmp-tabnine",
-		run = "./install.sh",
-		requires = "hrsh7th/nvim-cmp",
+		build = "./install.sh",
+		dependencies = "hrsh7th/nvim-cmp",
 		event = "InsertEnter",
 	},
 
@@ -122,8 +122,8 @@ lvim.plugins = {
 	{
 		"NTBBloodbath/rest.nvim",
 		commit = "e5f68db73276c4d4d255f75a77bbe6eff7a476ef",
-		requires = { "nvim-lua/plenary.nvim" },
-		opt = false,
+		dependencies = { "nvim-lua/plenary.nvim" },
+		lazy = false,
 		ft = { "http" },
 		config = function()
 			require("rest-nvim").setup({
