@@ -67,10 +67,10 @@ if (( ${+WSL_DISTRO_NAME} )); then
     # export GPG_TTY=$(tty)
 fi
 
-echo "load dropbox configs"
+echo "load personal configs"
 # load my personal scripts
-if [[ -f $HOME/Dropbox/uelei_files/personal_scripts/bash_sensitive.sh ]]; then
-    source $HOME/Dropbox/uelei_files/personal_scripts/bash_sensitive.sh
+if [[ -f $HOME/uelei_files/bash_sensitive.sh ]]; then
+    source $HOME/uelei_files/bash_sensitive.sh
 fi
 
 # Functions 
@@ -102,9 +102,6 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
 echo "load zinit plugins"
-# load plugins after 5 seconds verbose 
-zinit wait"5" for \
-    djui/alias-tips
 
 zinit wait lucid light-mode for lukechilds/zsh-nvm
 
@@ -167,3 +164,6 @@ echo "done"
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
+# load plugins after 5 seconds verbose 
+zinit wait"5" for \
+    djui/alias-tips

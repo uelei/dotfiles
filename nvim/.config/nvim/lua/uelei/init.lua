@@ -1,1 +1,6 @@
-require("plugins")
+require("uelei.options")
+require("uelei.plugin.treesitter")
+require("uelei.keymaps")
+require("uelei.plugin.org")
+-- require("uelei.plugin.telescope")
+-- require("uelei.plugin.lualine")
