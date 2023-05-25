@@ -16,45 +16,6 @@
 --
 -- keymap for nvim-tree
 vim.keymap.set('n', '<leader>e', require("nvim-tree.api").tree.toggle, { desc = "Explore" })
--- -- vim.keymap.set("n", "<Space>e", require("nvim-tree.api").tree.toggle)
--- local wk = require("which-key")
---
--- wk.register({
---   g = "+Git"
--- }, { prefix = "<leader>" }
--- )
---
--- -- The line beneath this is called `modeline`. See `:help modeline`
--- -- vim: ts=2 sts=2 sw=2 et
--- --
--- -- ["<C-h>"] = "<C-w>h",
--- -- ["<C-j>"] = "<C-w>j",
--- -- ["<C-k>"] = "<C-w>k",
--- -- ["<C-l>"] = "<C-w>l",
--- --
--- -- -- Resize with arrows
--- -- ["<C-Up>"] = ":resize -2<CR>",
--- -- ["<C-Down>"] = ":resize +2<CR>",
--- -- ["<C-Left>"] = ":vertical resize -2<CR>",
--- -- ["<C-Right>"] = ":vertical resize +2<CR>",
--- --
--- -- -- Move current line / block with Alt-j/k a la vscode.
--- -- ["<A-j>"] = ":m .+1<CR>==",
--- -- ["<A-k>"] = ":m .-2<CR>==",
--- --
---
--- -- move between windows
--- vim.keymap.set('n', '<C-h>', "<C-w>h")
--- vim.keymap.set('n', '<C-j>', "<C-w>j")
--- vim.keymap.set('n', '<C-k>', "<C-w>k")
--- vim.keymap.set('n', '<C-l>', "<C-w>l")
---
--- -- switch tabs using hl
--- vim.keymap.set('n', '<S-l>', "<cmd>BufferLineCycleNext<CR>")
--- vim.keymap.set('n', '<S-h>', "<cmd>BufferLineCyclePrev<cr>")
---
---
--- vim.keymap.set('n', '<leader>gg', "<cmd>LazyGit<cr>", { desc = "LazyGit" })
 
 local function map(mode, lhs, rhs, opts)
     opts = opts or {}
@@ -142,10 +103,6 @@ map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 --   map("n", "[q", vim.cmd.cprev, { desc = "Previous quickfix" })
 --   map("n", "]q", vim.cmd.cnext, { desc = "Next quickfix" })
 -- end
-
--- lazygit
---
-map("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "LazyGit"})
 
 -- quit
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })

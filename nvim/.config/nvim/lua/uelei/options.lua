@@ -36,7 +36,6 @@ vim.o.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
--- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
 vim.opt.list = true
@@ -59,3 +58,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
         group = highlight_group,
         pattern = '*',
 })
+
+require("bufferline").setup {}

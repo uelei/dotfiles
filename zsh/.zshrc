@@ -19,6 +19,12 @@ alias dc="docker-compose"
 alias dcs="docker-compose stop"
 alias dcc="docker compose kill ; docker compose down; docker compose rm -f ; docker system prune -f ; docker volume prune -f"
 
+# https://github.com/chubin/wttr.in
+alias weather='curl http://wttr.in'
+
+# crypto coin tracker
+alias ratesx='curl rate.sx'
+
 # changes for os type
 case "$OSTYPE" in
     darwin*)
