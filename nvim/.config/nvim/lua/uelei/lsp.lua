@@ -19,9 +19,20 @@ local on_attach = function(client, bufnr)
         nmap("<leader>lo", "<CMD>PyrightOrganizeImports<CR>", "[O]rganize Imports")
     end
 
+    if client.server_capabilities.codeActionProvider then
+        nmap("<leader>la", vim.lsp.buf.code_action, "[C]ode [A]ction")
+        vim.api.nvim_create_augroup("lsp_code_action", {})
+        vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+            group = "lsp_code_action",
+            callback = function()
+                require("nvim-lightbulb").update_lightbulb()
+            end,
+            buffer = bufnr,
+            desc = "LSP code action lightbulb",
+        })
+    end
     nmap("<leader>lr", vim.lsp.buf.rename, "[R]e[n]ame")
-    nmap("<leader>ld", "<cmd>Telescope lsp_document_diagnostics<cr>", "[D]iagnostics")
-    nmap("<leader>la", vim.lsp.buf.code_action, "[C]ode [A]ction")
+    nmap("<leader>ld", "<cmd>Telescope diagnostics bufnr=0<cr>", "[D]iagnostics")
     nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
     nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
     nmap("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")

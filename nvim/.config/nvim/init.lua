@@ -39,6 +39,11 @@ require("lazy").setup({
         },
     },
 
+    {
+        "kosayoda/nvim-lightbulb",
+        dependencies = "antoinemadec/FixCursorHold.nvim",
+    },
+
     "jose-elias-alvarez/null-ls.nvim",
     {
         -- Autocompletion
