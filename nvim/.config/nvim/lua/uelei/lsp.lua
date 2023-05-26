@@ -69,6 +69,7 @@ local servers = {
     pyright = {},
     rust_analyzer = {},
     tflint = {},
+    dockerls = {},
     lua_ls = {
         Lua = {
             workspace = { checkThirdParty = false },
