@@ -51,6 +51,7 @@ require("lazy").setup({
             "hrsh7th/cmp-cmdline",
             "hrsh7th/nvim-cmp",
             "saadparwaiz1/cmp_luasnip",
+            "onsails/lspkind-nvim",
         },
     },
 
