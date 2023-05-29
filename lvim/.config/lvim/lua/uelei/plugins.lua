@@ -132,5 +132,3 @@ lvim.plugins = {
 		end,
 	},
 }
-
--- TODO: limpar
