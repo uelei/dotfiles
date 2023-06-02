@@ -1,3 +1,4 @@
+local wk = require("which-key")
 -- -- [[ Basic Keymaps ]]
 --
 -- -- Keymaps for better default experience
@@ -14,8 +15,6 @@
 -- -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 -- -- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 --
--- keymap for nvim-tree
-vim.keymap.set('n', '<leader>e', require("nvim-tree.api").tree.toggle, { desc = "Explore" })
 
 local function map(mode, lhs, rhs, opts)
     opts = opts or {}
@@ -62,10 +61,10 @@ map({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsea
 -- Clear search, diff update and redraw
 -- taken from runtime/lua/_editor.lua
 map(
-  "n",
-  "<leader>ur",
-  "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-  { desc = "Redraw / clear hlsearch / diff update" }
+    "n",
+    "<leader>ur",
+    "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
+    { desc = "Redraw / clear hlsearch / diff update" }
 )
 
 map({ "n", "x" }, "gw", "*N", { desc = "Search word under cursor" })
@@ -91,7 +90,8 @@ map("v", "<", "<gv")
 map("v", ">", ">gv")
 
 -- lazy
-map("n", "<leader>L", "<cmd>:Lazy<cr>", { desc = "Lazy" })
+map("n", "<leader>sL", "<cmd>:Lazy<cr>", { desc = "Lazy" })
+map("n", "<leader>sM", "<cmd>:Mason<cr>", { desc = "Mason" })
 
 -- new file
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
@@ -109,7 +109,7 @@ map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
 
 -- highlights under cursor
 if vim.fn.has("nvim-0.9.0") == 1 then
-  map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
+    map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
 end
 
 -- floating terminal
@@ -132,3 +132,18 @@ map("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
 map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
+
+wk.register({
+    ["<leader><tab>"] = { name = "+Tab" },
+})
+
+wk.register({
+    -- keymap for nvim-tree
+    e = { require("nvim-tree.api").tree.toggle, "Explore" },
+    w = { name = "+Window" },
+    b = {
+        name = "+Buffer",
+        t = { "<cmd>terminal<cr>", "Terminal" },
+        c = { "<cmd>bdelete<cr>", "Close" },
+    },
+}, { prefix = "<leader>" })

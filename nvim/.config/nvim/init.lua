@@ -81,7 +81,13 @@ require("lazy").setup({
         },
     },
 
-    "f-person/git-blame.nvim",
+    {
+        "f-person/git-blame.nvim",
+        init = function()
+            -- vim.g.gitblame_message_template = " <author> - <date> - <summary> - <sha>"
+            vim.g.gitblame_enabled = 0
+        end,
+    },
     "sindrets/diffview.nvim",
     {
         "kdheepak/lazygit.nvim",
@@ -202,7 +208,7 @@ require("lazy").setup({
         "rest-nvim/rest.nvim",
         dependencies = { "nvim-lua/plenary.nvim" },
 
-		ft = { "http" },
+        ft = { "http" },
         config = function()
             require("rest-nvim").setup({
                 -- Open request results in a horizontal split

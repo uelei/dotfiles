@@ -1,9 +1,6 @@
 -- lazygit
 local wk = require("which-key")
 
--- git blame setting
-vim.g.gitblame_enabled = 0
-
 wk.register({
     g = {
         name = "+Git",

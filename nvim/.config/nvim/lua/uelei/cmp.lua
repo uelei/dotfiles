@@ -11,6 +11,9 @@ end
 local lspkind = require("lspkind")
 require("luasnip/loaders/from_vscode").lazy_load()
 
+require'luasnip'.filetype_extend("org", {"org"})
+require'luasnip'.filetype_extend("sh", {"bash"})
+
 local check_backspace = function()
     local col = vim.fn.col(".") - 1
     return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
