@@ -5,8 +5,8 @@ if not status_ok then
 	return
 end
 
-local status_ok, treesitter = pcall(require, "nvim-treesitter")
-if not status_ok then
+local tstatus_ok, _ = pcall(require, "nvim-treesitter")
+if not tstatus_ok then
         print("no treesitter module found")
 	return
 end
@@ -119,9 +119,6 @@ orgmode.setup({
 	},
 })
 
--- lvim.builtin.which_key.mappings["o"] = {
--- 	name = "Org Mode",
--- }
 require('which-key').register({
   o = {
     name = "Org", -- optional group name
