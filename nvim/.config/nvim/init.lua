@@ -43,9 +43,18 @@ require("lazy").setup({
         "kosayoda/nvim-lightbulb",
         dependencies = "antoinemadec/FixCursorHold.nvim",
     },
-
-    "jose-elias-alvarez/null-ls.nvim",
     {
+         "jay-babu/mason-null-ls.nvim",
+	 event = { "BufReadPre", "BufNewFile" },
+	 dependencies = {
+	     "williamboman/mason.nvim",
+	      "jose-elias-alvarez/null-ls.nvim",
+	  },
+	    -- config = function()
+	    --   require("your.null-ls.config")
+	    -- end,
+     },
+     {
         -- Autocompletion
         "hrsh7th/nvim-cmp",
         dependencies = {
