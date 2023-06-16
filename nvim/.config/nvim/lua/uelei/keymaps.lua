@@ -52,19 +52,19 @@ map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
 map("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
 
 map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
+-- map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 
 -- Clear search with <esc>
 map({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
 
--- Clear search, diff update and redraw
--- taken from runtime/lua/_editor.lua
-map(
-    "n",
-    "<leader>ur",
-    "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-    { desc = "Redraw / clear hlsearch / diff update" }
-)
+-- -- Clear search, diff update and redraw
+-- -- taken from runtime/lua/_editor.lua
+-- map(
+--     "n",
+--     "<leader>ur",
+--     "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
+--     { desc = "Redraw / clear hlsearch / diff update" }
+-- )
 
 map({ "n", "x" }, "gw", "*N", { desc = "Search word under cursor" })
 
@@ -94,9 +94,10 @@ map("n", "<leader>sM", "<cmd>:Mason<cr>", { desc = "Mason" })
 
 -- new file
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
+map("n", "<leader>fc", "<cmd>let @+ = expand('%')<cr>", { desc = "Copy path" })
 
-map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
-map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
+-- map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
+-- map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 
 -- if not Util.has("trouble.nvim") then
 --   map("n", "[q", vim.cmd.cprev, { desc = "Previous quickfix" })
@@ -104,11 +105,11 @@ map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 -- end
 
 -- quit
-map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit all" })
+map("n", "<leader>q", "<cmd>qa<cr>", { desc = "Quit all" })
 
 -- highlights under cursor
 if vim.fn.has("nvim-0.9.0") == 1 then
-    map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
+    map("n", "<leader>li", vim.show_pos, { desc = "Inspect Pos" })
 end
 
 -- floating terminal
@@ -140,6 +141,9 @@ wk.register({
     -- keymap for nvim-tree
     e = { require("nvim-tree.api").tree.toggle, "Explore" },
     w = { name = "+Window" },
+    l = { name = "+Lsp" },
+    s = { name = "+Search" },
+    f = { name = "+File" },
     b = {
         name = "+Buffer",
         t = { "<cmd>terminal<cr>", "Terminal" },
