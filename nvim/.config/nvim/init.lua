@@ -32,7 +32,7 @@ require("lazy").setup({
 
             -- Useful status updates for LSP
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            { "j-hui/fidget.nvim", opts = {} },
+            { "j-hui/fidget.nvim", opts = {}, tag = 'legacy'},
 
             -- Additional lua configuration, makes nvim stuff amazing!
             "folke/neodev.nvim",
@@ -43,9 +43,10 @@ require("lazy").setup({
         "kosayoda/nvim-lightbulb",
         dependencies = "antoinemadec/FixCursorHold.nvim",
     },
-
-    "jose-elias-alvarez/null-ls.nvim",
     {
+        "williamboman/mason.nvim"
+    },
+     {
         -- Autocompletion
         "hrsh7th/nvim-cmp",
         dependencies = {
@@ -169,7 +170,11 @@ require("lazy").setup({
             "nvim-tree/nvim-web-devicons",
         },
         config = function()
-            require("nvim-tree").setup({})
+            require("nvim-tree").setup({
+            update_focused_file = {
+                enable = true,
+                update_cwd = false,
+           }})
         end,
     },
 

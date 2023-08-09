@@ -116,13 +116,16 @@ lualine.setup({
                     if next(clients) == nil then
                         return msg
                     end
+                    local lsp_clients = {}
                     for _, client in ipairs(clients) do
                         local filetypes = client.config.filetypes
                         if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-                            return client.name
+                            table.insert(lsp_clients, client.name)
                         end
                     end
-                    return msg
+                    local unique_client_names = table.concat(lsp_clients, ", ")
+                    local language_servers = string.format("[%s]", unique_client_names)
+                    return language_servers
                 end,
                 icon = " ",
                 color = { fg = "#ffffff", gui = "bold" },
