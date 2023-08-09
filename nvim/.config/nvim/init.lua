@@ -44,16 +44,8 @@ require("lazy").setup({
         dependencies = "antoinemadec/FixCursorHold.nvim",
     },
     {
-         "jay-babu/mason-null-ls.nvim",
-	 event = { "BufReadPre", "BufNewFile" },
-	 dependencies = {
-	     "williamboman/mason.nvim",
-	      "jose-elias-alvarez/null-ls.nvim",
-	  },
-	    -- config = function()
-	    --   require("your.null-ls.config")
-	    -- end,
-     },
+        "williamboman/mason.nvim"
+    },
      {
         -- Autocompletion
         "hrsh7th/nvim-cmp",
