@@ -67,6 +67,8 @@ require("lazy").setup({
     },
     -- Useful plugin to show you pending keybinds.
     { "folke/which-key.nvim", opts = {} },
+
+    -- Git
     {
         -- Adds git releated signs to the gutter, as well as utilities for managing changes
         "lewis6991/gitsigns.nvim",
@@ -91,12 +93,19 @@ require("lazy").setup({
     },
     "sindrets/diffview.nvim",
     {
+        'ruifm/gitlinker.nvim',
+        dependencies = {
+          'nvim-lua/plenary.nvim', }
+    },
+    {
         "kdheepak/lazygit.nvim",
         -- optional for floating window border decoration
         dependencies = {
             "nvim-lua/plenary.nvim",
         },
     },
+
+    -- Theme
     {
         -- Theme inspired by Atom
         "navarasu/onedark.nvim",

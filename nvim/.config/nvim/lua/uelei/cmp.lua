@@ -11,6 +11,7 @@ end
 local lspkind = require("lspkind")
 require("luasnip/loaders/from_vscode").lazy_load()
 
+-- require'luasnip'.filetype_extend("python", {"python"})
 require'luasnip'.filetype_extend("org", {"org"})
 require'luasnip'.filetype_extend("sh", {"bash"})
 

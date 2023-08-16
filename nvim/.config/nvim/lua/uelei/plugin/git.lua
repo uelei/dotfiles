@@ -30,3 +30,6 @@ wk.register({
         },
     },
 }, { prefix = "<leader>" })
+
+
+require"gitlinker".setup()

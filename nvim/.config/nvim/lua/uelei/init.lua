@@ -1,5 +1,6 @@
 require("uelei.options")
 require("uelei.plugin.treesitter")
+require("uelei.plugin.bufferline")
 require("uelei.keymaps")
 require("uelei.plugin.git")
 require("uelei.plugin.org")
