@@ -109,11 +109,16 @@ require("lazy").setup({
     {
         -- Theme inspired by Atom
         "navarasu/onedark.nvim",
-        priority = 1000,
-        config = function()
-            vim.cmd.colorscheme("onedark")
-        end,
+        -- config = function()
+        --     vim.cmd.colorscheme("onedark")
+        -- end,
     },
+  {
+    "folke/tokyonight.nvim",
+        config = function()
+            vim.cmd.colorscheme("tokyonight")
+        end,
+  },
 
     {
         -- Set lualine as statusline
@@ -280,9 +285,25 @@ require("lazy").setup({
             })
         end,
     },
+
+    "mfussenegger/nvim-lint",
+    "f3fora/cmp-spell",
 }, {})
 
 require("uelei")
 
 vim.o.exrc = true
 vim.o.secure = true
+vim.lsp.set_log_level("debug")
+
+
+require('lint').linters_by_ft = {
+  markdown = {'vale',},
+  python = {'pylint', 'flake8'}
+}
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  callback = function()
+    require("lint").try_lint()
+  end,
+})

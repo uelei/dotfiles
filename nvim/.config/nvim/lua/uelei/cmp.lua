@@ -80,7 +80,8 @@ cmp.setup({
                 nvim_lua = "[Lua]",
                 latex_symbols = "[Latex]",
                 orgmode = "[Org]",
-        path = "[Path]",
+                path = "[Path]",
+                spell = "[Spell]",
             },
         }),
     },
@@ -106,6 +107,16 @@ cmp.setup({
         { name = "luasnip" },
         { name = "buffer",  max_item_count = 6 },
         { name = "path" },
+        {
+           max_item_count=5,
+           name = 'spell',
+                        option = {
+                                keep_all_entries = true,
+                                enable_in_context = function()
+                                        return true
+                                end,
+                        },
+                },
     },
     confirm_opts = {
         behavior = cmp.ConfirmBehavior.Replace,

@@ -39,7 +39,8 @@ vim.o.completeopt = 'menuone,noselect'
 vim.o.termguicolors = true
 
 vim.opt.list = true
--- add char ↴ at the end of the line
+-- add char ↴ at the end of the line   
+vim.opt.listchars = { tab = '>🡢' }
 vim.opt.listchars:append "eol:↴"
 
 -- change linenumber to relativenumber
@@ -47,6 +48,8 @@ vim.opt.relativenumber = true
 
 vim.cmd.colorscheme 'onedark'
 
+vim.opt.spelllang = 'en_us'
+vim.opt.spell = true
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
