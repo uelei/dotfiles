@@ -1,4 +1,6 @@
 -- LSP settings.
+
+vim.lsp.set_log_level("debug")
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(client, bufnr)
     -- NOTE: Remember that lua is a real programming language, and as such it is possible
@@ -70,6 +72,7 @@ local servers = {
     rust_analyzer = {},
     tflint = {},
     dockerls = {},
+    marksman = {},
     lua_ls = {
         Lua = {
             workspace = { checkThirdParty = false },
@@ -100,5 +103,16 @@ mason_lspconfig.setup_handlers({
             on_attach = on_attach,
             settings = servers[server_name],
         })
+    end,
+})
+
+require('lint').linters_by_ft = {
+    markdown = { 'vale', },
+    python = { 'pylint', 'flake8' }
+}
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+    callback = function()
+        require("lint").try_lint()
     end,
 })

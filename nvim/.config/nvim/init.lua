@@ -32,7 +32,7 @@ require("lazy").setup({
 
             -- Useful status updates for LSP
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            { "j-hui/fidget.nvim", opts = {}, tag = 'legacy'},
+            { "j-hui/fidget.nvim",       opts = {},    tag = 'legacy' },
 
             -- Additional lua configuration, makes nvim stuff amazing!
             "folke/neodev.nvim",
@@ -46,7 +46,7 @@ require("lazy").setup({
     {
         "williamboman/mason.nvim"
     },
-     {
+    {
         -- Autocompletion
         "hrsh7th/nvim-cmp",
         dependencies = {
@@ -66,7 +66,7 @@ require("lazy").setup({
         dependencies = { "rafamadriz/friendly-snippets" },
     },
     -- Useful plugin to show you pending keybinds.
-    { "folke/which-key.nvim", opts = {} },
+    { "folke/which-key.nvim",          opts = {} },
 
     -- Git
     {
@@ -95,7 +95,7 @@ require("lazy").setup({
     {
         'ruifm/gitlinker.nvim',
         dependencies = {
-          'nvim-lua/plenary.nvim', }
+            'nvim-lua/plenary.nvim', }
     },
     {
         "kdheepak/lazygit.nvim",
@@ -110,15 +110,25 @@ require("lazy").setup({
         -- Theme inspired by Atom
         "navarasu/onedark.nvim",
         -- config = function()
-        --     vim.cmd.colorscheme("onedark")
+        --     require('onedark').load()
         -- end,
     },
-  {
-    "folke/tokyonight.nvim",
+    {
+        "rakr/vim-one"
+    },
+    {
+        "bluz71/vim-nightfly-colors"
+    },
+    {
+        "folke/tokyonight.nvim",
         config = function()
             vim.cmd.colorscheme("tokyonight")
         end,
-  },
+    },
+    {
+        "catppuccin/nvim",
+        name = "catppuccin",
+    },
 
     {
         -- Set lualine as statusline
@@ -147,7 +157,7 @@ require("lazy").setup({
     },
 
     -- "gc" to comment visual regions/lines
-    { "numToStr/Comment.nvim", opts = {} },
+    { "numToStr/Comment.nvim",         opts = {} },
 
     -- Fuzzy Finder (files, lsp, etc)
     { "nvim-telescope/telescope.nvim", version = "*", dependencies = { "nvim-lua/plenary.nvim" } },
@@ -185,10 +195,11 @@ require("lazy").setup({
         },
         config = function()
             require("nvim-tree").setup({
-            update_focused_file = {
-                enable = true,
-                update_cwd = false,
-           }})
+                update_focused_file = {
+                    enable = true,
+                    update_cwd = false,
+                }
+            })
         end,
     },
 
@@ -197,7 +208,7 @@ require("lazy").setup({
         "akinsho/bufferline.nvim",
         -- event = "VeryLazy",
         keys = {
-            { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
+            { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>",            desc = "Toggle pin" },
             { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
         },
         version = "*",
@@ -213,7 +224,7 @@ require("lazy").setup({
     },
     "mg979/vim-visual-multi", -- multi edit
 
-    "p00f/nvim-ts-rainbow", -- Raiowparentheses
+    "p00f/nvim-ts-rainbow",   -- Raiowparentheses
     {
         "folke/todo-comments.nvim",
         event = "BufRead",
@@ -265,6 +276,7 @@ require("lazy").setup({
             })
         end,
     },
+    "towolf/vim-helm",
     -- test project settings
     {
         "klen/nvim-config-local",
@@ -279,9 +291,9 @@ require("lazy").setup({
                 hashfile = vim.fn.stdpath("data") .. "/config-local",
 
                 autocommands_create = true, -- Create autocommands (VimEnter, DirectoryChanged)
-                commands_create = true, -- Create commands (ConfigLocalSource, ConfigLocalEdit, ConfigLocalTrust, ConfigLocalIgnore)
-                silent = false, -- Disable plugin messages (Config loaded/ignored)
-                lookup_parents = false, -- Lookup config files in parent directories
+                commands_create = true,     -- Create commands (ConfigLocalSource, ConfigLocalEdit, ConfigLocalTrust, ConfigLocalIgnore)
+                silent = false,             -- Disable plugin messages (Config loaded/ignored)
+                lookup_parents = false,     -- Lookup config files in parent directories
             })
         end,
     },
@@ -291,19 +303,3 @@ require("lazy").setup({
 }, {})
 
 require("uelei")
-
-vim.o.exrc = true
-vim.o.secure = true
-vim.lsp.set_log_level("debug")
-
-
-require('lint').linters_by_ft = {
-  markdown = {'vale',},
-  python = {'pylint', 'flake8'}
-}
-
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-  callback = function()
-    require("lint").try_lint()
-  end,
-})
