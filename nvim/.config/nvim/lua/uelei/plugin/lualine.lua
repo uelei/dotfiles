@@ -3,17 +3,17 @@ local lualine = require("lualine")
 -- Color table for highlights
 -- stylua: ignore
 local colors = {
-        bg = "#202328",
-        fg = "#bbc2cf",
-        yellow = "#ECBE7B",
-        cyan = "#008080",
-        darkblue = "#081633",
-        green = "#98be65",
-        orange = "#FF8800",
-        violet = "#a9a1e1",
-        magenta = "#c678dd",
-        blue = "#51afef",
-        red = "#ec5f67",
+    bg = "#202328",
+    fg = "#bbc2cf",
+    yellow = "#ECBE7B",
+    cyan = "#008080",
+    darkblue = "#081633",
+    green = "#98be65",
+    orange = "#FF8800",
+    violet = "#a9a1e1",
+    magenta = "#c678dd",
+    blue = "#51afef",
+    red = "#ec5f67",
 }
 
 local conditions = {
@@ -40,7 +40,7 @@ local function env_cleanup(venv)
     return final_venv
 end
 
-lualine.setup({
+local config = {
     options = {
         icons_enabled = true,
         theme = "auto",
@@ -61,7 +61,7 @@ lualine.setup({
     },
     sections = {
         lualine_a = {
-            { "mode", separator = { left = "" }, right_padding = 2 },
+            -- { "mode", separator = { left = "" }, right_padding = 2 },
         },
         lualine_b = {
             "branch",
@@ -112,7 +112,7 @@ lualine.setup({
                 function()
                     local msg = "No Active Lsp"
                     local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-                    local clients = vim.lsp.get_active_clients()
+                    local clients = vim.lsp.get_clients()
                     if next(clients) == nil then
                         return msg
                     end
@@ -147,4 +147,6 @@ lualine.setup({
     winbar = {},
     inactive_winbar = {},
     extensions = {},
-})
+}
+
+lualine.setup(config)

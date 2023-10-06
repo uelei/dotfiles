@@ -109,9 +109,6 @@ require("lazy").setup({
     {
         -- Theme inspired by Atom
         "navarasu/onedark.nvim",
-        -- config = function()
-        --     require('onedark').load()
-        -- end,
     },
     {
         "rakr/vim-one"
@@ -121,13 +118,13 @@ require("lazy").setup({
     },
     {
         "folke/tokyonight.nvim",
-        config = function()
-            vim.cmd.colorscheme("tokyonight")
-        end,
     },
     {
         "catppuccin/nvim",
         name = "catppuccin",
+        config = function()
+            vim.cmd.colorscheme("catppuccin-frappe")
+        end,
     },
 
     {
@@ -148,11 +145,12 @@ require("lazy").setup({
     {
         -- Add indentation guides even on blank lines
         "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
         -- Enable `lukas-reineke/indent-blankline.nvim`
         -- See `:help indent_blankline.txt`
         opts = {
-            char = "┊",
-            show_trailing_blankline_indent = false,
+            indent = { char = "┊" },
+            -- show_trailing_blankline_indent = false,
         },
     },
 
@@ -300,6 +298,70 @@ require("lazy").setup({
 
     "mfussenegger/nvim-lint",
     "f3fora/cmp-spell",
+    "Jarvismkennedy/neorg-roam.nvim",
+    {
+        "nvim-neorg/neorg",
+        build = ":Neorg sync-parsers",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require("neorg").setup {
+                load = {
+                    ["core.defaults"] = {},  -- Loads default behaviour
+                    ["core.concealer"] = {}, -- Adds pretty icons to your documents
+                    ["core.dirman"] = {      -- Manages Neorg workspaces
+                        config = {
+                            workspaces = {
+                                notes = "~/notes",
+                                main = "~/notes/main/",
+                            },
+                        },
+                    },
+                    ["core.integrations.roam"] = {
+                        -- default keymaps
+                        config = {
+                            keymaps = {
+                                -- select_prompt is used to to create new note / capture from the prompt directly
+                                -- instead of the telescope choice.
+                                select_prompt = "<C-Space>",
+                                insert_link = "<leader>ni",
+                                find_note = "<leader>nf",
+                                capture_note = "<leader>nc",
+                                capture_index = "<leader>nci",
+                                capture_cancel = "<C-q>",
+                                capture_save = "<C-w>",
+                            },
+                            -- telescope theme
+                            theme = "ivy",
+
+                            capture_templates = {
+                                {
+                                    name = "default",
+                                    file = "${title}",
+                                    lines = { "" },
+                                }
+                            },
+                            substitutions = {
+                                title = function(metadata)
+                                    return metadata.title
+                                end,
+                                date = function(metadata)
+                                    return os.date("%Y-%m-%d")
+                                end
+                            }
+                        }
+                    },
+                    -- ["core.gtd"] = {
+                    --     config = {
+                    --         workspace = "main",
+                    --         default_lists = {
+                    --             inbox = "inbox_gtd.norg",
+                    --         },
+                    --     },
+                    -- },
+                },
+            }
+        end,
+    },
 }, {})
 
 require("uelei")
