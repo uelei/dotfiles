@@ -213,6 +213,9 @@ require("lazy").setup({
         dependencies = "nvim-tree/nvim-web-devicons",
     },
 
+    {
+        "alexghergh/nvim-tmux-navigation"
+    },
     -- Orgmode
     {
         "nvim-orgmode/orgmode",
@@ -313,6 +316,7 @@ require("lazy").setup({
                             workspaces = {
                                 notes = "~/notes",
                                 main = "~/notes/main/",
+                                here = os.getenv("PWD"),
                             },
                         },
                     },

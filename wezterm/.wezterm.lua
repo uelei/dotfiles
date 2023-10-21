@@ -11,7 +11,9 @@ if wezterm.config_builder then
 end
 
 -- This is where you actually apply your config choices
+config.font = wezterm.font 'MesloLGS Nerd Font'
 
+config.hide_tab_bar_if_only_one_tab = true
 -- For example, changing the color scheme:
 config.color_scheme = 'OneDark (base16)'
 
