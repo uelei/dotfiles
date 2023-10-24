@@ -51,13 +51,13 @@ export PATH="$PATH:$HOME/.local/bin"
 export NVM_COMPLETION=true
 export NVM_SYMLINK_CURRENT="true"
 
-# wsl
+# WSL
 if (( ${+WSL_DISTRO_NAME} )); then
 
     # fix agent missing on wsl
     ps -u $(whoami) | grep ssh-agent &> /dev/null
     if [ $? -ne 0 ];then
-	    echo "exporting new ssh agent"
+        echo "exporting new ssh agent"
         eval $(ssh-agent)
         ssh-add
         echo "export SSH_AGENT_PID=$SSH_AGENT_PID" > ~/.agent-profile
@@ -94,7 +94,7 @@ export GOPATH=/usr/local/go
 export PATH=$PATH:$GOPATH/bin
 
 echo "load zinit"
-### Added by Zinit's installer
+# Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
@@ -106,29 +106,116 @@ fi
 source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
-### End of Zinit's installer chunk
+# ### End of Zinit's installer chunk
 echo "load zinit plugins"
 
-zinit wait lucid light-mode for lukechilds/zsh-nvm
+# #####################
+# # PROMPT            #
+# #####################
+zinit lucid for \
+    as"command" \
+    from"gh-r" \
+    atinit'export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' atload'eval "$(starship init zsh)"' \
+    starship/starship
+##########################
+# OMZ Libs and Plugins   #
+##########################
+# IMPORTANT:
+# Ohmyzsh plugins and libs are loaded first as some these sets some defaults which are required later on.
+# Otherwise something will look messed up
+# ie. some settings help zsh-autosuggestions to clear after tab completion
+setopt promptsubst
+# Explanation:
+# 1. Loading tmux first, to prevent jumps when tmux is loaded after .zshrc
+# 2. History plugin is loaded early (as it has some defaults) to prevent empty history stack for other plugins
+zinit lucid for \
+    atinit"
+      ZSH_TMUX_FIXTERM=false
+      ZSH_TMUX_AUTOSTART=false
+      ZSH_TMUX_AUTOCONNECT=false" \
+  OMZP::tmux \
+  atinit"HIST_STAMPS=yyyy.mm.dd" \
+  OMZL::history.zsh \
 
 zinit wait lucid for \
-    light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50" atload"!_zsh_autosuggest_start" \
-        zsh-users/zsh-autosuggestions \
-    light-mode atinit"typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
-        zdharma-continuum/fast-syntax-highlighting \
-                        OMZ::lib/git.zsh \
-                        OMZ::lib/completion.zsh \
-                        OMZ::lib/theme-and-appearance.zsh \
-                        OMZ::lib/history.zsh \
-                        OMZ::lib/clipboard.zsh \
-                        OMZ::lib/directories.zsh \
-                        OMZ::lib/key-bindings.zsh \
-    atload"unalias grv" OMZ::plugins/git/git.plugin.zsh \
-                        OMZ::plugins/docker-compose \
-                        OMZ::plugins/kubectl \
-  as"completion" \
-        OMZP::docker/_docker
-
+	OMZL::clipboard.zsh \
+	OMZL::compfix.zsh \
+	OMZL::completion.zsh \
+	OMZL::correction.zsh \
+    atload"
+      alias ..='cd ..'
+      alias ...='cd ../..'
+      alias ....='cd ../../..'
+      alias .....='cd ../../../..'" \
+	OMZL::directories.zsh \
+	OMZL::git.zsh \
+	OMZL::grep.zsh \
+	OMZL::key-bindings.zsh \
+	OMZL::spectrum.zsh \
+      OMZ::lib/theme-and-appearance.zsh \
+    atload"alias gcd='gco dev'" \
+	OMZP::git \
+	OMZP::fzf \
+    atload"
+      alias dcupb='docker-compose up --build' \
+      alias dc='docker-compose'" \
+	OMZP::docker-compose \
+    as"completion" \
+  OMZP::docker/completions/_docker \
+  djui/alias-tips \
+  hlissner/zsh-autopair \
+  chriskempson/base16-shell
+#####################
+# PLUGINS           #
+#####################
+zinit wait lucid for \
+    light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20" atload"_zsh_autosuggest_start" \
+  zsh-users/zsh-autosuggestions \
+    light-mode atinit"
+      typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100;
+      zpcompinit; zpcdreplay" \
+  zdharma-continuum/fast-syntax-highlighting \
+    atpull'zinit creinstall -q .' \
+    atinit"
+      zstyle ':completion:*' completer _expand _complete _ignored _approximate
+      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+      zstyle ':completion:*' menu select=2
+      zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+      zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm,cmd -w -w'
+      zstyle ':completion:*:descriptions' format '-- %d --'
+      zstyle ':completion:*:processes' command 'ps -au$USER'
+      zstyle ':completion:complete:*:options' sort false
+      zstyle ':fzf-tab:complete:_zlua:*' query-string input
+      zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
+      zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap" \
+    blockf light-mode \
+  zsh-users/zsh-completions \
+    atinit"
+      zstyle :history-search-multi-word page-size 10
+      zstyle :history-search-multi-word highlight-color fg=red,bold
+      zstyle :plugin:history-search-multi-word reset-prompt-protect 1" \
+    bindmap"^R -> ^H" \
+  zdharma-continuum/history-search-multi-word \
+    atclone"
+      local P=${${(M)OSTYPE:#*darwin*}:+g}
+      \${P}sed -i \
+      '/DIR/c\DIR 38;5;63;1' LS_COLORS; \
+      \${P}dircolors -b LS_COLORS > c.zsh" \
+    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' \
+    atpull'%atclone' pick"c.zsh" nocompile'!' reset-prompt \
+  trapd00r/LS_COLORS
+#####################
+# PROGRAMS          #
+#####################
+# zinit wait'1' lucid light-mode for \
+#     pick"z.sh" \
+#   knu/z \
+#     as'command' \
+#     atinit'export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' \
+#     pick"**/n" \
+#   tj/n \
+#     from'gh-r' as'command' atinit'export PATH="$HOME/.yarn/bin:$PATH"' mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
+#   yarnpkg/yarn
 if [ -f pyproject.toml ] || [[ "$OSTYPE" != "darwin"* ]]; then
     echo "loading pyenv"
     export PYENV_ROOT="$HOME/.pyenv" 
@@ -139,10 +226,6 @@ else
     echo "lazy loading pyenv"
     zinit wait"1" for davidparsson/zsh-pyenv-lazy
 fi
-
-echo "loading starship"
-# Theme starship > spaceship
-eval "$(starship init zsh)"
 
 # rust cargo
 export PATH=$PATH:$HOME/.cargo/bin
@@ -174,4 +257,5 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 zinit wait"5" for \
     djui/alias-tips
 
+# tmux autoinit
 if [ -z $TMUX ]; then; tmux; fi
