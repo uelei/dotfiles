@@ -173,3 +173,5 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 # load plugins after 5 seconds verbose 
 zinit wait"5" for \
     djui/alias-tips
+
+if [ -z $TMUX ]; then; tmux; fi
