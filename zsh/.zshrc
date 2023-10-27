@@ -48,8 +48,12 @@ echo "load pipx path"
 # pipx ensure path
 export PATH="$PATH:$HOME/.local/bin"
 
-export NVM_COMPLETION=true
-export NVM_SYMLINK_CURRENT="true"
+# NVM
+echo "load nvm"
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+# export NVM_COMPLETION=true
+# export NVM_SYMLINK_CURRENT="true"
 
 # WSL
 if (( ${+WSL_DISTRO_NAME} )); then
@@ -164,58 +168,13 @@ zinit wait lucid for \
   OMZP::docker/completions/_docker \
   djui/alias-tips \
   hlissner/zsh-autopair \
-  chriskempson/base16-shell
-#####################
-# PLUGINS           #
-#####################
-zinit wait lucid for \
-    light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20" atload"_zsh_autosuggest_start" \
-  zsh-users/zsh-autosuggestions \
-    light-mode atinit"
-      typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100;
-      zpcompinit; zpcdreplay" \
+  chriskempson/base16-shell\
+  zsh-users/zsh-autosuggestions\
   zdharma-continuum/fast-syntax-highlighting \
-    atpull'zinit creinstall -q .' \
-    atinit"
-      zstyle ':completion:*' completer _expand _complete _ignored _approximate
-      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-      zstyle ':completion:*' menu select=2
-      zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-      zstyle ':completion:*:*:*:*:processes' command 'ps -u $USER -o pid,user,comm,cmd -w -w'
-      zstyle ':completion:*:descriptions' format '-- %d --'
-      zstyle ':completion:*:processes' command 'ps -au$USER'
-      zstyle ':completion:complete:*:options' sort false
-      zstyle ':fzf-tab:complete:_zlua:*' query-string input
-      zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
-      zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap" \
-    blockf light-mode \
-  zsh-users/zsh-completions \
-    atinit"
-      zstyle :history-search-multi-word page-size 10
-      zstyle :history-search-multi-word highlight-color fg=red,bold
-      zstyle :plugin:history-search-multi-word reset-prompt-protect 1" \
-    bindmap"^R -> ^H" \
-  zdharma-continuum/history-search-multi-word \
-    atclone"
-      local P=${${(M)OSTYPE:#*darwin*}:+g}
-      \${P}sed -i \
-      '/DIR/c\DIR 38;5;63;1' LS_COLORS; \
-      \${P}dircolors -b LS_COLORS > c.zsh" \
-    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' \
-    atpull'%atclone' pick"c.zsh" nocompile'!' reset-prompt \
+  zsh-users/zsh-completions\
+  zdharma-continuum/history-search-multi-word\
   trapd00r/LS_COLORS
-#####################
-# PROGRAMS          #
-#####################
-# zinit wait'1' lucid light-mode for \
-#     pick"z.sh" \
-#   knu/z \
-#     as'command' \
-#     atinit'export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' \
-#     pick"**/n" \
-#   tj/n \
-#     from'gh-r' as'command' atinit'export PATH="$HOME/.yarn/bin:$PATH"' mv'yarn* -> yarn' pick"yarn/bin/yarn" bpick'*.tar.gz' \
-#   yarnpkg/yarn
+
 if [ -f pyproject.toml ] || [[ "$OSTYPE" != "darwin"* ]]; then
     echo "loading pyenv"
     export PYENV_ROOT="$HOME/.pyenv" 
@@ -242,20 +201,7 @@ if [[ ! -e $HOME/.cache/zinit/completions ]]; then
   mkdir -p $HOME/.cache/zinit/completions
 fi
 
-echo "loading compinit lazy turbo"
-zi for \
-    atload"zicompinit; zicdreplay" \
-    blockf \
-    lucid \
-    wait \
-  zsh-users/zsh-completions
-echo "done"
-
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-
-# load plugins after 5 seconds verbose 
-zinit wait"5" for \
-    djui/alias-tips
 
 # tmux autoinit
 if [ -z $TMUX ]; then; tmux; fi
