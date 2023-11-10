@@ -159,6 +159,7 @@ zinit wait lucid for \
       OMZ::lib/theme-and-appearance.zsh \
     atload"alias gcd='gco dev'" \
 	OMZP::git \
+	OMZP::kubectl \
 	OMZP::fzf \
     atload"
       alias dcupb='docker-compose up --build' \
