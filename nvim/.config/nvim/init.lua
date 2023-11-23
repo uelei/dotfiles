@@ -32,7 +32,7 @@ require("lazy").setup({
 
             -- Useful status updates for LSP
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            { "j-hui/fidget.nvim", opts = {}, tag = 'legacy'},
+            { "j-hui/fidget.nvim",       opts = {},    tag = 'legacy' },
 
             -- Additional lua configuration, makes nvim stuff amazing!
             "folke/neodev.nvim",
@@ -46,7 +46,7 @@ require("lazy").setup({
     {
         "williamboman/mason.nvim"
     },
-     {
+    {
         -- Autocompletion
         "hrsh7th/nvim-cmp",
         dependencies = {
@@ -66,7 +66,7 @@ require("lazy").setup({
         dependencies = { "rafamadriz/friendly-snippets" },
     },
     -- Useful plugin to show you pending keybinds.
-    { "folke/which-key.nvim", opts = {} },
+    { "folke/which-key.nvim",          opts = {} },
 
     -- Git
     {
@@ -95,7 +95,7 @@ require("lazy").setup({
     {
         'ruifm/gitlinker.nvim',
         dependencies = {
-          'nvim-lua/plenary.nvim', }
+            'nvim-lua/plenary.nvim', }
     },
     {
         "kdheepak/lazygit.nvim",
@@ -109,16 +109,23 @@ require("lazy").setup({
     {
         -- Theme inspired by Atom
         "navarasu/onedark.nvim",
-        -- config = function()
-        --     vim.cmd.colorscheme("onedark")
-        -- end,
     },
-  {
-    "folke/tokyonight.nvim",
+    {
+        "rakr/vim-one"
+    },
+    {
+        "bluz71/vim-nightfly-colors"
+    },
+    {
+        "folke/tokyonight.nvim",
+    },
+    {
+        "catppuccin/nvim",
+        name = "catppuccin",
         config = function()
-            vim.cmd.colorscheme("tokyonight")
+            vim.cmd.colorscheme("catppuccin-frappe")
         end,
-  },
+    },
 
     {
         -- Set lualine as statusline
@@ -138,16 +145,17 @@ require("lazy").setup({
     {
         -- Add indentation guides even on blank lines
         "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
         -- Enable `lukas-reineke/indent-blankline.nvim`
         -- See `:help indent_blankline.txt`
         opts = {
-            char = "┊",
-            show_trailing_blankline_indent = false,
+            indent = { char = "┊" },
+            -- show_trailing_blankline_indent = false,
         },
     },
 
     -- "gc" to comment visual regions/lines
-    { "numToStr/Comment.nvim", opts = {} },
+    { "numToStr/Comment.nvim",         opts = {} },
 
     -- Fuzzy Finder (files, lsp, etc)
     { "nvim-telescope/telescope.nvim", version = "*", dependencies = { "nvim-lua/plenary.nvim" } },
@@ -185,10 +193,11 @@ require("lazy").setup({
         },
         config = function()
             require("nvim-tree").setup({
-            update_focused_file = {
-                enable = true,
-                update_cwd = false,
-           }})
+                update_focused_file = {
+                    enable = true,
+                    update_cwd = false,
+                }
+            })
         end,
     },
 
@@ -197,13 +206,16 @@ require("lazy").setup({
         "akinsho/bufferline.nvim",
         -- event = "VeryLazy",
         keys = {
-            { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
+            { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>",            desc = "Toggle pin" },
             { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
         },
         version = "*",
         dependencies = "nvim-tree/nvim-web-devicons",
     },
 
+    {
+        "alexghergh/nvim-tmux-navigation"
+    },
     -- Orgmode
     {
         "nvim-orgmode/orgmode",
@@ -213,7 +225,7 @@ require("lazy").setup({
     },
     "mg979/vim-visual-multi", -- multi edit
 
-    "p00f/nvim-ts-rainbow", -- Raiowparentheses
+    "p00f/nvim-ts-rainbow",   -- Raiowparentheses
     {
         "folke/todo-comments.nvim",
         event = "BufRead",
@@ -265,6 +277,7 @@ require("lazy").setup({
             })
         end,
     },
+    "towolf/vim-helm",
     -- test project settings
     {
         "klen/nvim-config-local",
@@ -279,31 +292,80 @@ require("lazy").setup({
                 hashfile = vim.fn.stdpath("data") .. "/config-local",
 
                 autocommands_create = true, -- Create autocommands (VimEnter, DirectoryChanged)
-                commands_create = true, -- Create commands (ConfigLocalSource, ConfigLocalEdit, ConfigLocalTrust, ConfigLocalIgnore)
-                silent = false, -- Disable plugin messages (Config loaded/ignored)
-                lookup_parents = false, -- Lookup config files in parent directories
+                commands_create = true,     -- Create commands (ConfigLocalSource, ConfigLocalEdit, ConfigLocalTrust, ConfigLocalIgnore)
+                silent = false,             -- Disable plugin messages (Config loaded/ignored)
+                lookup_parents = false,     -- Lookup config files in parent directories
             })
         end,
     },
 
     "mfussenegger/nvim-lint",
     "f3fora/cmp-spell",
+    "Jarvismkennedy/neorg-roam.nvim",
+    {
+        "nvim-neorg/neorg",
+        build = ":Neorg sync-parsers",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require("neorg").setup {
+                load = {
+                    ["core.defaults"] = {},  -- Loads default behaviour
+                    ["core.concealer"] = {}, -- Adds pretty icons to your documents
+                    ["core.dirman"] = {      -- Manages Neorg workspaces
+                        config = {
+                            workspaces = {
+                                notes = "~/notes",
+                                main = "~/notes/main/",
+                                here = os.getenv("PWD"),
+                            },
+                        },
+                    },
+                    ["core.integrations.roam"] = {
+                        -- default keymaps
+                        config = {
+                            keymaps = {
+                                -- select_prompt is used to to create new note / capture from the prompt directly
+                                -- instead of the telescope choice.
+                                select_prompt = "<C-Space>",
+                                insert_link = "<leader>ni",
+                                find_note = "<leader>nf",
+                                capture_note = "<leader>nc",
+                                capture_index = "<leader>nci",
+                                capture_cancel = "<C-q>",
+                                capture_save = "<C-w>",
+                            },
+                            -- telescope theme
+                            theme = "ivy",
+
+                            capture_templates = {
+                                {
+                                    name = "default",
+                                    file = "${title}",
+                                    lines = { "" },
+                                }
+                            },
+                            substitutions = {
+                                title = function(metadata)
+                                    return metadata.title
+                                end,
+                                date = function(metadata)
+                                    return os.date("%Y-%m-%d")
+                                end
+                            }
+                        }
+                    },
+                    -- ["core.gtd"] = {
+                    --     config = {
+                    --         workspace = "main",
+                    --         default_lists = {
+                    --             inbox = "inbox_gtd.norg",
+                    --         },
+                    --     },
+                    -- },
+                },
+            }
+        end,
+    },
 }, {})
 
 require("uelei")
-
-vim.o.exrc = true
-vim.o.secure = true
-vim.lsp.set_log_level("debug")
-
-
-require('lint').linters_by_ft = {
-  markdown = {'vale',},
-  python = {'pylint', 'flake8'}
-}
-
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-  callback = function()
-    require("lint").try_lint()
-  end,
-})

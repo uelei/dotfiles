@@ -46,8 +46,6 @@ vim.opt.listchars:append "eol:↴"
 -- change linenumber to relativenumber
 vim.opt.relativenumber = true
 
-vim.cmd.colorscheme 'onedark'
-
 vim.opt.spelllang = 'en_us'
 vim.opt.spell = true
 
@@ -73,3 +71,5 @@ vim.diagnostic.config({
   },
 })
 
+vim.o.exrc = true
+vim.o.secure = true

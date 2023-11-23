@@ -1,6 +1,6 @@
 local wk = require("which-key")
--- -- [[ Basic Keymaps ]]
---
+-- [[ Basic Keymaps ]]
+
 -- -- Keymaps for better default experience
 -- -- See `:help vim.keymap.set()`
 -- vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
@@ -26,10 +26,15 @@ map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
 -- Move to window using the <ctrl> hjkl keys
-map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
-map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
-map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
-map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
+local nvim_tmux_nav = require('nvim-tmux-navigation')
+nvim_tmux_nav.setup {
+            disable_when_zoomed = true -- defaults to false
+        }
+
+map("n", "<C-h>", nvim_tmux_nav.NvimTmuxNavigateLeft, { desc = "Go to left window", remap = true })
+map("n", "<C-j>", nvim_tmux_nav.NvimTmuxNavigateDown, { desc = "Go to lower window", remap = true })
+map("n", "<C-k>", nvim_tmux_nav.NvimTmuxNavigateUp, { desc = "Go to upper window", remap = true })
+map("n", "<C-l>", nvim_tmux_nav.NvimTmuxNavigateRight, { desc = "Go to right window", remap = true })
 
 -- Resize window using <ctrl> arrow keys
 map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
@@ -81,9 +86,6 @@ map("i", ",", ",<c-g>u")
 map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
--- save file
--- map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
-
 -- better indenting
 map("v", "<", "<gv")
 map("v", ">", ">gv")
@@ -112,9 +114,6 @@ if vim.fn.has("nvim-0.9.0") == 1 then
     map("n", "<leader>li", vim.show_pos, { desc = "Inspect Pos" })
 end
 
--- floating terminal
--- map("n", "<leader>ft", function() Util.float_term(nil, { cwd = Util.get_root() }) end, { desc = "Terminal (root dir)" })
--- map("n", "<leader>fT", function() Util.float_term() end, { desc = "Terminal (cwd)" })
 map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
 
 -- windows
@@ -125,17 +124,17 @@ map("n", "<leader>w|", "<C-W>v", { desc = "Split window right", remap = true })
 map("n", "<leader>-", "<C-W>s", { desc = "Split window below", remap = true })
 map("n", "<leader>|", "<C-W>v", { desc = "Split window right", remap = true })
 
--- tabs
-map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
-map("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
-map("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
-map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
-map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
-map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
-
-wk.register({
-    ["<leader><tab>"] = { name = "+Tab" },
-})
+-- -- tabs
+-- map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
+-- map("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
+-- map("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
+-- map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
+-- map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
+-- map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
+--
+-- wk.register({
+--     ["<leader><tab>"] = { name = "+Tab" },
+-- })
 
 wk.register({
     -- keymap for nvim-tree

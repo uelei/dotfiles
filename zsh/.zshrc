@@ -48,16 +48,20 @@ echo "load pipx path"
 # pipx ensure path
 export PATH="$PATH:$HOME/.local/bin"
 
-export NVM_COMPLETION=true
-export NVM_SYMLINK_CURRENT="true"
+# NVM
+echo "load nvm"
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+# export NVM_COMPLETION=true
+# export NVM_SYMLINK_CURRENT="true"
 
-# wsl
+# WSL
 if (( ${+WSL_DISTRO_NAME} )); then
 
     # fix agent missing on wsl
     ps -u $(whoami) | grep ssh-agent &> /dev/null
     if [ $? -ne 0 ];then
-	    echo "exporting new ssh agent"
+        echo "exporting new ssh agent"
         eval $(ssh-agent)
         ssh-add
         echo "export SSH_AGENT_PID=$SSH_AGENT_PID" > ~/.agent-profile
@@ -94,7 +98,7 @@ export GOPATH=/usr/local/go
 export PATH=$PATH:$GOPATH/bin
 
 echo "load zinit"
-### Added by Zinit's installer
+# Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
@@ -106,28 +110,71 @@ fi
 source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
-### End of Zinit's installer chunk
+# ### End of Zinit's installer chunk
 echo "load zinit plugins"
 
-zinit wait lucid light-mode for lukechilds/zsh-nvm
+# #####################
+# # PROMPT            #
+# #####################
+zinit lucid for \
+    as"command" \
+    from"gh-r" \
+    atinit'export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"' atload'eval "$(starship init zsh)"' \
+    starship/starship
+##########################
+# OMZ Libs and Plugins   #
+##########################
+# IMPORTANT:
+# Ohmyzsh plugins and libs are loaded first as some these sets some defaults which are required later on.
+# Otherwise something will look messed up
+# ie. some settings help zsh-autosuggestions to clear after tab completion
+setopt promptsubst
+# Explanation:
+# 1. Loading tmux first, to prevent jumps when tmux is loaded after .zshrc
+# 2. History plugin is loaded early (as it has some defaults) to prevent empty history stack for other plugins
+zinit lucid for \
+    atinit"
+      ZSH_TMUX_FIXTERM=false
+      ZSH_TMUX_AUTOSTART=false
+      ZSH_TMUX_AUTOCONNECT=false" \
+  OMZP::tmux \
+  atinit"HIST_STAMPS=yyyy.mm.dd" \
+  OMZL::history.zsh \
 
 zinit wait lucid for \
-    light-mode atinit"ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50" atload"!_zsh_autosuggest_start" \
-        zsh-users/zsh-autosuggestions \
-    light-mode atinit"typeset -gA FAST_HIGHLIGHT; FAST_HIGHLIGHT[git-cmsg-len]=100; zpcompinit; zpcdreplay" \
-        zdharma-continuum/fast-syntax-highlighting \
-                        OMZ::lib/git.zsh \
-                        OMZ::lib/completion.zsh \
-                        OMZ::lib/theme-and-appearance.zsh \
-                        OMZ::lib/history.zsh \
-                        OMZ::lib/clipboard.zsh \
-                        OMZ::lib/directories.zsh \
-                        OMZ::lib/key-bindings.zsh \
-    atload"unalias grv" OMZ::plugins/git/git.plugin.zsh \
-                        OMZ::plugins/docker-compose \
-                        OMZ::plugins/kubectl \
-  as"completion" \
-        OMZP::docker/_docker
+	OMZL::clipboard.zsh \
+	OMZL::compfix.zsh \
+	OMZL::completion.zsh \
+	OMZL::correction.zsh \
+    atload"
+      alias ..='cd ..'
+      alias ...='cd ../..'
+      alias ....='cd ../../..'
+      alias .....='cd ../../../..'" \
+	OMZL::directories.zsh \
+	OMZL::git.zsh \
+	OMZL::grep.zsh \
+	OMZL::key-bindings.zsh \
+	OMZL::spectrum.zsh \
+      OMZ::lib/theme-and-appearance.zsh \
+    atload"alias gcd='gco dev'" \
+	OMZP::git \
+	OMZP::kubectl \
+	OMZP::fzf \
+    atload"
+      alias dcupb='docker-compose up --build' \
+      alias dc='docker-compose'" \
+	OMZP::docker-compose \
+    as"completion" \
+  OMZP::docker/completions/_docker \
+  djui/alias-tips \
+  hlissner/zsh-autopair \
+  chriskempson/base16-shell\
+  zsh-users/zsh-autosuggestions\
+  zdharma-continuum/fast-syntax-highlighting \
+  zsh-users/zsh-completions\
+  zdharma-continuum/history-search-multi-word\
+  trapd00r/LS_COLORS
 
 if [ -f pyproject.toml ] || [[ "$OSTYPE" != "darwin"* ]]; then
     echo "loading pyenv"
@@ -139,10 +186,6 @@ else
     echo "lazy loading pyenv"
     zinit wait"1" for davidparsson/zsh-pyenv-lazy
 fi
-
-echo "loading starship"
-# Theme starship > spaceship
-eval "$(starship init zsh)"
 
 # rust cargo
 export PATH=$PATH:$HOME/.cargo/bin
@@ -159,17 +202,7 @@ if [[ ! -e $HOME/.cache/zinit/completions ]]; then
   mkdir -p $HOME/.cache/zinit/completions
 fi
 
-echo "loading compinit lazy turbo"
-zi for \
-    atload"zicompinit; zicdreplay" \
-    blockf \
-    lucid \
-    wait \
-  zsh-users/zsh-completions
-echo "done"
-
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-# load plugins after 5 seconds verbose 
-zinit wait"5" for \
-    djui/alias-tips
+# tmux autoinit
+if [ -z $TMUX ]; then; tmux; fi
