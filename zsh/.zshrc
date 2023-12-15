@@ -1,4 +1,7 @@
 # User configuration
+# tmux autoinit
+if [ -z $TMUX ]; then; tmux; fi
+
 # alias
 alias :q="exit"
 alias x="exit"
@@ -176,6 +179,9 @@ zinit wait lucid for \
   zdharma-continuum/history-search-multi-word\
   trapd00r/LS_COLORS
 
+
+# pyenv
+export PIP_REQUIRE_VIRTUALENV=true
 if [ -f pyproject.toml ] || [[ "$OSTYPE" != "darwin"* ]]; then
     echo "loading pyenv"
     export PYENV_ROOT="$HOME/.pyenv" 
@@ -202,7 +208,5 @@ if [[ ! -e $HOME/.cache/zinit/completions ]]; then
   mkdir -p $HOME/.cache/zinit/completions
 fi
 
+# krew
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-
-# tmux autoinit
-if [ -z $TMUX ]; then; tmux; fi

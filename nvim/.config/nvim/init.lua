@@ -301,6 +301,17 @@ require("lazy").setup({
 
     "mfussenegger/nvim-lint",
     "f3fora/cmp-spell",
+    -- null-ls
+    {
+        "jay-babu/mason-null-ls.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = {
+            "williamboman/mason.nvim",
+            "nvimtools/none-ls.nvim",
+        },
+    },
+
+    -- neorg
     "Jarvismkennedy/neorg-roam.nvim",
     {
         "nvim-neorg/neorg",
