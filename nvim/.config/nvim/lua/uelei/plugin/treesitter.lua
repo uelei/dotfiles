@@ -1,7 +1,8 @@
 -- [[ Configure Treesitter ]]
 require("nvim-treesitter.configs").setup({
     -- A list of parser names, or "all" (the five listed parsers should always be installed)
-    ensure_installed = { "go", "lua", "python", "rust", "tsx", "typescript", "vim", "terraform", "org" },
+    ensure_installed = { "go", "lua", "python", "rust", "tsx", "typescript", "vim", "terraform", "org", "markdown",
+        "markdown_inline" },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
@@ -71,6 +72,6 @@ local opt = vim.opt
 opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
 opt.foldlevelstart = 99
-opt.foldnestmax = 10 -- deepest fold is 10 levels
+opt.foldnestmax = 10   -- deepest fold is 10 levels
 opt.foldenable = false -- don't fold by default
 -- opt.foldlevel = 1
