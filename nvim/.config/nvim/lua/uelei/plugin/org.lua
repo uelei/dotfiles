@@ -5,24 +5,20 @@ if not status_ok then
     return
 end
 
-local tstatus_ok, _ = pcall(require, "nvim-treesitter")
-if not tstatus_ok then
-    print("no treesitter module found")
-    return
-end
+local Menu = require("org-modern.menu")
 
 -- Load custom tree-sitter grammar for org filetype
 orgmode.setup_ts_grammar()
 
 -- Tree-sitter configuration
-require("nvim-treesitter.configs").setup({
-    -- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
-    highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = { "org" }, -- Required for spellcheck, some LaTex highlights and code block highlights that do not have ts grammar
-    },
-    ensure_installed = { "org" },                -- Or run :TSUpdate org
-})
+-- require("nvim-treesitter.configs").setup({
+--     -- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
+--     highlight = {
+--         enable = true,
+--         additional_vim_regex_highlighting = { "org" }, -- Required for spellcheck, some LaTex highlights and code block highlights that do not have ts grammar
+--     },
+--     ensure_installed = { "org" },                -- Or run :TSUpdate org
+-- })
 
 orgmode.setup({
 
@@ -36,8 +32,31 @@ orgmode.setup({
     org_todo_keyword_faces = {
         NEXT = ":foreground yellow :weight bold",
         DONE = ":foreground green :slant italic",
-        WAITING = ':foreground blue :weight bold',
-        TODO = ':foreground red', -- overrides builtin color for `TODO` keyword
+        WAITING = ":foreground blue :weight bold",
+        TODO = ":foreground red", -- overrides builtin color for `TODO` keyword
+    },
+    ui = {
+        menu = {
+            handler = function(data)
+                Menu:new({
+                    window = {
+                        margin = { 1, 0, 1, 0 },
+                        padding = { 0, 1, 0, 1 },
+                        title_pos = "center",
+                        border = "single",
+                        zindex = 1000,
+                    },
+                    icons = {
+                        separator = "➜",
+                    },
+                }):open(data)
+            end,
+        },
+    },
+    mappings = {
+        org = {
+            org_toggle_checkbox = "<leader>o<space>",
+        },
     },
     org_capture_templates = {
 
@@ -80,6 +99,12 @@ orgmode.setup({
             template = "* %U\n %? \n",
         },
 
+        p = "Project",
+        pt = {
+            description = "Project Generic Task",
+            template = "* TODO %?\n",
+            target = ("%s/project_task.org"):format(vim.fn.getcwd()),
+        },
         t = "Task",
         tt = {
             description = "Task Generic",
@@ -119,8 +144,12 @@ orgmode.setup({
     },
 })
 
-require('which-key').register({
+require("which-key").register({
     o = {
         name = "Org", -- optional group name
     },
 }, { prefix = "<leader>" })
+
+require("orgmode-multi-key").setup({
+    key = "<leader>o<tab>",
+})

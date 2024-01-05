@@ -22,6 +22,17 @@ vim.opt.rtp:prepend(lazypath)
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
 require("lazy").setup({
+
+    -- lazy
+    {
+        "kdheepak/lazygit.nvim",
+        -- optional for floating window border decoration
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+    },
+
+    -- LSP
     {
         -- LSP Configuration & Plugins
         "neovim/nvim-lspconfig",
@@ -30,9 +41,8 @@ require("lazy").setup({
             { "williamboman/mason.nvim", config = true },
             "williamboman/mason-lspconfig.nvim",
 
-            -- Useful status updates for LSP
-            -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            { "j-hui/fidget.nvim",       opts = {},    tag = 'legacy' },
+            -- `opts = {}` is the same as calling `require('fidget').setup({})`
+            { "j-hui/fidget.nvim", opts = {}, tag = "legacy" },
 
             -- Additional lua configuration, makes nvim stuff amazing!
             "folke/neodev.nvim",
@@ -44,8 +54,10 @@ require("lazy").setup({
         dependencies = "antoinemadec/FixCursorHold.nvim",
     },
     {
-        "williamboman/mason.nvim"
+        "williamboman/mason.nvim",
     },
+
+    -- CMP
     {
         -- Autocompletion
         "hrsh7th/nvim-cmp",
@@ -65,8 +77,34 @@ require("lazy").setup({
         "L3MON4D3/LuaSnip",
         dependencies = { "rafamadriz/friendly-snippets" },
     },
+
+    -- treesitter
+    {
+        -- Highlight, edit, and navigate code
+        "nvim-treesitter/nvim-treesitter",
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter-textobjects",
+        },
+        config = function()
+            pcall(require("nvim-treesitter.install").update({ with_sync = true }))
+        end,
+    },
+
+    -- lint
+    "mfussenegger/nvim-lint",
+    "f3fora/cmp-spell",
+    -- null-ls
+    {
+        "jay-babu/mason-null-ls.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = {
+            "williamboman/mason.nvim",
+            "nvimtools/none-ls.nvim",
+        },
+    },
+
     -- Useful plugin to show you pending keybinds.
-    { "folke/which-key.nvim",          opts = {} },
+    { "folke/which-key.nvim", opts = {} },
 
     -- Git
     {
@@ -93,28 +131,22 @@ require("lazy").setup({
     },
     "sindrets/diffview.nvim",
     {
-        'ruifm/gitlinker.nvim',
-        dependencies = {
-            'nvim-lua/plenary.nvim', }
-    },
-    {
-        "kdheepak/lazygit.nvim",
-        -- optional for floating window border decoration
+        "ruifm/gitlinker.nvim",
         dependencies = {
             "nvim-lua/plenary.nvim",
         },
     },
 
-    -- Theme
+    -- Themes
     {
         -- Theme inspired by Atom
         "navarasu/onedark.nvim",
     },
     {
-        "rakr/vim-one"
+        "rakr/vim-one",
     },
     {
-        "bluz71/vim-nightfly-colors"
+        "bluz71/vim-nightfly-colors",
     },
     {
         "folke/tokyonight.nvim",
@@ -126,7 +158,12 @@ require("lazy").setup({
             vim.cmd.colorscheme("catppuccin-frappe")
         end,
     },
+    "EdenEast/nightfox.nvim",
+    "scottmckendry/cyberdream.nvim",
+    "projekt0n/github-nvim-theme",
+    "rmehri01/onenord.nvim",
 
+    -- UI
     {
         -- Set lualine as statusline
         "nvim-lualine/lualine.nvim",
@@ -155,7 +192,7 @@ require("lazy").setup({
     },
 
     -- "gc" to comment visual regions/lines
-    { "numToStr/Comment.nvim",         opts = {} },
+    { "numToStr/Comment.nvim", opts = {} },
 
     -- Fuzzy Finder (files, lsp, etc)
     { "nvim-telescope/telescope.nvim", version = "*", dependencies = { "nvim-lua/plenary.nvim" } },
@@ -165,22 +202,11 @@ require("lazy").setup({
     -- requirements installed.
     {
         "nvim-telescope/telescope-fzf-native.nvim",
-        -- NOTE: If you are having trouble with this installation,
+        --  If you are having trouble with this installation,
         --       refer to the README for telescope-fzf-native for more instructions.
         build = "make",
         cond = function()
             return vim.fn.executable("make") == 1
-        end,
-    },
-
-    {
-        -- Highlight, edit, and navigate code
-        "nvim-treesitter/nvim-treesitter",
-        dependencies = {
-            "nvim-treesitter/nvim-treesitter-textobjects",
-        },
-        config = function()
-            pcall(require("nvim-treesitter.install").update({ with_sync = true }))
         end,
     },
 
@@ -196,7 +222,7 @@ require("lazy").setup({
                 update_focused_file = {
                     enable = true,
                     update_cwd = false,
-                }
+                },
             })
         end,
     },
@@ -206,7 +232,7 @@ require("lazy").setup({
         "akinsho/bufferline.nvim",
         -- event = "VeryLazy",
         keys = {
-            { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>",            desc = "Toggle pin" },
+            { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
             { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
         },
         version = "*",
@@ -214,18 +240,31 @@ require("lazy").setup({
     },
 
     {
-        "alexghergh/nvim-tmux-navigation"
+        "alexghergh/nvim-tmux-navigation",
     },
+
     -- Orgmode
     {
         "nvim-orgmode/orgmode",
+        -- config = function()
+        --     require("orgmode").setup({})
+        -- end,
+    },
+    {
+        "andreadev-it/orgmode-multi-key",
         config = function()
-            require("orgmode").setup({})
+            require("orgmode-multi-key").setup()
+        end,
+    },
+    "danilshvalov/org-modern.nvim",
+    {
+        "akinsho/org-bullets.nvim",
+        config = function()
+            require("org-bullets").setup()
         end,
     },
     "mg979/vim-visual-multi", -- multi edit
-
-    "p00f/nvim-ts-rainbow",   -- Raiowparentheses
+    "p00f/nvim-ts-rainbow", -- Raiowparentheses
     {
         "folke/todo-comments.nvim",
         event = "BufRead",
@@ -277,7 +316,7 @@ require("lazy").setup({
             })
         end,
     },
-    "towolf/vim-helm",
+
     -- test project settings
     {
         "klen/nvim-config-local",
@@ -292,91 +331,14 @@ require("lazy").setup({
                 hashfile = vim.fn.stdpath("data") .. "/config-local",
 
                 autocommands_create = true, -- Create autocommands (VimEnter, DirectoryChanged)
-                commands_create = true,     -- Create commands (ConfigLocalSource, ConfigLocalEdit, ConfigLocalTrust, ConfigLocalIgnore)
-                silent = false,             -- Disable plugin messages (Config loaded/ignored)
-                lookup_parents = false,     -- Lookup config files in parent directories
+                commands_create = true, -- Create commands (ConfigLocalSource, ConfigLocalEdit, ConfigLocalTrust, ConfigLocalIgnore)
+                silent = false, -- Disable plugin messages (Config loaded/ignored)
+                lookup_parents = false, -- Lookup config files in parent directories
             })
         end,
     },
 
-    "mfussenegger/nvim-lint",
-    "f3fora/cmp-spell",
-    -- null-ls
-    {
-        "jay-babu/mason-null-ls.nvim",
-        event = { "BufReadPre", "BufNewFile" },
-        dependencies = {
-            "williamboman/mason.nvim",
-            "nvimtools/none-ls.nvim",
-        },
-    },
-
-    -- neorg
-    "Jarvismkennedy/neorg-roam.nvim",
-    {
-        "nvim-neorg/neorg",
-        build = ":Neorg sync-parsers",
-        dependencies = { "nvim-lua/plenary.nvim" },
-        config = function()
-            require("neorg").setup {
-                load = {
-                    ["core.defaults"] = {},  -- Loads default behaviour
-                    ["core.concealer"] = {}, -- Adds pretty icons to your documents
-                    ["core.dirman"] = {      -- Manages Neorg workspaces
-                        config = {
-                            workspaces = {
-                                notes = "~/notes",
-                                main = "~/notes/main/",
-                                here = os.getenv("PWD"),
-                            },
-                        },
-                    },
-                    ["core.integrations.roam"] = {
-                        -- default keymaps
-                        config = {
-                            keymaps = {
-                                -- select_prompt is used to to create new note / capture from the prompt directly
-                                -- instead of the telescope choice.
-                                select_prompt = "<C-Space>",
-                                insert_link = "<leader>ni",
-                                find_note = "<leader>nf",
-                                capture_note = "<leader>nc",
-                                capture_index = "<leader>nci",
-                                capture_cancel = "<C-q>",
-                                capture_save = "<C-w>",
-                            },
-                            -- telescope theme
-                            theme = "ivy",
-
-                            capture_templates = {
-                                {
-                                    name = "default",
-                                    file = "${title}",
-                                    lines = { "" },
-                                }
-                            },
-                            substitutions = {
-                                title = function(metadata)
-                                    return metadata.title
-                                end,
-                                date = function(metadata)
-                                    return os.date("%Y-%m-%d")
-                                end
-                            }
-                        }
-                    },
-                    -- ["core.gtd"] = {
-                    --     config = {
-                    --         workspace = "main",
-                    --         default_lists = {
-                    --             inbox = "inbox_gtd.norg",
-                    --         },
-                    --     },
-                    -- },
-                },
-            }
-        end,
-    },
+    -- test plugins
 }, {})
 
 require("uelei")
