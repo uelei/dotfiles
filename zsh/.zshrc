@@ -53,10 +53,20 @@ export PATH="$PATH:$HOME/.local/bin"
 
 # NVM
 echo "load nvm"
+
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-# export NVM_COMPLETION=true
+# What OS are we running?
+if [[ $(uname) == "Darwin" ]]; then
+  echo "loaging mac nvm"
+  # export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+else 
+  echo "loading nvm linux"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+  # export NVM_COMPLETION=true
 # export NVM_SYMLINK_CURRENT="true"
+fi
 
 # WSL
 if (( ${+WSL_DISTRO_NAME} )); then
@@ -210,3 +220,5 @@ fi
 
 # krew
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+[[ -s "/Users/uelei/.gvm/scripts/gvm" ]] && source "/Users/uelei/.gvm/scripts/gvm"
