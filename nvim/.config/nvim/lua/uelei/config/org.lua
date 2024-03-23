@@ -76,7 +76,7 @@ orgmode.setup {
     ht = {
       description = 'Task',
       template = '* TODO %?\n',
-      target = '~/notes/home/home.org',
+      target = '~/notes/home.org',
     },
     hc = {
       description = 'Coding',
@@ -115,13 +115,13 @@ orgmode.setup {
     tw = {
       description = 'Work',
       template = '* TODO %?\n',
-      target = '~/notes/work/work.org',
+      target = '~/notes/work.org',
     },
 
     th = {
       description = 'Home',
       template = '* TODO %?\n',
-      target = '~/notes/home/home.org',
+      target = '~/notes/home.org',
     },
 
     j = {
@@ -134,7 +134,7 @@ orgmode.setup {
     wt = {
       description = 'Task',
       template = '* TODO %?\n',
-      target = '~/notes/work/work.org',
+      target = '~/notes/work.org',
     },
     wn = {
       description = 'Note',

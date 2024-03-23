@@ -326,13 +326,14 @@ require('lazy').setup {
         -- yaml = { 'yamlfix' },
         -- Use a sub-list to run only the first available formatter
         -- You can use a function here to determine the formatters dynamically
-        python = function(bufnr)
-          if require('conform').get_formatter_info('ruff_format', bufnr).available then
-            return { 'ruff_format' }
-          else
-            return { 'isort', 'black' }
-          end
-        end,
+        -- python = function(bufnr)
+        --   if require('conform').get_formatter_info('ruff_format', bufnr).available then
+        --     return { 'ruff_format' }
+        --   else
+        --     return { 'isort' }
+        --   end
+        -- end,
+        python = { 'isort' },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.

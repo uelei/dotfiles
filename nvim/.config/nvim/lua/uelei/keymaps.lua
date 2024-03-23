@@ -14,19 +14,19 @@ end
 -- vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 -- vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 --
--- wk.register({
---   -- keymap for nvim-tree
---   e = { '<cmd>Neotree<cr>', 'Explore' },
---   -- w = { name = "+Window" },
---   -- l = { name = "+Lsp" },
---   -- s = { name = "+Search" },
---   -- f = { name = "+File" },
---   -- b = {
---   --     name = "+Buffer",
---   --     t = { "<cmd>terminal<cr>", "Terminal" },
---   --     c = { "<cmd>bdelete<cr>", "Close" },
---   -- },
--- }, { prefix = '<leader>' })
+wk.register({
+  -- keymap for nvim-tree
+  -- e = { '<cmd>Neotree<cr>', 'Explore' },
+  -- w = { name = "+Window" },
+  -- l = { name = "+Lsp" },
+  -- s = { name = "+Search" },
+  -- f = { name = "+File" },
+  b = {
+    name = '+Buffer',
+    t = { '<cmd>terminal<cr>', 'Terminal' },
+    c = { '<cmd>bdelete<cr>', 'Close' },
+  },
+}, { prefix = '<leader>' })
 
 wk.register({
   g = {
