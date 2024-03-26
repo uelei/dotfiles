@@ -13,22 +13,36 @@ end
 -- -- Remap for dealing with word wrap
 -- vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 -- vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
---
+
 wk.register({
-  -- keymap for nvim-tree
-  -- e = { '<cmd>Neotree<cr>', 'Explore' },
-  -- w = { name = "+Window" },
-  -- l = { name = "+Lsp" },
-  -- s = { name = "+Search" },
-  -- f = { name = "+File" },
+
+  f = {
+    name = '+File',
+
+    p = {
+      "<cmd>let @+ = expand('%:~:.')<cr> <cmd>lua vim.notify('Yanked relative path')<cr>",
+      'Relative Path',
+    },
+    f = { "<cmd>let @+ = expand('%:p')<cr> <cmd>lua vim.notify('Yanked full path')<cr>", 'Full Path' },
+    a = { '<cmd>%y<cr>', 'Buffer contents' },
+    n = { '<cmd>enew<cr>', 'New File' },
+  },
+  l = { name = '+Lsp' },
+  -- buffer
   b = {
     name = '+Buffer',
     t = { '<cmd>terminal<cr>', 'Terminal' },
     c = { '<cmd>bdelete<cr>', 'Close' },
   },
-}, { prefix = '<leader>' })
-
-wk.register({
+  -- y = {
+  --   name = 'Yank',
+  --   p = {
+  --     "<cmd>let @+ = expand('%:~:.')<cr> <cmd>lua vim.notify('Yanked relative path' .. expand('%:~:.') )<cr>",
+  --     'Relative Path',
+  --   },
+  --   f = { "<cmd>let @+ = expand('%:p')<cr> <cmd>lua vim.notify('Yanked full path' + expand('%:p'))<cr>", 'Full Path' },
+  --   a = { '<cmd>%y<cr>', 'Buffer contents' },
+  -- },
   g = {
     name = '+Git',
     g = { '<cmd>LazyGit<cr>', 'Lazygit' },
@@ -171,10 +185,6 @@ map('v', '>', '>gv')
 -- lazy
 map('n', '<leader>sL', '<cmd>:Lazy<cr>', { desc = 'Lazy' })
 map('n', '<leader>sM', '<cmd>:Mason<cr>', { desc = 'Mason' })
-
--- new file
-map('n', '<leader>fn', '<cmd>enew<cr>', { desc = 'New File' })
-map('n', '<leader>fc', "<cmd>let @+ = expand('%')<cr>", { desc = 'Copy path' })
 
 -- map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
 -- map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
