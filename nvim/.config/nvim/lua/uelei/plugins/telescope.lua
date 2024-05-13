@@ -60,6 +60,7 @@ return {
           colorscheme = {
             enable_preview = true,
           },
+          hidden = true,
         },
         extensions = {
           ['ui-select'] = {
