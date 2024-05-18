@@ -23,7 +23,6 @@ zinit light Aloxaf/fzf-tab
 
 # Add in snippets
 zinit snippet OMZP::git
-zinit snippet OMZP::tmux
 zinit snippet OMZP::sudo
 zinit snippet OMZP::kubectl
 zinit snippet OMZP::command-not-found
@@ -65,6 +64,8 @@ alias m="make"
 alias n="nvim"
 alias lgit="lazygit"
 alias tf='terraform'
+alias gs="git stash"
+alias gsp="git stash pop"
 
 # WSL
 if (( ${+WSL_DISTRO_NAME} )); then
