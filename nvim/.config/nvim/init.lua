@@ -555,6 +555,7 @@ require('lazy').setup {
   require 'uelei.plugins.filetree',
   require 'uelei.plugins.bufferline',
   require 'uelei.plugins.org',
+  require 'uelei.plugins.ufo',
 
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information see: :help lazy.nvim-lazy.nvim-structuring-your-plugins
@@ -562,7 +563,7 @@ require('lazy').setup {
 }
 
 require 'uelei.keymaps'
-
 require 'uelei.config.org'
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

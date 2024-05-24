@@ -84,6 +84,11 @@ if (( ${+WSL_DISTRO_NAME} )); then
     fi
 fi
 
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv" 
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
 echo "load personal configs"
 # load my personal scripts
 if [[ -f $HOME/uelei_files/bash_sensitive.sh ]]; then
@@ -116,3 +121,6 @@ function setenv(){
     export $(cat $1 | xargs)
   fi
 }
+
+# load fzf 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
