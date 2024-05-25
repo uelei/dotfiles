@@ -53,6 +53,9 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --zsh)"
+
 # Aliases
 alias ls='ls --color'
 alias vim='nvim'
