@@ -324,7 +324,7 @@ require('lazy').setup {
         -- Conform can also run multiple formatters sequentially
         go = { 'goimports', 'gofmt' },
         markdown = { 'prettierd', 'injected' },
-        yaml = { 'yamlfix' },
+        -- yaml = { 'yamlfix' },
         -- Use a sub-list to run only the first available formatter
         -- You can use a function here to determine the formatters dynamically
         -- python = function(bufnr)
