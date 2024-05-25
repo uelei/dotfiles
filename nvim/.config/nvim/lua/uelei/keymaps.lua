@@ -46,7 +46,7 @@ wk.register({
   g = {
     name = '+Git',
     g = { '<cmd>LazyGit<cr>', 'Lazygit' },
-    g = { '<cmd>NeoGit<cr>', 'NeoGit' },
+    n = { '<cmd>NeoGit<cr>', 'NeoGit' },
     j = { "<cmd>lua require 'gitsigns'.next_hunk({navigation_message = false})<cr>", 'Next Hunk' },
     k = { "<cmd>lua require 'gitsigns'.prev_hunk({navigation_message = false})<cr>", 'Prev Hunk' },
     l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", 'Blame' },
