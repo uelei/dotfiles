@@ -25,7 +25,7 @@ wk.register({
     },
     f = { "<cmd>let @+ = expand('%:p')<cr> <cmd>lua vim.notify('Yanked full path')<cr>", 'Full Path' },
     a = { '<cmd>%y<cr>', 'Buffer contents' },
-    n = { '<cmd>enew<cr>', 'New File' },
+    n = { '<cmd>new<cr>', 'New File' },
   },
   l = { name = '+Lsp' },
   -- buffer
@@ -46,7 +46,7 @@ wk.register({
   g = {
     name = '+Git',
     g = { '<cmd>LazyGit<cr>', 'Lazygit' },
-    n = { '<cmd>NeoGit<cr>', 'NeoGit' },
+    n = { '<cmd>Neogit<cr>', 'Neogit' },
     j = { "<cmd>lua require 'gitsigns'.next_hunk({navigation_message = false})<cr>", 'Next Hunk' },
     k = { "<cmd>lua require 'gitsigns'.prev_hunk({navigation_message = false})<cr>", 'Prev Hunk' },
     l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", 'Blame' },
