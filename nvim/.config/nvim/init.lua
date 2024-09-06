@@ -324,6 +324,7 @@ require('lazy').setup {
         -- Conform can also run multiple formatters sequentially
         go = { 'goimports', 'gofmt' },
         markdown = { 'prettierd', 'injected' },
+        json = { 'prettierd', 'injected' },
         -- yaml = { 'yamlfix' },
         -- Use a sub-list to run only the first available formatter
         -- You can use a function here to determine the formatters dynamically
@@ -463,6 +464,7 @@ require('lazy').setup {
           end, { 'i', 's' }),
         },
         sources = {
+          { name = 'copilot', group_index = 2 },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
@@ -489,33 +491,33 @@ require('lazy').setup {
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
-  { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
-    config = function()
-      -- Better Around/Inside textobjects
-      --
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]parenthen
-      --  - yinq - [Y]ank [I]nside [N]ext [']quote
-      --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
-
-      -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
-
-      -- Simple and easy statusline.
-      --  You could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
-      require('mini.statusline').setup()
-
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
-    end,
-  },
+  -- { -- Collection of various small independent plugins/modules
+  --   'echasnovski/mini.nvim',
+  --   config = function()
+  --     -- Better Around/Inside textobjects
+  --     --
+  --     -- Examples:
+  --     --  - va)  - [V]isually select [A]round [)]parenthen
+  --     --  - yinq - [Y]ank [I]nside [N]ext [']quote
+  --     --  - ci'  - [C]hange [I]nside [']quote
+  --     require('mini.ai').setup { n_lines = 500 }
+  --
+  --     -- Add/delete/replace surroundings (brackets, quotes, etc.)
+  --     --
+  --     -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
+  --     -- - sd'   - [S]urround [D]elete [']quotes
+  --     -- - sr)'  - [S]urround [R]eplace [)] [']
+  --     require('mini.surround').setup()
+  --
+  --     -- Simple and easy statusline.
+  --     --  You could remove this setup call if you don't like it,
+  --     --  and try some other statusline plugin
+  --     require('mini.statusline').setup()
+  --
+  --     -- ... and there is more!
+  --     --  Check out: https://github.com/echasnovski/mini.nvim
+  --   end,
+  -- },
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
@@ -555,7 +557,8 @@ require('lazy').setup {
   require 'uelei.plugins.filetree',
   require 'uelei.plugins.bufferline',
   require 'uelei.plugins.org',
-  require 'uelei.plugins.ufo',
+  -- require 'uelei.plugins.ufo',
+  require 'uelei.plugins.copilot',
 
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information see: :help lazy.nvim-lazy.nvim-structuring-your-plugins
@@ -563,6 +566,9 @@ require('lazy').setup {
 }
 
 require 'uelei.keymaps'
+require 'uelei.config.org'
+require 'uelei.config.cmp'
+
 require 'uelei.config.org'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
