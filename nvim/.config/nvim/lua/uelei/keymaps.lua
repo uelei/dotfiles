@@ -14,64 +14,47 @@ end
 -- vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 -- vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
-wk.register({
+wk.add {
+  -- Buffer
+  { '<leader>b', group = 'Buffer' },
+  { '<leader>bc', '<cmd>bdelete<cr>', desc = 'Close' },
+  { '<leader>bt', '<cmd>terminal<cr>', desc = 'Terminal' },
+  -- File
+  { '<leader>f', group = 'File' },
+  { '<leader>fa', '<cmd>%y<cr>', desc = 'Buffer contents' },
+  { '<leader>ff', "<cmd>let @+ = expand('%:p')<cr> <cmd>lua vim.notify('Yanked full path')<cr>", desc = 'Full Path' },
+  { '<leader>fn', '<cmd>new<cr>', desc = 'New File' },
+  { '<leader>fp', "<cmd>let @+ = expand('%:~:.')<cr> <cmd>lua vim.notify('Yanked relative path')<cr>", desc = 'Relative Path' },
+  -- Git
+  { '<leader>g', group = 'Git' },
+  { '<leader>gC', '<cmd>Telescope git_bcommits<cr>', desc = 'Checkout commit(for current file)' },
+  { '<leader>gL', '<cmd>GitBlameToggle<cr>', desc = 'Blame all' },
+  { '<leader>gR', "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", desc = 'Reset Buffer' },
+  { '<leader>gb', '<cmd>Telescope git_branches<cr>', desc = 'Checkout branch' },
+  { '<leader>gc', '<cmd>Telescope git_commits<cr>', desc = 'Checkout commit' },
+  { '<leader>gd', '<cmd>Gitsigns diffthis HEAD<cr>', desc = 'Git Diff' },
+  { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'Lazygit' },
+  { '<leader>gj', "<cmd>lua require 'gitsigns'.next_hunk({navigation_message = false})<cr>", desc = 'Next Hunk' },
+  { '<leader>gk', "<cmd>lua require 'gitsigns'.prev_hunk({navigation_message = false})<cr>", desc = 'Prev Hunk' },
+  { '<leader>gl', "<cmd>lua require 'gitsigns'.blame_line()<cr>", desc = 'Blame' },
+  { '<leader>gn', '<cmd>Neogit<cr>', desc = 'Neogit' },
+  { '<leader>go', '<cmd>Telescope git_status<cr>', desc = 'Open changed file' },
+  { '<leader>gp', "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", desc = 'Preview Hunk' },
+  { '<leader>gr', "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", desc = 'Reset Hunk' },
+  { '<leader>gs', "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", desc = 'Stage Hunk' },
+  { '<leader>gu', "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>", desc = 'Undo Stage Hunk' },
+  -- LSP
+  { '<leader>l', group = '+Lsp', icon = '' },
 
-  f = {
-    name = '+File',
-
-    p = {
-      "<cmd>let @+ = expand('%:~:.')<cr> <cmd>lua vim.notify('Yanked relative path')<cr>",
-      'Relative Path',
-    },
-    f = { "<cmd>let @+ = expand('%:p')<cr> <cmd>lua vim.notify('Yanked full path')<cr>", 'Full Path' },
-    a = { '<cmd>%y<cr>', 'Buffer contents' },
-    n = { '<cmd>new<cr>', 'New File' },
-  },
-  l = { name = '+Lsp' },
-  -- buffer
-  b = {
-    name = '+Buffer',
-    t = { '<cmd>terminal<cr>', 'Terminal' },
-    c = { '<cmd>bdelete<cr>', 'Close' },
-  },
-  -- y = {
-  --   name = 'Yank',
-  --   p = {
-  --     "<cmd>let @+ = expand('%:~:.')<cr> <cmd>lua vim.notify('Yanked relative path' .. expand('%:~:.') )<cr>",
-  --     'Relative Path',
-  --   },
-  --   f = { "<cmd>let @+ = expand('%:p')<cr> <cmd>lua vim.notify('Yanked full path' + expand('%:p'))<cr>", 'Full Path' },
-  --   a = { '<cmd>%y<cr>', 'Buffer contents' },
-  -- },
-  g = {
-    name = '+Git',
-    g = { '<cmd>LazyGit<cr>', 'Lazygit' },
-    n = { '<cmd>Neogit<cr>', 'Neogit' },
-    j = { "<cmd>lua require 'gitsigns'.next_hunk({navigation_message = false})<cr>", 'Next Hunk' },
-    k = { "<cmd>lua require 'gitsigns'.prev_hunk({navigation_message = false})<cr>", 'Prev Hunk' },
-    l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", 'Blame' },
-    L = { '<cmd>GitBlameToggle<cr>', 'Blame all' },
-    p = { "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", 'Preview Hunk' },
-    r = { "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", 'Reset Hunk' },
-    R = { "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", 'Reset Buffer' },
-    s = { "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", 'Stage Hunk' },
-    u = {
-      "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
-      'Undo Stage Hunk',
-    },
-    o = { '<cmd>Telescope git_status<cr>', 'Open changed file' },
-    b = { '<cmd>Telescope git_branches<cr>', 'Checkout branch' },
-    c = { '<cmd>Telescope git_commits<cr>', 'Checkout commit' },
-    C = {
-      '<cmd>Telescope git_bcommits<cr>',
-      'Checkout commit(for current file)',
-    },
-    d = {
-      '<cmd>Gitsigns diffthis HEAD<cr>',
-      'Git Diff',
-    },
-  },
-}, { prefix = '<leader>' })
+  -- windows
+  { '<leader>w', group = '+Window', icon = '' },
+  { '<leader>ww', '<C-W>p', desc = 'Other window', remap = true },
+  { '<leader>wd', '<C-W>c', desc = 'Delete window', remap = true },
+  { '<leader>w-', '<C-W>s', desc = 'Split window below', remap = true },
+  { '<leader>w|', '<C-W>v', desc = 'Split window right', remap = true },
+  { '<leader>-', '<C-W>s', desc = 'Split window below', remap = true },
+  { '<leader>|', '<C-W>v', desc = 'Split window right', remap = true },
+}
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -198,20 +181,7 @@ map('n', '<leader>sM', '<cmd>:Mason<cr>', { desc = 'Mason' })
 -- quit
 map('n', '<leader>q', '<cmd>qa<cr>', { desc = 'Quit all' })
 
--- highlights under cursor
-if vim.fn.has 'nvim-0.9.0' == 1 then
-  map('n', '<leader>li', vim.show_pos, { desc = 'Inspect Pos' })
-end
-
 map('t', '<esc><esc>', '<c-\\><c-n>', { desc = 'Enter Normal Mode' })
-
--- windows
-map('n', '<leader>ww', '<C-W>p', { desc = 'Other window', remap = true })
-map('n', '<leader>wd', '<C-W>c', { desc = 'Delete window', remap = true })
-map('n', '<leader>w-', '<C-W>s', { desc = 'Split window below', remap = true })
-map('n', '<leader>w|', '<C-W>v', { desc = 'Split window right', remap = true })
-map('n', '<leader>-', '<C-W>s', { desc = 'Split window below', remap = true })
-map('n', '<leader>|', '<C-W>v', { desc = 'Split window right', remap = true })
 
 -- -- tabs
 -- map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
