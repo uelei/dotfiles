@@ -16,11 +16,11 @@ end
 
 wk.add {
   -- Buffer
-  { '<leader>b', group = 'Buffer' },
+  { '<leader>b', group = 'Buffer', icon = '' },
   { '<leader>bc', '<cmd>bdelete<cr>', desc = 'Close' },
   { '<leader>bt', '<cmd>terminal<cr>', desc = 'Terminal' },
   -- File
-  { '<leader>f', group = 'File' },
+  { '<leader>f', group = 'File', icon = '' },
   { '<leader>fa', '<cmd>%y<cr>', desc = 'Buffer contents' },
   { '<leader>ff', "<cmd>let @+ = expand('%:p')<cr> <cmd>lua vim.notify('Yanked full path')<cr>", desc = 'Full Path' },
   { '<leader>fn', '<cmd>new<cr>', desc = 'New File' },

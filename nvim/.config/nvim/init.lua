@@ -35,41 +35,18 @@ require('lazy').setup {
 
   -- [[ Plugin Specs list ]]
 
-  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   'alexghergh/nvim-tmux-navigation',
   'mg979/vim-visual-multi', -- multi edit
-  -- NOTE: Plugins can also be added by using a table,
-  -- with the first argument being the link and the following
-  -- keys can be used to configure plugin behavior/loading/etc.
-  --
+
+  -- "gc" to comment visual regions/lines
   -- Use `opts = {}` to force a plugin to be loaded.
-  --
+  { 'numToStr/Comment.nvim', opts = {} },
   --  This is equivalent to:
   --    require('Comment').setup({})
 
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
-
-  -- Here is a more advanced example where we pass configuration
-  -- options to `gitsigns.nvim`. This is equivalent to the following lua:
-  --    require('gitsigns').setup({ ... })
-  --
-  -- See `:help gitsigns` to understand what the configuration keys do
-
-  -- NOTE: Plugins can also be configured to run lua code when they are loaded.
-  --
-  -- This is often very useful to both group configuration, as well as handle
-  -- lazy loading plugins that don't need to be loaded immediately at startup.
-  --
-  -- For example, in the following configuration, we use:
-  --  event = 'VeryLazy'
-  --
-  -- which loads which-key after all the UI elements are loaded. Events can be
-  -- normal autocommands events (:help autocomd-events).
-  --
-  -- Then, because we use the `config` key, the configuration only runs
+  -- The `config` key, the configuration only runs
   -- after the plugin has been loaded:
   --  config = function() ... end
 
@@ -81,11 +58,6 @@ require('lazy').setup {
     end,
   },
 
-  -- NOTE: Plugins can specify dependencies.
-  --
-  -- The dependencies are proper plugin specifications as well - anything
-  -- you do for a plugin at the top level, you can do for a dependency.
-  --
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
 
   { -- LSP Configuration & Plugins
@@ -476,6 +448,7 @@ require('lazy').setup {
   -- Themes
   'folke/tokyonight.nvim',
   'Mofiqul/dracula.nvim',
+  'rebelot/kanagawa.nvim',
   {
     'catppuccin/nvim',
     laze = false,
@@ -486,32 +459,34 @@ require('lazy').setup {
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
-  { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
-    config = function()
-      -- Better Around/Inside textobjects
-      --
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]parenthen
-      --  - yinq - [Y]ank [I]nside [N]ext [']quote
-      --  - ci'  - [C]hange [I]nside [']quote
-      -- require('mini.ai').setup { n_lines = 500 }
-      require('mini.icons').setup()
+  -- { -- Collection of various small independent plugins/modules
+  --   'echasnovski/mini.nvim',
+  --   config = function()
+  --     -- Better Around/Inside textobjects
+  --     --
+  --     -- Examples:
+  --     --  - va)  - [V]isually select [A]round [)]parenthen
+  --     --  - yinq - [Y]ank [I]nside [N]ext [']quote
+  --     --  - ci'  - [C]hange [I]nside [']quote
+  --     -- require('mini.ai').setup { n_lines = 500 }
+  --     require('mini.icons').setup()
+  --
+  --     -- Add/delete/replace surroundings (brackets, quotes, etc.)
+  --     --
+  --     -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
+  --     -- - sd'   - [S]urround [D]elete [']quotes
+  --     -- - sr)'  - [S]urround [R]eplace [)] [']
+  --     -- require('mini.surround').setup()
+  --
+  --     -- Simple and easy statusline.
+  --     -- require('mini.statusline').setup()
+  --
+  --     -- ... and there is more!
+  --     --  Check out: https://github.com/echasnovski/mini.nvim
+  --   end,
+  -- },
 
-      -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
-      -- require('mini.surround').setup()
-
-      -- Simple and easy statusline.
-      -- require('mini.statusline').setup()
-
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
-    end,
-  },
+  --  statusline
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -541,13 +516,6 @@ require('lazy').setup {
     end,
   },
 
-  -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
-  -- init.lua. If you want these files, they are in the repository, so you can just download them and
-  -- put them in the right spots if you want.
-
-  --  Here are some example plugins that I've included in the kickstart repository.
-  --  Uncomment any of the lines below to enable them (you will need to restart nvim).
-  --
   require 'uelei.plugins.telescope',
   require 'uelei.plugins.git',
   require 'uelei.plugins.autopairs',

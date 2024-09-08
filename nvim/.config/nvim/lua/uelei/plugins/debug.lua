@@ -8,6 +8,7 @@ return {
       'nvim-neotest/nvim-nio',
       'mfussenegger/nvim-dap-python',
     },
+    lazy = true,
     config = function()
       local dap = require 'dap'
       local dapui = require 'dapui'
@@ -198,7 +199,7 @@ return {
       dapui.close()
 
       --     -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
-      vim.keymap.set('n', '<leader>cl', dapui.toggle, { desc = 'Debug: See last session result.' })
+      vim.keymap.set('n', '<leader>cx', dapui.toggle, { desc = 'Debug: See last session result.' })
     end,
   },
 }
