@@ -190,7 +190,7 @@ require('lazy').setup {
 
           -- highlights under cursor
           if vim.fn.has 'nvim-0.9.0' == 1 then
-            map('n', '<leader>li', vim.show_pos, { desc = 'LSP: [I]nspect Pos' })
+            map('<leader>li', vim.show_pos, '[I]nspect Pos')
           end
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
@@ -549,7 +549,6 @@ require('lazy').setup {
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   require 'uelei.plugins.telescope',
-  require 'uelei.plugins.debug',
   require 'uelei.plugins.git',
   require 'uelei.plugins.autopairs',
   require 'uelei.plugins.filetree',
@@ -557,6 +556,7 @@ require('lazy').setup {
   require 'uelei.plugins.org',
   -- require 'uelei.plugins.ufo',
   require 'uelei.plugins.copilot',
+  require 'uelei.plugins.debug',
 
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information see: :help lazy.nvim-lazy.nvim-structuring-your-plugins
