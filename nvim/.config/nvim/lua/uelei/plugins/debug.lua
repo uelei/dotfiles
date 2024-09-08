@@ -3,12 +3,34 @@ return {
 
   {
     'mfussenegger/nvim-dap',
+    recommended = true,
     dependencies = {
       'rcarriga/nvim-dap-ui',
       'nvim-neotest/nvim-nio',
-      'mfussenegger/nvim-dap-python',
+      {
+        'mfussenegger/nvim-dap-python',
+        keys = {
+          {
+            '<leader>dPt',
+            function()
+              require('dap-python').test_method()
+            end,
+            desc = 'Test Debug Method',
+            ft = 'python',
+          },
+          {
+            '<leader>dPc',
+            function()
+              require('dap-python').test_class()
+            end,
+            desc = 'Test Debug Class',
+            ft = 'python',
+          },
+        },
+        ft = 'python',
+      },
     },
-    lazy = true,
+    event = 'VeryLazy',
     config = function()
       local dap = require 'dap'
       local dapui = require 'dapui'
@@ -18,8 +40,9 @@ return {
 
       -- Python setup
 
-      local mason_path = vim.fn.glob(vim.fn.stdpath 'data' .. '/mason/')
-      local debugpy_path = mason_path .. '/packages/debugpy/venv/bin/python'
+      local mason_debugpy_path = require('mason-registry').get_package('debugpy'):get_install_path()
+      -- local mason_path = vim.fn.glob(vim.fn.stdpath 'data' .. '/mason/')
+      local debugpy_path = mason_debugpy_path .. '/venv/bin/python'
 
       local dap_python = require 'dap-python'
       require('dap.ext.vscode').load_launchjs('.vscode/launch.json', {
@@ -29,6 +52,8 @@ return {
       })
       dap_python.setup(debugpy_path)
       dap_python.default_port = 5678
+
+      dap_python.test_runner = 'pytest'
       -- dap.adapters.python = function(cb, config)
       --   if config.request == 'attach' then
       --     ---@diagnostic disable-next-line: undefined-field
@@ -146,19 +171,133 @@ return {
       local wk = require 'which-key'
       wk.add {
 
-        { '<leader>c', group = 'Debug' },
-        { '<leader>cc', dap.continue, desc = 'Debug: Start/Continue' },
-        { '<leader>co', dap.step_over, desc = 'Debug: Step Over' },
-        { '<leader>cs', dap.step_into, desc = 'Debug: Step Into' },
-        { '<leader>cu', dap.step_out, desc = 'Debug: Step Out' },
-        { '<leader>cb', dap.toggle_breakpoint, desc = 'Debug: Toggle Breakpoint' },
-        -- { '<leader>cx', require('dapui').close(), desc = 'Debug: Close UI' },
+        { '<leader>d', '', desc = '+debug', mode = { 'n', 'v' } },
         {
-          '<leader>cB',
+          '<leader>dB',
           function()
-            dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+            require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ')
           end,
-          desc = 'Debug: Set Breakpoint Cond.',
+          desc = 'Breakpoint Condition',
+        },
+        {
+          '<leader>db',
+          function()
+            require('dap').toggle_breakpoint()
+          end,
+          desc = 'Toggle Breakpoint',
+        },
+        {
+          '<leader>dc',
+          function()
+            require('dap').continue()
+          end,
+          desc = 'Continue',
+        },
+        {
+          '<leader>da',
+          function()
+            require('dap').continue { before = get_args }
+          end,
+          desc = 'Run with Args',
+        },
+        {
+          '<leader>dC',
+          function()
+            require('dap').run_to_cursor()
+          end,
+          desc = 'Run to Cursor',
+        },
+        {
+          '<leader>dg',
+          function()
+            require('dap').goto_()
+          end,
+          desc = 'Go to Line (No Execute)',
+        },
+        {
+          '<leader>di',
+          function()
+            require('dap').step_into()
+          end,
+          desc = 'Step Into',
+        },
+        {
+          '<leader>dj',
+          function()
+            require('dap').down()
+          end,
+          desc = 'Down',
+        },
+        {
+          '<leader>dk',
+          function()
+            require('dap').up()
+          end,
+          desc = 'Up',
+        },
+        {
+          '<leader>dl',
+          function()
+            require('dap').run_last()
+          end,
+          desc = 'Run Last',
+        },
+        {
+          '<leader>do',
+          function()
+            require('dap').step_out()
+          end,
+          desc = 'Step Out',
+        },
+        {
+          '<leader>dO',
+          function()
+            require('dap').step_over()
+          end,
+          desc = 'Step Over',
+        },
+        {
+          '<leader>dp',
+          function()
+            require('dap').pause()
+          end,
+          desc = 'Pause',
+        },
+        {
+          '<leader>dr',
+          function()
+            require('dap').repl.toggle()
+          end,
+          desc = 'Toggle REPL',
+        },
+        {
+          '<leader>ds',
+          function()
+            require('dap').session()
+          end,
+          desc = 'Session',
+        },
+        {
+          '<leader>dt',
+          function()
+            require('dap').terminate()
+          end,
+          desc = 'Terminate',
+        },
+        {
+          '<leader>dw',
+          function()
+            require('dap.ui.widgets').hover()
+          end,
+          desc = 'Widgets',
+        },
+
+        {
+          '<leader>du',
+          function()
+            require('dapui').toggle()
+          end,
+          desc = 'UI Toggle',
         },
       }
 
@@ -171,21 +310,44 @@ return {
         icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
         controls = {
           icons = {
-            pause = '⏸',
-            play = '▶',
-            step_into = '⏎',
-            step_over = '⏭',
-            step_out = '⏮',
-            step_back = 'b',
-            run_last = '▶▶',
-            terminate = '⏹',
-            disconnect = '⏏',
+            pause = '',
+            play = '',
+            step_into = '',
+            step_over = '',
+            step_out = '',
+            step_back = '',
+            run_last = '',
+            terminate = '',
+          },
+        },
+
+        layouts = {
+          {
+            elements = {
+              'scopes',
+              -- 'breakpoints',
+              'stacks',
+              -- 'watches',
+            },
+            size = 40,
+            position = 'left',
+          },
+          {
+            elements = {
+              'repl',
+              'console',
+            },
+            size = 10,
+            position = 'bottom',
           },
         },
       }
+      vim.fn.sign_define('DapStopped', { text = '󰁕 ', texthl = 'DiagnosticWarn', linehl = 'DapStoppedLine', numhl = 'DapStoppedLine' })
 
-      vim.fn.sign_define('DapBreakpoint', { text = '🛑', texthl = '', linehl = '', numhl = '' })
-      vim.fn.sign_define('DapStopped', { text = '⭐️', texthl = '', linehl = '', numhl = '' })
+      vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DiagnosticInfo' })
+      vim.fn.sign_define('DapBreakpointRejected', { text = '', texthl = 'DiagnosticError' })
+      vim.fn.sign_define('DapBreakpointCondition', { text = '', texthl = 'DiagnosticInfo' })
+      vim.fn.sign_define('DapLogPoint', { text = '.>', texthl = 'DiagnosticInfo' })
       dap.listeners.before.attach.dapui_config = function()
         dapui.open()
       end
@@ -199,7 +361,7 @@ return {
       dapui.close()
 
       --     -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
-      vim.keymap.set('n', '<leader>cx', dapui.toggle, { desc = 'Debug: See last session result.' })
+      -- vim.keymap.set('n', '<leader>cx', dapui.toggle, { desc = 'Debug: See last session result.' })
     end,
   },
 }
