@@ -449,6 +449,7 @@ require('lazy').setup {
   'folke/tokyonight.nvim',
   'Mofiqul/dracula.nvim',
   'rebelot/kanagawa.nvim',
+
   {
     'catppuccin/nvim',
     laze = false,
@@ -533,6 +534,7 @@ require('lazy').setup {
 
 require 'uelei.keymaps'
 require 'uelei.config.lualine'
+require 'uelei.config.filetype'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
