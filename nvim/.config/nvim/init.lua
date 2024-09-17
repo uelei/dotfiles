@@ -205,7 +205,9 @@ require('lazy').setup {
         gopls = {},
         pyright = {},
         rust_analyzer = {},
-        html = {},
+        html = {
+          filetypes = { 'html', 'htmldjango' },
+        },
         terraformls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -490,7 +492,7 @@ require('lazy').setup {
   --  statusline
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'nvim-tree/nvim-web-devicons', 'AndreM222/copilot-lualine' },
   },
 
   { -- Highlight, edit, and navigate code
@@ -526,6 +528,8 @@ require('lazy').setup {
   -- require 'uelei.plugins.ufo',
   require 'uelei.plugins.copilot',
   require 'uelei.plugins.debug',
+  require 'uelei.plugins.neotest',
+  require 'uelei.plugins.indent_line',
 
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information see: :help lazy.nvim-lazy.nvim-structuring-your-plugins
