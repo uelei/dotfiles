@@ -43,6 +43,25 @@ wk.add {
   { '<leader>gr', "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", desc = 'Reset Hunk' },
   { '<leader>gs', "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", desc = 'Stage Hunk' },
   { '<leader>gu', "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>", desc = 'Undo Stage Hunk' },
+
+  { '<leader>mc', group = 'CopilotChat', icon = ' ' },
+  { '<leader>mcc', '<cmd>CopilotChat<cr>', desc = 'CopilotChat' },
+  { '<leader>mcd', '<cmd>CopilotChatDocs<cr>', desc = 'Create Documentation' },
+  { '<leader>mct', '<cmd>CopilotChatTests<cr>', desc = 'Generate tests for my code' },
+  { '<leader>mcm', '<cmd>CopilotChatCommitStaged<cr>', desc = 'Generate Commit message' },
+  { '<leader>mci', '<cmd>CopilotChatOptimize<cr>', desc = 'Improve Selected code' },
+
+  {
+    '<leader>mcq',
+    function()
+      local input = vim.fn.input 'Quick Chat: '
+      if input ~= '' then
+        require('CopilotChat').ask(input, { selection = require('CopilotChat.select').buffer })
+      end
+    end,
+    desc = 'CopilotChat - Quick chat',
+  },
+
   -- LSP
   { '<leader>l', group = '+Lsp', icon = '' },
 

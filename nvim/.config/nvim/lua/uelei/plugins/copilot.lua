@@ -4,9 +4,6 @@ return {
     opts = {
       debug = true, -- Enable debugging
     },
-    keys = {
-      { 'g?', '<cmd>CopilotChat<cr>', desc = 'CopilotChat' },
-    }, -- See Configuration section for rest
   },
   'zbirenbaum/copilot.lua',
   {

@@ -58,7 +58,6 @@ alias ls='ls --color'
 alias vim='nvim'
 alias c='clear'
 alias :q='exit'
-alias :q="exit"
 alias x="exit"
 alias m="make"
 alias n="nvim"
