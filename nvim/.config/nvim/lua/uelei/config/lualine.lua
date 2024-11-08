@@ -65,16 +65,6 @@ local config = {
     },
     lualine_b = {
       'branch',
-      {
-        'diagnostics',
-        sources = { 'nvim_diagnostic' },
-        symbols = { error = ' ', warn = ' ', info = ' ' },
-        diagnostics_color = {
-          color_error = { fg = colors.red },
-          color_warn = { fg = colors.yellow },
-          color_info = { fg = colors.cyan },
-        },
-      },
 
       {
         'diff',
@@ -89,13 +79,13 @@ local config = {
       },
     },
     lualine_c = {
-      'filename',
+      { 'filename', path = 1 },
       {
 
         -- env name
         function()
           if vim.bo.filetype == 'python' then
-            local venv = os.getenv 'CONDA_DEFAULT_ENV' or os.getenv 'VIRTUAL_ENV'
+            local venv = os.getenv 'VIRTUAL_ENV'
             if venv then
               local icons = require 'nvim-web-devicons'
               local py_icon, _ = icons.get_icon '.py'
@@ -129,6 +119,16 @@ local config = {
         end,
         icon = ' ',
         color = { fg = '#ffffff', gui = 'bold' },
+      },
+      {
+        'diagnostics',
+        sources = { 'nvim_diagnostic' },
+        symbols = { error = ' ', warn = ' ', info = ' ' },
+        diagnostics_color = {
+          color_error = { fg = colors.red },
+          color_warn = { fg = colors.yellow },
+          color_info = { fg = colors.cyan },
+        },
       },
       {
         'copilot',

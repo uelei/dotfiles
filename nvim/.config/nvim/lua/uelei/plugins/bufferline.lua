@@ -19,7 +19,7 @@ return {
           text_align = 'left',
         },
       },
-      diagnostics = 'nvim_lsp',
+      -- diagnostics = 'nvim_lsp',
       separator_style = { '', '' },
       modified_icon = '●',
       show_close_icon = false,

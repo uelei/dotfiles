@@ -203,7 +203,15 @@ require('lazy').setup {
       local servers = {
         -- clangd = {},
         gopls = {},
-        pyright = {},
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                typeCheckingMode = 'off',
+              },
+            },
+          },
+        },
         rust_analyzer = {},
         html = {
           filetypes = { 'html', 'htmldjango' },
@@ -524,6 +532,44 @@ require('lazy').setup {
     end,
   },
 
+  {
+    'folke/trouble.nvim',
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = 'Trouble',
+    keys = {
+      {
+        '<leader>xx',
+        '<cmd>Trouble diagnostics toggle filter.severity = vim.diagnostic.severity.ERROR<cr>',
+        desc = 'Diagnostics (Trouble)',
+      },
+      {
+        '<leader>xX',
+        '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
+        desc = 'Buffer Diagnostics (Trouble)',
+      },
+      {
+        '<leader>cs',
+        '<cmd>Trouble symbols toggle focus=false<cr>',
+        desc = 'Symbols (Trouble)',
+      },
+      {
+        '<leader>cl',
+        '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
+        desc = 'LSP Definitions / references / ... (Trouble)',
+      },
+      {
+        '<leader>xL',
+        '<cmd>Trouble loclist toggle<cr>',
+        desc = 'Location List (Trouble)',
+      },
+      {
+        '<leader>xQ',
+        '<cmd>Trouble qflist toggle<cr>',
+        desc = 'Quickfix List (Trouble)',
+      },
+    },
+  },
+
   require 'uelei.plugins.telescope',
   require 'uelei.plugins.git',
   require 'uelei.plugins.autopairs',
@@ -545,6 +591,30 @@ require('lazy').setup {
 require 'uelei.keymaps'
 require 'uelei.config.lualine'
 require 'uelei.config.filetype'
+
+-- local FormatDiagnostic = function(diagnostic)
+--   -- local line = diagnostic.lnum
+--   if diagnostic.severity == 1 then
+--     return string.format('\r🔥%s', diagnostic.message)
+--   end
+--   return string.format('\r%s', diagnostic.message)
+-- end
+--
+-- vim.diagnostic.config {
+--   underline = true,
+--   signs = true,
+--   -- virtual_text = true,
+--   virtual_text = { source = true, prefix = '', format = FormatDiagnostic, spacing = 0 },
+--   float = {
+--     show_header = true,
+--     source = true,
+--     -- border = border,
+--     focus = false,
+--     width = 60,
+--   },
+--   update_in_insert = true, -- default to false
+--   -- severity_sort = true, -- default to false
+-- }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
