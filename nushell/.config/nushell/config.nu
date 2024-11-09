@@ -906,3 +906,7 @@ alias m = make
 alias n = nvim 
 alias lgit = lazygit
 alias tf = terraform 
+
+# asdf
+$env.ASDF_DIR = (brew --prefix asdf | str trim | into string | path join 'libexec')
+ source /opt/homebrew/opt/asdf/libexec/asdf.nu
