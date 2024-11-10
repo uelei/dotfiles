@@ -203,6 +203,7 @@ require('lazy').setup {
       local servers = {
         -- clangd = {},
         gopls = {},
+        taplo = {},
         pyright = {
           settings = {
             python = {
@@ -431,33 +432,6 @@ require('lazy').setup {
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
-  -- { -- Collection of various small independent plugins/modules
-  --   'echasnovski/mini.nvim',
-  --   config = function()
-  --     -- Better Around/Inside textobjects
-  --     --
-  --     -- Examples:
-  --     --  - va)  - [V]isually select [A]round [)]parenthen
-  --     --  - yinq - [Y]ank [I]nside [N]ext [']quote
-  --     --  - ci'  - [C]hange [I]nside [']quote
-  --     -- require('mini.ai').setup { n_lines = 500 }
-  --     require('mini.icons').setup()
-  --
-  --     -- Add/delete/replace surroundings (brackets, quotes, etc.)
-  --     --
-  --     -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-  --     -- - sd'   - [S]urround [D]elete [']quotes
-  --     -- - sr)'  - [S]urround [R]eplace [)] [']
-  --     -- require('mini.surround').setup()
-  --
-  --     -- Simple and easy statusline.
-  --     -- require('mini.statusline').setup()
-  --
-  --     -- ... and there is more!
-  --     --  Check out: https://github.com/echasnovski/mini.nvim
-  --   end,
-  -- },
-
   --  statusline
   {
     'nvim-lualine/lualine.nvim',
@@ -487,7 +461,37 @@ require('lazy').setup {
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
+  {
+    'mfussenegger/nvim-lint',
+    event = {
+      'BufReadPre',
+      'BufNewFile',
+    },
+    config = function()
+      local lint = require 'lint'
 
+      lint.linters_by_ft = {
+        javascript = { 'eslint_d', 'codespell' },
+        -- typescript = { "eslint_d" },
+        go = { 'golangci-lint', 'codespell' },
+        python = { 'mypy', 'codespell' },
+        terraform = { 'tflint', 'codespell' },
+      }
+
+      local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
+
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+        group = lint_augroup,
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+
+      vim.keymap.set('n', '<leader>fl', function()
+        lint.try_lint()
+      end, { desc = 'Trigger linting for current file' })
+    end,
+  },
   -- Rest client
   {
     'rest-nvim/rest.nvim',
@@ -548,12 +552,12 @@ require('lazy').setup {
         desc = 'Buffer Diagnostics (Trouble)',
       },
       {
-        '<leader>cs',
+        '<leader>bs',
         '<cmd>Trouble symbols toggle focus=false<cr>',
         desc = 'Symbols (Trouble)',
       },
       {
-        '<leader>cl',
+        '<leader>ll',
         '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
         desc = 'LSP Definitions / references / ... (Trouble)',
       },
@@ -591,30 +595,6 @@ require('lazy').setup {
 require 'uelei.keymaps'
 require 'uelei.config.lualine'
 require 'uelei.config.filetype'
-
--- local FormatDiagnostic = function(diagnostic)
---   -- local line = diagnostic.lnum
---   if diagnostic.severity == 1 then
---     return string.format('\r🔥%s', diagnostic.message)
---   end
---   return string.format('\r%s', diagnostic.message)
--- end
---
--- vim.diagnostic.config {
---   underline = true,
---   signs = true,
---   -- virtual_text = true,
---   virtual_text = { source = true, prefix = '', format = FormatDiagnostic, spacing = 0 },
---   float = {
---     show_header = true,
---     source = true,
---     -- border = border,
---     focus = false,
---     width = 60,
---   },
---   update_in_insert = true, -- default to false
---   -- severity_sort = true, -- default to false
--- }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

@@ -20,7 +20,6 @@ return { -- Autoformat
   'stevearc/conform.nvim',
   opts = {
     notify_on_error = true,
-
     format_on_save = function(bufnr)
       -- Disable with a global or buffer-local variable
       if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
@@ -33,9 +32,9 @@ return { -- Autoformat
       lua = { 'stylua' },
       -- Conform can also run multiple formatters sequentially
       go = { 'goimports', 'gofmt' },
+      yaml = { 'yamlfmt' },
       markdown = { 'prettierd', 'injected' },
       json = { 'prettierd', 'injected' },
-      -- yaml = { 'yamlfix' },
       -- Use a sub-list to run only the first available formatter
       -- You can use a function here to determine the formatters dynamically
       -- python = function(bufnr)
@@ -51,7 +50,7 @@ return { -- Autoformat
       -- is found.
       javascript = { { 'prettierd', 'prettier' } },
       -- Use the "*" filetype to run formatters on all filetypes.
-      ['*'] = { 'codespell' },
+      -- ['*'] = { 'codespell' },
       -- Use the "_" filetype to run formatters on filetypes that don't
       -- have other formatters configured.
       -- ['_'] = { 'trim_whitespace' },

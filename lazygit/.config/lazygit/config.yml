@@ -1,7 +1,7 @@
 customCommands:
   - key: "C"
-    command: "git cz --name cz_commitizen_emoji c -s"
-    description: "commit with commitizen"
+    command: "gitmoji -c"
+    description: "commit with gitmoji"
     context: "files"
-    loadingText: "opening commitizen commit tool"
+    loadingText: "opening gitmoji commit tool"
     subprocess: true
