@@ -25,9 +25,7 @@ zinit light zsh-users/zsh-history-substring-search
 
 # Add in snippets
 zinit snippet OMZP::git
-zinit snippet OMZP::sudo
 zinit snippet OMZP::kubectl
-zinit snippet OMZP::command-not-found
 
 # Load completions
 autoload -Uz compinit && compinit
@@ -35,23 +33,11 @@ autoload -Uz compinit && compinit
 zinit cdreplay -q
 
 # History
-#
-[ -z "$HISTFILE" ] && HISTFILE="$HOME/.zsh_history"
-HISTSIZE=29000
-SAVEHIST=$HISTSIZE
-HISTDUP=erase
-HIST_STAMPS=yyyy.mm.dd
-# setopt appendhistory
-# setopt sharehistory
-# setopt hist_ignore_space
-# setopt hist_ignore_all_dups
-# setopt hist_save_no_dups
-# setopt hist_ignore_dups
-# setopt hist_find_no_dups
-#
+zinit snippet OMZL::history.zsh
+
 # # Completion styling
 # zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-# zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # zstyle ':completion:*' menu no
 # zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
@@ -70,7 +56,6 @@ alias gsp="git stash pop"
 
 # WSL
 if (( ${+WSL_DISTRO_NAME} )); then
-
     # fix agent missing on wsl
     ps -u $(whoami) | grep ssh-agent &> /dev/null
     if [ $? -ne 0 ];then
@@ -85,7 +70,6 @@ if (( ${+WSL_DISTRO_NAME} )); then
     fi
 fi
 
-
 echo "load personal configs"
 # load my personal scripts
 if [[ -f $HOME/uelei_files/bash_sensitive.sh ]]; then
@@ -93,11 +77,9 @@ if [[ -f $HOME/uelei_files/bash_sensitive.sh ]]; then
 fi
 
 # # pyenv
-# export PYENV_ROOT="$HOME/.pyenv"
-# [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-# eval "$(pyenv init -)"
-# # pipx ensure path
-# export PATH="$PATH:$HOME/.local/bin"
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
 
 # asdf 
 if [ -x "$(command -v brew)" ]; then
@@ -117,9 +99,3 @@ function setenv(){
   fi
 }
 
-# # load fzf 
-# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-#
-# # Set up fzf key bindings and fuzzy completion
-# eval "$(fzf --zsh)"
-#
