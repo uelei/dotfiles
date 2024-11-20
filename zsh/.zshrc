@@ -76,7 +76,7 @@ if [[ -f $HOME/uelei_files/bash_sensitive.sh ]]; then
     source $HOME/uelei_files/bash_sensitive.sh
 fi
 
-# # pyenv
+# pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
