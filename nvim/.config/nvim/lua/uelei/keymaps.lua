@@ -16,11 +16,11 @@ end
 
 wk.add {
   -- Buffer
-  { '<leader>b', group = 'Buffer' },
+  { '<leader>b', group = 'Buffer', icon = '' },
   { '<leader>bc', '<cmd>bdelete<cr>', desc = 'Close' },
   { '<leader>bt', '<cmd>terminal<cr>', desc = 'Terminal' },
   -- File
-  { '<leader>f', group = 'File' },
+  { '<leader>f', group = 'File', icon = '' },
   { '<leader>fa', '<cmd>%y<cr>', desc = 'Buffer contents' },
   { '<leader>ff', "<cmd>let @+ = expand('%:p')<cr> <cmd>lua vim.notify('Yanked full path')<cr>", desc = 'Full Path' },
   { '<leader>fn', '<cmd>new<cr>', desc = 'New File' },
@@ -43,6 +43,25 @@ wk.add {
   { '<leader>gr', "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", desc = 'Reset Hunk' },
   { '<leader>gs', "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", desc = 'Stage Hunk' },
   { '<leader>gu', "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>", desc = 'Undo Stage Hunk' },
+
+  { '<leader>mc', group = 'CopilotChat', icon = ' ' },
+  { '<leader>mcc', '<cmd>CopilotChat<cr>', desc = 'CopilotChat' },
+  { '<leader>mcd', '<cmd>CopilotChatDocs<cr>', desc = 'Create Documentation' },
+  { '<leader>mct', '<cmd>CopilotChatTests<cr>', desc = 'Generate tests for my code' },
+  { '<leader>mcm', '<cmd>CopilotChatCommitStaged<cr>', desc = 'Generate Commit message' },
+  { '<leader>mci', '<cmd>CopilotChatOptimize<cr>', desc = 'Improve Selected code' },
+
+  {
+    '<leader>mcq',
+    function()
+      local input = vim.fn.input 'Quick Chat: '
+      if input ~= '' then
+        require('CopilotChat').ask(input, { selection = require('CopilotChat.select').buffer })
+      end
+    end,
+    desc = 'CopilotChat - Quick chat',
+  },
+
   -- LSP
   { '<leader>l', group = '+Lsp', icon = '' },
 
@@ -54,6 +73,8 @@ wk.add {
   { '<leader>w|', '<C-W>v', desc = 'Split window right', remap = true },
   { '<leader>-', '<C-W>s', desc = 'Split window below', remap = true },
   { '<leader>|', '<C-W>v', desc = 'Split window right', remap = true },
+
+  { '<leader>dP', group = '+Python' },
 }
 
 -- Diagnostic keymaps
@@ -208,3 +229,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
+vim.keymap.set('n', '<C-_>', function()
+  require('Comment.api').toggle.linewise.current()
+end, { noremap = true, silent = true })
+
+vim.keymap.set('x', '<C-_>', '<Plug>(comment_toggle_linewise_visual)')

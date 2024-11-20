@@ -35,41 +35,18 @@ require('lazy').setup {
 
   -- [[ Plugin Specs list ]]
 
-  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   'alexghergh/nvim-tmux-navigation',
   'mg979/vim-visual-multi', -- multi edit
-  -- NOTE: Plugins can also be added by using a table,
-  -- with the first argument being the link and the following
-  -- keys can be used to configure plugin behavior/loading/etc.
-  --
+
+  -- "gc" to comment visual regions/lines
   -- Use `opts = {}` to force a plugin to be loaded.
-  --
+  { 'numToStr/Comment.nvim', opts = {} },
   --  This is equivalent to:
   --    require('Comment').setup({})
 
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
-
-  -- Here is a more advanced example where we pass configuration
-  -- options to `gitsigns.nvim`. This is equivalent to the following lua:
-  --    require('gitsigns').setup({ ... })
-  --
-  -- See `:help gitsigns` to understand what the configuration keys do
-
-  -- NOTE: Plugins can also be configured to run lua code when they are loaded.
-  --
-  -- This is often very useful to both group configuration, as well as handle
-  -- lazy loading plugins that don't need to be loaded immediately at startup.
-  --
-  -- For example, in the following configuration, we use:
-  --  event = 'VeryLazy'
-  --
-  -- which loads which-key after all the UI elements are loaded. Events can be
-  -- normal autocommands events (:help autocomd-events).
-  --
-  -- Then, because we use the `config` key, the configuration only runs
+  -- The `config` key, the configuration only runs
   -- after the plugin has been loaded:
   --  config = function() ... end
 
@@ -81,11 +58,6 @@ require('lazy').setup {
     end,
   },
 
-  -- NOTE: Plugins can specify dependencies.
-  --
-  -- The dependencies are proper plugin specifications as well - anything
-  -- you do for a plugin at the top level, you can do for a dependency.
-  --
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
 
   { -- LSP Configuration & Plugins
@@ -231,9 +203,20 @@ require('lazy').setup {
       local servers = {
         -- clangd = {},
         gopls = {},
-        pyright = {},
+        taplo = {},
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                typeCheckingMode = 'off',
+              },
+            },
+          },
+        },
         rust_analyzer = {},
-        html = {},
+        html = {
+          filetypes = { 'html', 'htmldjango' },
+        },
         terraformls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -303,45 +286,6 @@ require('lazy').setup {
         },
       }
     end,
-  },
-
-  { -- Autoformat
-    'stevearc/conform.nvim',
-    opts = {
-      notify_on_error = true,
-      format_on_save = {
-        timeout_ms = nil,
-        lsp_fallback = true,
-      },
-      log_level = vim.log.levels.DEBUG,
-      formatters_by_ft = {
-        lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        go = { 'goimports', 'gofmt' },
-        markdown = { 'prettierd', 'injected' },
-        json = { 'prettierd', 'injected' },
-        -- yaml = { 'yamlfix' },
-        -- Use a sub-list to run only the first available formatter
-        -- You can use a function here to determine the formatters dynamically
-        -- python = function(bufnr)
-        --   if require('conform').get_formatter_info('ruff_format', bufnr).available then
-        --     return { 'ruff_format' }
-        --   else
-        --     return { 'isort' }
-        --   end
-        -- end,
-        python = { 'isort' },
-        --
-        -- You can use a sub-list to tell conform to run *until* a formatter
-        -- is found.
-        javascript = { { 'prettierd', 'prettier' } },
-        -- Use the "*" filetype to run formatters on all filetypes.
-        ['*'] = { 'codespell' },
-        -- Use the "_" filetype to run formatters on filetypes that don't
-        -- have other formatters configured.
-        -- ['_'] = { 'trim_whitespace' },
-      },
-    },
   },
 
   { -- Autocompletion
@@ -476,6 +420,8 @@ require('lazy').setup {
   -- Themes
   'folke/tokyonight.nvim',
   'Mofiqul/dracula.nvim',
+  'rebelot/kanagawa.nvim',
+
   {
     'catppuccin/nvim',
     laze = false,
@@ -486,35 +432,10 @@ require('lazy').setup {
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
-  { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
-    config = function()
-      -- Better Around/Inside textobjects
-      --
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]parenthen
-      --  - yinq - [Y]ank [I]nside [N]ext [']quote
-      --  - ci'  - [C]hange [I]nside [']quote
-      -- require('mini.ai').setup { n_lines = 500 }
-      require('mini.icons').setup()
-
-      -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
-      -- require('mini.surround').setup()
-
-      -- Simple and easy statusline.
-      -- require('mini.statusline').setup()
-
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
-    end,
-  },
+  --  statusline
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'nvim-tree/nvim-web-devicons', 'AndreM222/copilot-lualine' },
   },
 
   { -- Highlight, edit, and navigate code
@@ -540,23 +461,131 @@ require('lazy').setup {
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
+  {
+    'mfussenegger/nvim-lint',
+    event = {
+      'BufReadPre',
+      'BufNewFile',
+    },
+    config = function()
+      local lint = require 'lint'
 
-  -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
-  -- init.lua. If you want these files, they are in the repository, so you can just download them and
-  -- put them in the right spots if you want.
+      lint.linters_by_ft = {
+        javascript = { 'eslint_d', 'codespell' },
+        -- typescript = { "eslint_d" },
+        go = { 'golangci-lint', 'codespell' },
+        python = { 'mypy', 'codespell' },
+        terraform = { 'tflint', 'codespell' },
+      }
 
-  --  Here are some example plugins that I've included in the kickstart repository.
-  --  Uncomment any of the lines below to enable them (you will need to restart nvim).
-  --
+      local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
+
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+        group = lint_augroup,
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+
+      vim.keymap.set('n', '<leader>fl', function()
+        lint.try_lint()
+      end, { desc = 'Trigger linting for current file' })
+    end,
+  },
+  -- Rest client
+  {
+    'rest-nvim/rest.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+
+    ft = { 'http' },
+    config = function()
+      require('rest-nvim').setup {
+        -- Open request results in a horizontal split
+        result_split_horizontal = false,
+        -- Keep the http file buffer above|left when split horizontal|vertical
+        result_split_in_place = false,
+        -- Skip SSL verification, useful for unknown certificates
+        skip_ssl_verification = false,
+        -- Encode URL before making request
+        encode_url = true,
+        -- Highlight request on run
+        highlight = {
+          enabled = true,
+          timeout = 150,
+        },
+        result = {
+          -- toggle showing URL, HTTP info, headers at top the of result window
+          show_url = true,
+          show_http_info = true,
+          show_headers = true,
+          -- executables or functions for formatting response body [optional]
+          -- set them to false if you want to disable them
+          formatters = {
+            json = 'jq',
+            html = function(body)
+              return vim.fn.system({ 'tidy', '-i', '-q', '-' }, body)
+            end,
+          },
+        },
+        -- Jump to request line on run
+        jump_to_request = false,
+        env_file = '.env',
+        custom_dynamic_variables = {},
+        yank_dry_run = true,
+      }
+    end,
+  },
+
+  {
+    'folke/trouble.nvim',
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = 'Trouble',
+    keys = {
+      {
+        '<leader>xx',
+        '<cmd>Trouble diagnostics toggle filter.severity = vim.diagnostic.severity.ERROR<cr>',
+        desc = 'Diagnostics (Trouble)',
+      },
+      {
+        '<leader>xX',
+        '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
+        desc = 'Buffer Diagnostics (Trouble)',
+      },
+      {
+        '<leader>bs',
+        '<cmd>Trouble symbols toggle focus=false<cr>',
+        desc = 'Symbols (Trouble)',
+      },
+      {
+        '<leader>ll',
+        '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
+        desc = 'LSP Definitions / references / ... (Trouble)',
+      },
+      {
+        '<leader>xL',
+        '<cmd>Trouble loclist toggle<cr>',
+        desc = 'Location List (Trouble)',
+      },
+      {
+        '<leader>xQ',
+        '<cmd>Trouble qflist toggle<cr>',
+        desc = 'Quickfix List (Trouble)',
+      },
+    },
+  },
+
   require 'uelei.plugins.telescope',
   require 'uelei.plugins.git',
   require 'uelei.plugins.autopairs',
   require 'uelei.plugins.filetree',
   require 'uelei.plugins.bufferline',
   require 'uelei.plugins.org',
+  require 'uelei.plugins.conform',
   -- require 'uelei.plugins.ufo',
   require 'uelei.plugins.copilot',
   require 'uelei.plugins.debug',
+  require 'uelei.plugins.neotest',
+  require 'uelei.plugins.indent_line',
 
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information see: :help lazy.nvim-lazy.nvim-structuring-your-plugins
@@ -565,6 +594,7 @@ require('lazy').setup {
 
 require 'uelei.keymaps'
 require 'uelei.config.lualine'
+require 'uelei.config.filetype'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

@@ -136,7 +136,7 @@ return {
 
       require('which-key').add {
 
-        { '<leader>o', group = '+Org', icon = '' },
+        { '<leader>o', group = '+Org', icon = '' },
       }
     end,
   },
