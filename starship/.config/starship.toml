@@ -46,7 +46,6 @@ stashed = " "
 staged = " "
 renamed = " "
 untracked = " "
-up_to_date = "✓"
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
