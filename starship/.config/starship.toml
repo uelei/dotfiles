@@ -12,6 +12,10 @@ $cmd_duration\
 $battery\
 $line_break\
 $python\
+$golang\
+$docker_context\
+$kubernetes\
+$terraform\
 $character"""
 
 [battery]
@@ -20,13 +24,14 @@ charging_symbol = "🔌"
 discharging_symbol = "⚡"
 
 [[battery.display]]
-threshold = 80
+threshold = 75
 style = "bold red"
 
 [directory]
 truncation_length = 5
 format = "[$path]($style)[$lock_symbol]($lock_style) "
 truncation_symbol = '…/'
+home_symbol = "| 󰋞 ~"
 style = "blue"
 
 [character]
@@ -64,3 +69,27 @@ detect_files = []
 
 [hostname]
 ssh_only = true
+
+[golang]
+format = '[$symbol($version )($mod_version )]($style)'
+symbol = " "
+
+[docker_context]
+symbol = " "
+style = "bg:#06969A"
+format = '[ $symbol $context ]($style) $path'
+detect_files = []
+
+[terraform]
+format = "[ terraform $version]($style)($style) "
+
+[username]
+style_user = "bold blue"
+style_root = "bold purple"
+format = "  [$user]($style) "
+disabled = false
+# show_always = true
+
+[kubernetes]
+format = 'on [ $context\($namespace\)](bold purple) '
+disabled = false
