@@ -45,7 +45,7 @@ vimcmd_symbol = "[❮](green)"
 
 [git_status]
 conflicted = " "
-deleted = "﫧"
+deleted = "✘"
 modified = " "
 stashed = " "
 staged = " "
