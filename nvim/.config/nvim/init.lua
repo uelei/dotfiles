@@ -474,7 +474,7 @@ require('lazy').setup {
         javascript = { 'eslint_d', 'codespell' },
         -- typescript = { "eslint_d" },
         go = { 'golangci-lint', 'codespell' },
-        python = { 'mypy', 'codespell' },
+        python = { 'mypy', 'pylint', 'codespell' },
         terraform = { 'tflint', 'codespell' },
       }
 
