@@ -1,6 +1,9 @@
 return {
     {
         'CopilotC-Nvim/CopilotChat.nvim',
+        opts = {
+            debug = true, -- Enable debugging
+        },
         config = function()
             vim.keymap.set('n', '<leader>mcc', '<cmd>CopilotChat<cr>', { desc = 'CopilotChat' })
             vim.keymap.set('n', '<leader>mcd', '<cmd>CopilotChatDocs<cr>', { desc = 'Create Documentation' })
@@ -13,10 +16,8 @@ return {
                     require('CopilotChat').ask(input, { selection = require('CopilotChat.select').buffer })
                 end
             end, { desc = 'CopilotChat - Quick chat' })
-            require('CopilotChat').setup { debug = true }
         end,
     },
-
     'zbirenbaum/copilot.lua',
     {
         'zbirenbaum/copilot-cmp',

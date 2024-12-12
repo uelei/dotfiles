@@ -2,18 +2,11 @@ local check_backspace = function()
     local col = vim.fn.col '.' - 1
     return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s'
 end
--- local has_words_before = function()
---     if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
---         return false
---     end
---     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
---     return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match '^%s*$' == nil
--- end
 
 return {
+
     { -- Autocompletion
         'hrsh7th/nvim-cmp',
-        active = false,
         event = 'InsertEnter',
         dependencies = {
             -- Snippet Engine & its associated nvim-cmp source
@@ -38,19 +31,6 @@ return {
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-path',
             'hrsh7th/cmp-buffer',
-            {
-                'onsails/lspkind.nvim',
-                config = function()
-                    local lspkind = require 'lspkind'
-                    lspkind.init {
-                        symbol_map = {
-                            Copilot = '',
-                        },
-                    }
-
-                    vim.api.nvim_set_hl(0, 'CmpItemKindCopilot', { fg = '#6CC644' })
-                end,
-            },
             -- If you want to add a bunch of pre-configured snippets,
             --    you can use this plugin to help you. It even has snippets
             --    for various frameworks/libraries/etc. but you will have to
@@ -61,7 +41,6 @@ return {
             -- See `:help cmp`
             local cmp = require 'cmp'
             local luasnip = require 'luasnip'
-            local lspkind = require 'lspkind'
             luasnip.config.setup {}
 
             require('luasnip/loaders/from_vscode').lazy_load()
@@ -150,27 +129,6 @@ return {
                 experimental = {
                     ghost_text = true,
                     native_menu = false,
-                },
-                formatting = {
-                    format = lspkind.cmp_format {
-                        mode = 'symbol', -- show only symbol annotations
-                        maxwidth = {
-                            -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                            -- can also be a function to dynamically calculate max width such as
-                            -- menu = function() return math.floor(0.45 * vim.o.columns) end,
-                            menu = 50, -- leading text (labelDetails)
-                            abbr = 50, -- actual suggestion item
-                        },
-                        ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-                        show_labelDetails = true, -- show labelDetails in menu. Disabled by default
-
-                        -- The function below will be called before any actual modifications from lspkind
-                        -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-                        before = function(entry, vim_item)
-                            -- ...
-                            return vim_item
-                        end,
-                    },
                 },
             }
         end,

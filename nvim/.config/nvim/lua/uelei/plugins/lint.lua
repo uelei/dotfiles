@@ -10,25 +10,11 @@ return {
             local lint = require 'lint'
 
             lint.linters_by_ft = {
-                javascript = { 'eslint_d' },
+                javascript = { 'eslint_d', 'codespell' },
                 -- typescript = { "eslint_d" },
-                -- lua = { 'codespell' },
-                go = { 'golangci-lint' },
-                python = { 'mypy', 'pylint' },
-                terraform = { 'tflint' },
-            }
-
-            -- pylint work with virtualenv needs to be installed in the virtualenv
-            lint.linters.pylint.cmd = 'python'
-            lint.linters.pylint.args = {
-                '-m',
-                'pylint',
-                '-f',
-                'json',
-                '--from-stdin',
-                function()
-                    return vim.api.nvim_buf_get_name(0)
-                end,
+                go = { 'golangci-lint', 'codespell' },
+                python = { 'mypy', 'pylint', 'codespell' },
+                terraform = { 'tflint', 'codespell' },
             }
 
             local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
