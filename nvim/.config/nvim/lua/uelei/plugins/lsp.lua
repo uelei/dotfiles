@@ -29,9 +29,9 @@ return {
                     end
                     if client.supports_method 'textDocument/formatting' then
                         -- Format the current buffer on save
-                        vim.notify('Autoformat enabled for ' .. event.buf)
-                        vim.notify('Client ID: ' .. event.data.client_id)
-                        vim.notify('Client Name: ' .. client.name)
+                        -- vim.notify('Autoformat enabled for ' .. event.buf)
+                        -- vim.notify('Client ID: ' .. event.data.client_id)
+                        -- vim.notify('Client Name: ' .. client.name)
 
                         vim.api.nvim_create_user_command('FormatLSP', function()
                             vim.lsp.buf.format { bufnr = event.buf, id = client.id }
