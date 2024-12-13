@@ -12,6 +12,7 @@ return {
             lint.linters_by_ft = {
                 javascript = { 'eslint_d', 'codespell' },
                 -- typescript = { "eslint_d" },
+                lua = { 'codespell' },
                 go = { 'golangci-lint', 'codespell' },
                 python = { 'mypy', 'pylint', 'codespell' },
                 terraform = { 'tflint', 'codespell' },
