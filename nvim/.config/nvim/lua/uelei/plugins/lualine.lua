@@ -1,3 +1,12 @@
+local function value_in_table(tbl, value)
+    for _, v in pairs(tbl) do
+        if v == value then
+            return true
+        end
+    end
+    return false
+end
+
 return {
     --  statusline
     {
@@ -104,6 +113,28 @@ return {
                     },
                     lualine_x = {
                         {
+                            function()
+                                local lites = ''
+                                local rlinters = require('lint').get_running()
+                                local linters = require('lint')._resolve_linter_by_ft(vim.bo.filetype)
+
+                                if #linters == 0 then
+                                    return '󰷪 '
+                                end
+
+                                for _, ilinter in ipairs(linters) do
+                                    if value_in_table(rlinters, ilinter) then
+                                        lites = lites .. '󱉶 ' .. ilinter .. ', '
+                                    else
+                                        lites = lites .. '󰦕 ' .. ilinter .. ', '
+                                    end
+                                end
+
+                                -- return "󱉶 " .. table.concat(linters, ", ")
+                                return lites
+                            end,
+                        },
+                        {
                             -- Lsp server name .
                             function()
                                 local msg = 'No Active Lsp'
@@ -182,9 +213,6 @@ return {
             }
 
             lualine.setup(config)
-        end
-
-
+        end,
     },
-
 }

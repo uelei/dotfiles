@@ -15,7 +15,7 @@ return { -- Autoformat
             lua = { 'stylua' },
             -- Conform can also run multiple formatters sequentially
             go = { 'goimports', 'gofmt' },
-            yaml = { 'yamlfmt' },
+            -- yaml = { 'yamlfmt' },
             markdown = { 'prettierd', 'injected' },
             json = { 'prettierd', 'injected' },
             -- Use a sub-list to run only the first available formatter
@@ -33,7 +33,7 @@ return { -- Autoformat
             -- is found.
             javascript = { { 'prettierd', 'prettier' } },
             -- Use the "*" filetype to run formatters on all filetypes.
-            ['*'] = { 'codespell' },
+            -- ['*'] = { 'codespell' },
             -- Use the "_" filetype to run formatters on filetypes that don't
             -- have other formatters configured.
             -- ['_'] = { 'trim_whitespace' },

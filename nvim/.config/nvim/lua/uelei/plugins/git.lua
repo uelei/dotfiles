@@ -21,24 +21,22 @@ return {
             vim.keymap.set("n", '<leader>gm', '<cmd>DiffviewOpen<cr>', { desc = 'Lazygit' })
         end
 
-
     },
-
 
     {
         -- Adds git related signs to the gutter, as well as utilities for managing changes
         'lewis6991/gitsigns.nvim',
-        opts = {
-            -- See `:help gitsigns.txt`
-            signs = {
-                add = { text = '+' },
-                change = { text = '~' },
-                delete = { text = '_' },
-                topdelete = { text = '‾' },
-                changedelete = { text = '~' },
-            },
-        },
         config = function()
+            require('gitsigns').setup {
+                -- See `:help gitsigns.txt`
+                -- signs = {
+                --     add = { text = '+' },
+                --     change = { text = '~' },
+                --     delete = { text = '_' },
+                --     topdelete = { text = '‾' },
+                --     changedelete = { text = '~' },
+                -- },
+            }
             vim.keymap.set("n", '<leader>gj', "<cmd>lua require 'gitsigns'.next_hunk({navigation_message = false})<cr>",
                 { desc = 'Next Hunk' })
             vim.keymap.set("n", '<leader>gk', "<cmd>lua require 'gitsigns'.prev_hunk({navigation_message = false})<cr>",
