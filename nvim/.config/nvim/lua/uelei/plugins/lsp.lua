@@ -8,7 +8,6 @@ return {
             -- 'WhoIsSethDaniel/mason-tool-installer.nvim',
 
             -- Useful status updates for LSP.
-            -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
             { 'j-hui/fidget.nvim', opts = {} },
             {
                 'kosayoda/nvim-lightbulb',
@@ -131,13 +130,13 @@ return {
             --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
             local servers = {
                 -- clangd = {},
-                -- gopls = {},
+                gopls = {},
                 -- taplo = {},
                 -- rust_analyzer = {},
                 -- html = {
                 --     filetypes = { 'html', 'htmldjango' },
                 -- },
-                -- terraformls = {},
+                terraform_ls = {},
                 -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
                 --
                 -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -230,12 +229,18 @@ return {
 
             -- You can add other tools here that you want Mason to install
             -- for you, so that they are available from within Neovim.
-            -- local ensure_installed = vim.tbl_keys(servers or {})
-            -- vim.list_extend(ensure_installed, {
-            --   'stylua', -- Used to format lua code
-            -- })
+            local ensure_installed = vim.tbl_keys(servers or {})
+            vim.list_extend(ensure_installed, {
+                'stylua', -- Used to format lua code
 
-            -- require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+                'debugpy', -- python debugger
+                'pylint', -- python linter
+                'mypy', -- python type checker
+                -- 'lua-language-server', -- lua language server
+                -- "ruff", -- python formatter
+            })
+
+            require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
             -- require('mason-lspconfig').setup {
             --   handlers = {

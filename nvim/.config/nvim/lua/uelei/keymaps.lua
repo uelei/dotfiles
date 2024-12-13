@@ -113,8 +113,8 @@ map('v', '<', '<gv')
 map('v', '>', '>gv')
 
 -- lazy
-map('n', '<leader>sL', '<cmd>:Lazy<cr>', { desc = 'Lazy' })
-map('n', '<leader>sM', '<cmd>:Mason<cr>', { desc = 'Mason' })
+map('n', '<leader>ml', '<cmd>:Lazy<cr>', { desc = 'Lazy' })
+map('n', '<leader>mm', '<cmd>:Mason<cr>', { desc = 'Mason' })
 
 -- quit
 map('n', '<leader>q', '<cmd>qa<cr>', { desc = 'Quit all' })
