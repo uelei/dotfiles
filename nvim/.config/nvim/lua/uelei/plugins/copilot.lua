@@ -16,16 +16,26 @@ return {
             require('CopilotChat').setup { debug = true }
         end,
     },
-    'zbirenbaum/copilot.lua',
     {
-        'zbirenbaum/copilot-cmp',
-        config = function()
-            require('copilot_cmp').setup()
+        'zbirenbaum/copilot.lua',
 
+        config = function()
+            -- require('copilot_cmp').setup()
             require('copilot').setup {
                 suggestion = { enabled = false },
                 panel = { enabled = false },
             }
         end,
+        -- {
+        --     'zbirenbaum/copilot-cmp',
+        --     config = function()
+        --         require('copilot_cmp').setup()
+        --
+        --         require('copilot').setup {
+        --             suggestion = { enabled = false },
+        --             panel = { enabled = false },
+        --         }
+        --     end,
+        -- },
     },
 }
