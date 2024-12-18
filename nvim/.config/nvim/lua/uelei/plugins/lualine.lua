@@ -125,6 +125,8 @@ return {
                                 for _, ilinter in ipairs(linters) do
                                     if value_in_table(rlinters, ilinter) then
                                         lites = lites .. '󱉶 ' .. ilinter .. ', '
+                                    elseif vim.fn.executable(ilinter) == 0 then
+                                        lites = lites .. 'X ' .. ilinter .. ', '
                                     else
                                         lites = lites .. '󰦕 ' .. ilinter .. ', '
                                     end

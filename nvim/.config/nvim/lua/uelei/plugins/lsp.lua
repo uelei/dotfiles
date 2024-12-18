@@ -203,7 +203,7 @@ return {
             vim.list_extend(ensure_installed, {
                 'stylua', -- Used to format lua code
                 'debugpy', -- python debugger
-                'pylint', -- python linter
+                -- 'pylint', -- python linter
                 'mypy', -- python type checker
                 -- 'lua-language-server', -- lua language server
                 -- "ruff", -- python formatter
