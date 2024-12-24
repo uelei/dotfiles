@@ -8,7 +8,6 @@ return {
 
     -- Themes
     'Mofiqul/dracula.nvim',
-    'rebelot/kanagawa.nvim',
 
     {
         'catppuccin/nvim',
