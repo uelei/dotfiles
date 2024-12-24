@@ -2,7 +2,7 @@ return {
     {
         'folke/tokyonight.nvim',
         config = function()
-            vim.cmd.colorscheme 'tokyonight'
+            vim.cmd.colorscheme 'tokyonight-storm'
         end,
     },
 
@@ -13,8 +13,8 @@ return {
     {
         'catppuccin/nvim',
         laze = false,
-        config = function()
-            vim.cmd.colorscheme 'catppuccin-frappe'
-        end,
+        -- config = function()
+        --     vim.cmd.colorscheme 'catppuccin-frappe'
+        -- end,
     },
 }
