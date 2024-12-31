@@ -16,11 +16,10 @@ return {
     -- },
 
     {
-        "sindrets/diffview.nvim",
+        'sindrets/diffview.nvim',
         config = function()
-            vim.keymap.set("n", '<leader>gm', '<cmd>DiffviewOpen<cr>', { desc = 'Lazygit' })
-        end
-
+            vim.keymap.set('n', '<leader>gm', '<cmd>DiffviewOpen<cr>', { desc = 'Lazygit' })
+        end,
     },
 
     {
@@ -37,22 +36,21 @@ return {
                 --     changedelete = { text = '~' },
                 -- },
             }
-            vim.keymap.set("n", '<leader>gj', "<cmd>lua require 'gitsigns'.next_hunk({navigation_message = false})<cr>",
+            vim.keymap.set('n', '<leader>gj', "<cmd>lua require 'gitsigns'.next_hunk({navigation_message = false})<cr>",
                 { desc = 'Next Hunk' })
-            vim.keymap.set("n", '<leader>gk', "<cmd>lua require 'gitsigns'.prev_hunk({navigation_message = false})<cr>",
+            vim.keymap.set('n', '<leader>gk', "<cmd>lua require 'gitsigns'.prev_hunk({navigation_message = false})<cr>",
                 { desc = 'Prev Hunk' })
-            vim.keymap.set("n", '<leader>gl', "<cmd>lua require 'gitsigns'.blame_line()<cr>", { desc = 'Blame' })
-            vim.keymap.set("n", '<leader>gp', "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", { desc = 'Preview Hunk' })
-            vim.keymap.set("n", '<leader>gr', "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", { desc = 'Reset Hunk' })
-            vim.keymap.set("n", '<leader>gs', "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", { desc = 'Stage Hunk' })
-            vim.keymap.set("n", '<leader>gu', "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
+            vim.keymap.set('n', '<leader>gl', "<cmd>lua require 'gitsigns'.blame_line()<cr>", { desc = 'Blame' })
+            vim.keymap.set('n', '<leader>gp', "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", { desc = 'Preview Hunk' })
+            vim.keymap.set('n', '<leader>gr', "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", { desc = 'Reset Hunk' })
+            vim.keymap.set('n', '<leader>gs', "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", { desc = 'Stage Hunk' })
+            vim.keymap.set('n', '<leader>gu', "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
                 { desc = 'Undo Stage Hunk' })
 
-            vim.keymap.set("n", '<leader>gd', '<cmd>Gitsigns diffthis HEAD<cr>', { desc = 'Git Diff' })
-            vim.keymap.set("n", '<leader>gR', "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", { desc = 'Reset Buffer' })
-            vim.keymap.set("n", '<leader>gL', '<cmd>GitBlameToggle<cr>', { desc = 'Blame all' })
-        end
-
+            vim.keymap.set('n', '<leader>gd', '<cmd>Gitsigns diffthis HEAD<cr>', { desc = 'Git Diff' })
+            vim.keymap.set('n', '<leader>gR', "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", { desc = 'Reset Buffer' })
+            vim.keymap.set('n', '<leader>gL', '<cmd>GitBlameToggle<cr>', { desc = 'Blame all' })
+        end,
     },
 
     {
@@ -70,16 +68,16 @@ return {
         },
         opts = {},
     },
-    -- lazygit
-    {
-        'kdheepak/lazygit.nvim',
-        -- optional for floating window border decoration
-        dependencies = {
-            'nvim-lua/plenary.nvim',
-        },
-        config = function()
-            vim.keymap.set("n", '<leader>gg', '<cmd>LazyGit<cr>', { desc = 'Lazygit' })
-        end
-
-    },
+    -- -- lazygit
+    -- {
+    --     'kdheepak/lazygit.nvim',
+    --     -- optional for floating window border decoration
+    --     dependencies = {
+    --         'nvim-lua/plenary.nvim',
+    --     },
+    --     config = function()
+    --         vim.keymap.set("n", '<leader>gg', '<cmd>LazyGit<cr>', { desc = 'Lazygit' })
+    --     end
+    --
+    -- },
 }
