@@ -42,15 +42,15 @@ defaults write com.apple.finder ShowPathbar -bool true
 # defaults write com.apple.finder ShowStatusBar -bool true
 
 # normal minimum is 15 (225 ms)
-defaults write -g InitialKeyRepeat -float 10.0
+defaults write -g InitialKeyRepeat -float 12.0
 
 echo "Set a shorter Delay until key repeat"
 defaults write NSGlobalDomain InitialKeyRepeat -float 10.0
 
 echo "Set a blazingly fast keyboard repeat rate"
 # normal minimum is 2 (30 ms)
-defaults write NSGlobalDomain KeyRepeat -float 1.0
-defaults write -g KeyRepeat -float 1.0
+defaults write NSGlobalDomain KeyRepeat -float 1.9
+defaults write -g KeyRepeat -float 1.9
 
 echo "Show the ~/Library folder"
 chflags nohidden ~/Library
