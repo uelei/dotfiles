@@ -84,11 +84,9 @@ if [[ -d $HOME/.pyenv  && -d $PYENV_ROOT/bin ]]; then
     eval "$(pyenv init -)"
 fi
 
-# asdf 
-if [ -x "$(command -v brew)" ]; then
-   . $(brew --prefix asdf)/libexec/asdf.sh
-else 
-   . $HOME/.asdf/asdf.sh
+
+if [[ -f $HOME/.local/bin/mise ]]; then
+    eval "$(~/.local/bin/mise activate zsh)"
 fi
 
 # Functions 

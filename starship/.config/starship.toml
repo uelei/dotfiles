@@ -1,47 +1,95 @@
 # ~/.config/starship.toml
 
+format = """
+$username\
+$hostname\
+$path\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$cmd_duration\
+$battery\
+$line_break\
+$python\
+$golang\
+$docker_context\
+$kubernetes\
+$terraform\
+$character"""
+
 [battery]
 full_symbol = "🔋"
 charging_symbol = "🔌"
 discharging_symbol = "⚡"
 
 [[battery.display]]
-threshold = 30
+threshold = 75
 style = "bold red"
-
-[character]
-error_symbol = "[✖](bold red) "
-
-[cmd_duration]
-min_time = 10_000  # Show command duration over 10,000 milliseconds (=10 sec)
-format = " took [$duration]($style)"
 
 [directory]
 truncation_length = 5
 format = "[$path]($style)[$lock_symbol]($lock_style) "
+truncation_symbol = '…/'
+home_symbol = "| 󰋞 ~"
+style = "blue"
 
-[git_commit]
-commit_hash_length = 8
-style = "bold white"
+[character]
+success_symbol = "[❯](purple)"
+error_symbol = "[✖](bold red) "
+vimcmd_symbol = "[❮](green)"
 
-[git_state]
-format = '[\($state( $progress_current of $progress_total)\)]($style) '
+# [git_branch]
+# format = "[$branch]($style)"
+# style = "bright-black"
 
 [git_status]
-conflicted = "⚔️ "
-ahead = "🏎️💨×${count} "
-behind = "🐢×${count} "
-diverged = "🔱🏎️💨×${ahead_count}🐢×${behind_count} "
-untracked = "🤷×${count} "
-stashed = "📦 "
-modified = "📝×${count} "
-staged = "🗃️×${count} "
-renamed = "📛×${count} "
-deleted = "🗑️×${count} "
-style = "bright-white"
-format = "$all_status$ahead_behind"
-# up_to_date = "✓"
+conflicted = " "
+deleted = "✘"
+modified = " "
+stashed = " "
+staged = " "
+renamed = " "
+untracked = " "
 
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
 
-[aws]
-symbol = "☁️ 🅰 "
+[cmd_duration]
+format = "[$duration]($style) "
+style = "yellow"
+
+[python]
+format = '[${symbol}(${version} )(\($virtualenv\))]($style)'
+style = "bright-black"
+# should only show up when using virtualenv, disable all other triggers
+detect_extensions = []
+detect_files = []
+
+[hostname]
+ssh_only = true
+
+[golang]
+format = '[$symbol($version )($mod_version )]($style)'
+symbol = " "
+
+[docker_context]
+symbol = " "
+style = "bg:#06969A"
+format = '[ $symbol $context ]($style) $path'
+detect_files = []
+
+[terraform]
+format = "[ terraform $version]($style)($style) "
+
+[username]
+style_user = "bold blue"
+style_root = "bold purple"
+format = "  [$user]($style) "
+disabled = false
+# show_always = true
+
+[kubernetes]
+format = 'on [ $context\($namespace\)](bold purple) '
+disabled = false
