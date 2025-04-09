@@ -1,4 +1,4 @@
--- dap.lua
+--  dap.lua
 return {
 
     {
@@ -30,7 +30,6 @@ return {
                 ft = 'python',
             },
         },
-        event = 'VeryLazy',
         config = function()
             local dap = require 'dap'
             local dapui = require 'dapui'
@@ -45,11 +44,6 @@ return {
             local debugpy_path = mason_debugpy_path .. '/venv/bin/python'
 
             local dap_python = require 'dap-python'
-            require('dap.ext.vscode').load_launchjs('.vscode/launch.json', {
-                python = {
-                    'python',
-                },
-            })
             dap_python.setup(debugpy_path)
             dap_python.default_port = 5678
 

@@ -26,12 +26,12 @@ require 'uelei.options'
 -- Setup lazy.nvim
 require('lazy').setup {
     spec = {
-        -- add your plugins here
-        { import = 'uelei.plugins' },
         'mg979/vim-visual-multi', -- multi edit
         -- Highlight todo, notes, etc in comments
         { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
         { 'numToStr/Comment.nvim',    opts = {} },
+
+        { import = 'uelei.plugins' },
     },
     -- Configure any other settings here. See the documentation for more details.
     -- colorscheme that will be used when installing plugins.

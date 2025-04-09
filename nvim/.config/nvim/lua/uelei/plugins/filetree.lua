@@ -30,22 +30,22 @@ return {
         end,
     },
     -- file explore
-    -- {
-    --     'nvim-tree/nvim-tree.lua',
-    --     version = '*',
-    --     dependencies = {
-    --         'nvim-tree/nvim-web-devicons',
-    --     },
-    --     config = function()
-    --         require('nvim-tree').setup {
-    --             update_focused_file = {
-    --                 enable = true,
-    --                 update_cwd = false,
-    --             },
-    --         }
-    --     end,
-    --     keys = {
-    --         { '<leader>fe', '<cmd>NvimTreeToggle<cr>', desc = 'File Explore' },
-    --     },
-    -- },
+    {
+        'nvim-tree/nvim-tree.lua',
+        version = '*',
+        dependencies = {
+            'nvim-tree/nvim-web-devicons',
+        },
+        config = function()
+            require('nvim-tree').setup {
+                update_focused_file = {
+                    enable = true,
+                    update_cwd = false,
+                },
+            }
+        end,
+        keys = {
+            { '<leader>ft', '<cmd>NvimTreeToggle<cr>', desc = 'File Explore(neotree)' },
+        },
+    },
 }
