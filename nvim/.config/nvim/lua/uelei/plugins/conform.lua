@@ -18,6 +18,7 @@ return { -- Autoformat
             -- yaml = { 'yamlfmt' },
             markdown = { 'prettierd', 'injected' },
             json = { 'prettierd', 'injected' },
+            terraform = { 'terraform_fmt' },
             -- Use a sub-list to run only the first available formatter
             -- You can use a function here to determine the formatters dynamically
             -- python = function(bufnr)
