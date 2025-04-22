@@ -7,14 +7,15 @@ return {
             'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
             'MunifTanjim/nui.nvim',
         },
-        opts = {
-
-            follow_current_file = { enabled = true },
-        },
-        -- config = function()
-        --     require('neo-tree').setup {
-        --     }
-        -- end,
+        config = function()
+            require('neo-tree').setup {
+                filesystem = {
+                    follow_current_file = {
+                        enabled = true,
+                    },
+                },
+            }
+        end,
         keys = {
             { '<leader>fe', '<cmd>Neotree toggle<cr>', desc = 'Open File NeoTree' },
         },
