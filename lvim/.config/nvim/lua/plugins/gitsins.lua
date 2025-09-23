@@ -30,5 +30,12 @@ return {
             vim.keymap.set('n', '<leader>gM', '<cmd>GitBlameToggle<cr>', { desc = 'Blame all' })
         end,
     },
+    {
+        'f-person/git-blame.nvim',
+        init = function()
+            -- vim.g.gitblame_message_template = " <author> - <date> - <summary> - <sha>"
+            vim.g.gitblame_enabled = 0
+        end,
+    },
 
 }
