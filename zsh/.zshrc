@@ -59,6 +59,8 @@ alias lgit="lazygit"
 alias tf='terraform'
 alias gs="git stash"
 alias gsp="git stash pop"
+alias ..='cd ..'
+alias grep='grep --color=auto'
 
 # WSL
 if (( ${+WSL_DISTRO_NAME} )); then
