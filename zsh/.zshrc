@@ -1,4 +1,3 @@
-
 # # tmux autoinit
 # if [ -z $TMUX ]; then; tmux; fi
 export XDG_CONFIG_HOME="${HOME}/.config"
@@ -20,8 +19,8 @@ eval "$(starship init zsh)"
 zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-history-substring-search
-# zinit light Aloxaf/fzf-tab
+zinit light Aloxaf/fzf-tab
+zinit light joshskidmore/zsh-fzf-history-search
 
 # Add in snippets
 zinit snippet OMZP::git
@@ -33,17 +32,24 @@ autoload -Uz compinit && compinit
 zinit cdreplay -q
 
 # History
-zinit snippet OMZL::history.zsh
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=$HISTSIZE
+
+# sane defaults
+setopt inc_append_history share_history hist_ignore_all_dups
+setopt autocd no_beep interactivecomments
+unsetopt nomatch
 
 # # Completion styling
-# zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-# zstyle ':completion:*' menu no
-# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+# zstyle ':completion:*' menu select
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
 # Aliases
 alias ls='ls --color'
-alias vim='nvim'
 alias c='clear'
 alias :q='exit'
 alias x="exit"
@@ -76,15 +82,6 @@ if [[ -f $HOME/uelei_files/bash_sensitive.sh ]]; then
     source $HOME/uelei_files/bash_sensitive.sh
 fi
 
-# # pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-if [[ -d $HOME/.pyenv  && -d $PYENV_ROOT/bin ]]; then
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init -)"
-fi
-
-
 if [[ -f $HOME/.local/bin/mise ]]; then
     eval "$(~/.local/bin/mise activate zsh)"
 fi
@@ -100,3 +97,8 @@ function setenv(){
   fi
 }
 
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Zoxide
+eval "$(zoxide init zsh)"
