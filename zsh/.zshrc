@@ -1,4 +1,3 @@
-
 # # tmux autoinit
 # if [ -z $TMUX ]; then; tmux; fi
 export XDG_CONFIG_HOME="${HOME}/.config"
@@ -7,43 +6,43 @@ export XDG_CONFIG_HOME="${HOME}/.config"
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
 # Download Zinit, if it's not there
-if [ ! -d $ZINIT_HOME ]; && mkdir -p "$(dirname $ZINIT_HOME)"
+[[ ! -d $ZINIT_HOME ]] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 
 # source Zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
-# start starship Terminal
-eval "$(starship init zsh)"
+# Add in Oh My Zsh snippets
+zinit snippet OMZP::git
+zinit snippet OMZP::sudo
+zinit snippet OMZP::docker
+zinit snippet OMZP::kubectl
+zinit snippet OMZL::history.zsh
 
 # Add in zsh plugins
 zinit light zdharma-continuum/fast-syntax-highlighting
-zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-history-substring-search
-# zinit light Aloxaf/fzf-tab
+zinit light zsh-users/zsh-completions
+zinit light zdharma-continuum/history-search-multi-word
 
-# Add in snippets
-zinit snippet OMZP::git
-zinit snippet OMZP::kubectl
-
+zinit load 'zsh-users/zsh-history-substring-search'
+zinit ice wait atload'_history_substring_search_config'
 # Load completions
 autoload -Uz compinit && compinit
 
+# Completion styling
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu select
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+
 zinit cdreplay -q
 
-# History
-zinit snippet OMZL::history.zsh
-
-# # Completion styling
-# zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-# zstyle ':completion:*' menu no
-# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+# Prompt (after plugins so they don't override it)
+eval "$(starship init zsh)"
 
 # Aliases
 alias ls='ls --color'
-alias vim='nvim'
 alias c='clear'
 alias :q='exit'
 alias x="exit"
@@ -76,19 +75,6 @@ if [[ -f $HOME/uelei_files/bash_sensitive.sh ]]; then
     source $HOME/uelei_files/bash_sensitive.sh
 fi
 
-# # pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-if [[ -d $HOME/.pyenv  && -d $PYENV_ROOT/bin ]]; then
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init -)"
-fi
-
-
-if [[ -f $HOME/.local/bin/mise ]]; then
-    eval "$(~/.local/bin/mise activate zsh)"
-fi
-
 # Functions 
 myip() echo "External :: IP => $( curl --silent https://ifconfig.me )"
 
@@ -100,3 +86,13 @@ function setenv(){
   fi
 }
 
+# load Mise
+if [[ -f $HOME/.local/bin/mise ]]; then
+    eval "$(~/.local/bin/mise activate zsh)"
+fi
+
+# zoxide
+eval "$(zoxide init zsh)"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:$HOME/.lmstudio/bin"
