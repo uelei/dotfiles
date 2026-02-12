@@ -5,6 +5,8 @@ python.uv_venv_auto = true
 
 [tools]
 bat = "latest"
+eza = "latest"
 go = "latest"
+node = "22"
 rust = "latest"
 uv = "latest"

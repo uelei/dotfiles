@@ -41,8 +41,34 @@ zinit cdreplay -q
 # Prompt (after plugins so they don't override it)
 eval "$(starship init zsh)"
 
+# load Mise (before aliases so mise-installed tools are available)
+if [[ -f $HOME/.local/bin/mise ]]; then
+    eval "$(~/.local/bin/mise activate zsh)"
+fi
+
 # Aliases
-alias ls='ls --color'
+# Use eza if available, otherwise fallback to ls
+if command -v eza &> /dev/null; then
+    alias ls='eza --icons --group-directories-first'
+    alias ll='eza -lh --icons --group-directories-first'
+    alias la='eza -lah --icons --group-directories-first'
+    alias lt='eza -T --icons --level=2'
+else
+    # Fallback to standard ls with platform-appropriate flags
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        alias ls='ls -G'
+    else
+        alias ls='ls --color=auto'
+    fi
+fi
+
+# Use bat if available, otherwise fallback to cat
+if command -v bat &> /dev/null; then
+    alias cat='bat --style=auto'
+    alias catp='bat --plain'  # Plain output without decorations
+    alias batl='bat --paging=always'  # Force pager for long files
+fi
+
 alias c='clear'
 alias :q='exit'
 alias x="exit"
@@ -87,11 +113,6 @@ function setenv(){
     export $(cat $1 | xargs)
   fi
 }
-
-# load Mise
-if [[ -f $HOME/.local/bin/mise ]]; then
-    eval "$(~/.local/bin/mise activate zsh)"
-fi
 
 # zoxide
 eval "$(zoxide init zsh)"
