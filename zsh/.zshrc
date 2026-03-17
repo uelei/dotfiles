@@ -119,3 +119,6 @@ eval "$(zoxide init zsh)"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:$HOME/.lmstudio/bin"
+
+# Set GOPATH to avoid create go folder on Home directory
+export GOPATH="$HOME/.local/share/go"
