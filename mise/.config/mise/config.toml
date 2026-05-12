@@ -1,9 +1,16 @@
 [settings]
 experimental = true
-python_venv_auto_create = true
 python.uv_venv_auto = true
 
 [tools]
+aws = { version = "latest", symlink_bins = "true" }
+bat = "latest"
+eza = "latest"
 go = "latest"
+lazydocker = "latest"
+lazygit = "latest"
+neovim = "latest"
+node = "latest"
 rust = "latest"
 uv = "latest"
+zoxide = "latest"

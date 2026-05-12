@@ -24,7 +24,16 @@ return {
             require('copilot_cmp').setup()
 
             require('copilot').setup {
+                filetypes = {
+                    python = true,
+                    go = true,
+                    snacks_dashboard = false,
+                    ['*'] = false,
+                },
                 suggestion = { enabled = false },
+                logger = {
+                    file_log_level = vim.log.levels.TRACE,
+                },
                 panel = { enabled = false },
             }
         end,

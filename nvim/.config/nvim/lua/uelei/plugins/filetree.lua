@@ -8,7 +8,13 @@ return {
             'MunifTanjim/nui.nvim',
         },
         config = function()
-            require('neo-tree').setup {}
+            require('neo-tree').setup {
+                filesystem = {
+                    follow_current_file = {
+                        enabled = true,
+                    },
+                },
+            }
         end,
         keys = {
             { '<leader>fe', '<cmd>Neotree toggle<cr>', desc = 'Open File NeoTree' },
@@ -30,22 +36,22 @@ return {
         end,
     },
     -- file explore
-    -- {
-    --     'nvim-tree/nvim-tree.lua',
-    --     version = '*',
-    --     dependencies = {
-    --         'nvim-tree/nvim-web-devicons',
-    --     },
-    --     config = function()
-    --         require('nvim-tree').setup {
-    --             update_focused_file = {
-    --                 enable = true,
-    --                 update_cwd = false,
-    --             },
-    --         }
-    --     end,
-    --     keys = {
-    --         { '<leader>fe', '<cmd>NvimTreeToggle<cr>', desc = 'File Explore' },
-    --     },
-    -- },
+    {
+        'nvim-tree/nvim-tree.lua',
+        version = '*',
+        dependencies = {
+            'nvim-tree/nvim-web-devicons',
+        },
+        config = function()
+            require('nvim-tree').setup {
+                update_focused_file = {
+                    enable = true,
+                    update_cwd = false,
+                },
+            }
+        end,
+        keys = {
+            { '<leader>ft', '<cmd>NvimTreeToggle<cr>', desc = 'File Explore(neotree)' },
+        },
+    },
 }

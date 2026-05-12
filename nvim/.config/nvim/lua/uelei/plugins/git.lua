@@ -60,7 +60,6 @@ return {
             vim.g.gitblame_enabled = 0
         end,
     },
-    'sindrets/diffview.nvim',
     {
         'ruifm/gitlinker.nvim',
         dependencies = {

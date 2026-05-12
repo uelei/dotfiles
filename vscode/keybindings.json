@@ -1,0 +1,23 @@
+[
+  {
+    "key": "ctrl+alt+t",
+    "command": "workbench.action.tasks.runTask"
+  },
+  {
+    "key": "ctrl+alt+m",
+    "command": "workbench.action.toggleMaximizedPanel"
+  },
+  {
+    "key": "ctrl+alt+`",
+    "command": "claude-vscode.terminal.open",
+    "when": "config.claudeCode.useTerminal"
+  },
+  {
+    "key": "cmd+shift+j",
+    "command": "workbench.action.terminal.focusNext"
+  },
+  {
+    "key": "cmd+shift+k",
+    "command": "workbench.action.terminal.focusPrevious"
+  }
+]
